@@ -162,7 +162,12 @@
         // 检查是否已登录管理账号
         const adminUser = localStorage.getItem('adminUser');
         if (!adminUser) {
-            window.location.href = '/aitrainer/login.html';
+            // 计算返回根目录的路径
+            const pathname = window.location.pathname;
+            const dirPath = pathname.substring(0, pathname.lastIndexOf('/'));
+            const depth = dirPath.split('/').filter(p => p).length - 1;
+            const prefix = '../'.repeat(depth);
+            window.location.href = prefix + 'login.html';
         }
         
         // 下载模板
