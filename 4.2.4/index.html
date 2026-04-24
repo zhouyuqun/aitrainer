@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人工智能训练师考核 - 4.2.4</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f4f8 100%);
+    padding: 20px;
+}
+.exam-header {
+    background: linear-gradient(135deg, #2c5282 0%, #3182ce 100%);
+    color: #fff;
+    padding: 18px 30px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px 12px 0 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.main-box {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+/* 左侧题目区 */
+.question-side {
+    flex: 1.1;
+    min-width: 450px;
+    padding: 35px;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+}
+.question-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3182ce;
+}
+.question-item {
+    font-size: 15px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #2d3748;
+}
+/* 右侧答题区 */
+.answer-side {
+    flex: 1;
+    min-width: 450px;
+    padding: 35px;
+    background: #fff;
+}
+.answer-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #38a169;
+}
+.blank-item {
+    margin-bottom: 22px;
+}
+.blank-item label {
+    display: block;
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+.blank-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+}
+.blank-input:focus {
+    border-color: #3182ce;
+}
+.btn-group {
+    margin-top: 35px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+.btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-submit {
+    background: #3182ce;
+    color: #fff;
+}
+.btn-submit:hover {
+    background: #2c5282;
+}
+.btn-reset {
+    background: #e53e3e;
+    color: #fff;
+}
+.btn-reset:hover {
+    background: #c53030;
+}
+.result-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+}
+.score {
+    font-size: 20px;
+    font-weight: bold;
+    color: #22543d;
+    margin-bottom: 15px;
+}
+.answer-list {
+    font-size: 14px;
+    line-height: 1.8;
+}
+.right { color: #38a169; font-weight: bold; }
+.wrong { color: #e53e3e; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="exam-header">
+    人工智能训练师（三级）操作技能考核 — 4.2.4 自动驾驶感知系统
+</div>
+
+<div class="main-box">
+    <!-- 左侧：题目 -->
+    <div class="question-side">
+        <h2>题目内容</h2>
+        <div class="question-item">
+            <strong>1. 数据采集方案</strong><br>
+             多传感器融合：______________________。<br>
+             场景覆盖：______________________。<br>
+             事件触发采集：在特定事件发生时（如紧急刹车、避让行动），自动触发额外数据采集，以捕获关键时刻。<br>
+             数据质量控制：______________________。<br>
+             数据加密与传输：采用安全的数据传输协议，确保数据在传输过程中的安全性。
+        </div>
+        <div class="question-item">
+            <strong>2. 数据标注方案</strong><br>
+             定义标注标准：明确标注类别、边界框精度要求、遮挡处理规则等。<br>
+             选择标注工具：使用专业的数据标注软件，支持2D框、3D框、语义分割等标注类型。<br>
+             ______________________：对标注员进行专业培训，确保他们理解标注标准，熟悉工具使用。<br>
+             执行标注任务：分配数据给标注团队，设定清晰的任务指标和截止日期。<br>
+             质量控制与复查：实施多级检查，包括自动检查和人工复查，确保标注的准确性和一致性。<br>
+             数据整合与存储：将标注后的数据整合，形成______________________数据集，存储在安全的数据仓库中，供模型训练使用。
+        </div>
+    </div>
+
+    <!-- 右侧：答题区 -->
+    <div class="answer-side">
+        <h2>答题填空区</h2>
+        <div class="blank-item">
+            <label>1. 多传感器融合：</label>
+            <input type="text" class="blank-input" id="q1">
+        </div>
+        <div class="blank-item">
+            <label>2. 场景覆盖：</label>
+            <input type="text" class="blank-input" id="q2">
+        </div>
+        <div class="blank-item">
+            <label>3. 数据质量控制：</label>
+            <input type="text" class="blank-input" id="q3">
+        </div>
+        <div class="blank-item">
+            <label>4. 数据标注方案填空：</label>
+            <input type="text" class="blank-input" id="q4">
+        </div>
+        <div class="blank-item">
+            <label>5. 数据整合与存储填空：</label>
+            <input type="text" class="blank-input" id="q5">
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-submit" onclick="checkScore()">提交评分</button>
+            <button class="btn btn-reset" onclick="resetAll()">清空重置</button>
+        </div>
+        <div class="result-box" id="resultBox" style="background:#f0fff4;border:1px solid #9ae6b4;">
+            <div class="score" id="scoreText">得分：0 / 100</div>
+            <div class="answer-list" id="answerDetail"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 标准答案
+const answers = [
+    "综合运用摄像头、雷达、激光雷达等多种传感器，实现环境信息的多维度、互补性采集，提高数据丰富度和准确性",
+    "设计涵盖各种天气条件（晴、雨、雪、雾等）、不同时间段（白天、夜晚、黄昏、黎明）、不同地域（城市、乡村、高速、山区等）以及各种驾驶场景（拥堵、畅通、施工、事故等）的数据采集计划，确保数据的全面性和多样性",
+    "建立严格的数据质量评估体系，对采集到的数据进行初步筛选和清洗，去除模糊、失真、重复等无效数据，确保数据的高质量",
+    "培训标注员",
+    "结构化的高质量"
+];
+
+function checkScore() {
+    let user = [
+        document.getElementById('q1').value.trim(),
+        document.getElementById('q2').value.trim(),
+        document.getElementById('q3').value.trim(),
+        document.getElementById('q4').value.trim(),
+        document.getElementById('q5').value.trim()
+    ];
+    let score = 0;
+    let detail = "";
+    let per = 20;
+
+    user.forEach((val, i) => {
+        let ok = val.length > 4 && (answers[i].includes(val) || val.includes(answers[i].substring(0,10)));
+        if (ok) {
+            score += per;
+            detail += `<p class="right">第${i+1}空：正确</p>`;
+        } else {
+            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
+        }
+    });
+
+    document.getElementById('resultBox').style.display = 'block';
+    document.getElementById('scoreText').innerText = `得分：${score} / 100`;
+    document.getElementById('answerDetail').innerHTML = detail;
+}
+
+function resetAll() {
+    document.querySelectorAll('.blank-input').forEach(i => i.value = '');
+    document.getElementById('resultBox').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

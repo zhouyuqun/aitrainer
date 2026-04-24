@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核 - 3.2.4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .text-answer {
+            width: 100%;
+            height: 80px;
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+            min-height: 120px;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+            min-height: 40px;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 3.2.4 花朵智能识别系统交互流程设计
+    </div>
+    <div class="container">
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>3.2.4</p>
+                <p><strong>试题名称：</strong>花朵智能识别系统交互流程设计</p>
+                <p><strong>考核时间：</strong>20min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>(1) 人工智能训练师主机 1 台；</p>
+                <p>(2) Python 编译环境；</p>
+                <p>(3) Pytorch 框架；</p>
+                <p>(4) 模型：flower-detection.onnx、标签：labels.txt、测试图：flower_test.png</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>花朵智能识别系统利用计算机视觉技术，实现花朵种类实时监控与分类管理。</p>
+                <p><strong>AI模型说明：</strong></p>
+                <p>模型：flower-detection.onnx（深度卷积神经网络）</p>
+                <p>标签文件：labels.txt</p>
+                
+                <h3>3. 模型使用流程</h3>
+                <p>1) 加载模型与类别标签</p>
+                <p>2) 加载并预处理图片 flower_test.png</p>
+                <p>3) 模型识别预测</p>
+                <p>4) 输出花朵类型与准确率</p>
+
+                <h3>4. 操作要求</h3>
+                <p>(1) 补全代码 3.2.4.ipynb，结果截图保存为 3.2.4-1.jpg；</p>
+                <p>(2) 写出人机交互最优流程，保存为 3.2.4.docx；</p>
+                <p>(3) 所有文件存入“准考证号+身份证号后六位”文件夹。</p>
+                
+                <h3>5. 技能要求</h3>
+                <p>(1) 确保模型单场景稳定运行；</p>
+                <p>(2) 设计人工与智能交互最优流程。</p>
+            </div>
+        </div>
+
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import onnxruntime as ort
+import numpy as np
+import scipy.special
+from PIL import Image
+
+# 预处理图像
+def preprocess_image(image, resize_size=256, crop_size=224, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
+    image = image.resize((resize_size, resize_size), Image.BILINEAR)
+    w, h = image.size
+    left = (w - crop_size) / 2
+    top = (h - crop_size) / 2
+    image = image.crop((left, top, left + crop_size, top + crop_size))
+    image = np.array(image).astype(np.float32)
+    image = image / 255.0
+    image = (image - mean) / std
+    image = np.transpose(image, (2, 0, 1))
+    image = image.reshape((1,) + image.shape)
+    return image
+
+# 加载模型  2分
+session = <input type="text" class="blank" id="b1">
+
+# 加载类别标签 2分
+with <input type="text" class="blank" id="b2"> as f:
+    labels = [line.strip() for line in f.readlines()]
+
+# 获取模型输入输出名
+input_name = session.get_inputs()[0].name
+output_name = session.get_outputs()[0].name
+
+# 加载图片  2分
+image = <input type="text" class="blank" id="b3">
+
+# 预处理图片  2分
+processed_image = <input type="text" class="blank" id="b4">
+
+# 类型转换
+processed_image = processed_image.astype(np.float32)
+
+# 进行图片识别  2分
+output = <input type="text" class="blank" id="b5">
+
+# 应用 softmax 函数获取识别分类后的准确率  2分
+accuracy = <input type="text" class="blank" id="b6">
+
+# 获取预测的类别索引
+predicted_idx = <input type="text" class="blank" id="b7">
+
+# 获取预测的准确值（转换为百分比）
+prob_percentage = <input type="text" class="blank" id="b8">
+
+# 获取预测的类别标签
+predicted_label = <input type="text" class="blank" id="b9">
+
+# 输出预测结果
+print(f"Predicted class: {predicted_label}, Accuracy: {prob_percentage:.2f}%")
+            </div>
+
+            <div style="margin-top:20px;">
+                <h3>人机交互最优流程（1分）</h3>
+                <textarea class="text-answer" id="flowNorm"></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 20 分
+            </div>
+
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // 模糊匹配
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user.includes(correct) || correct.includes(user);
+    }
+
+    // 标准答案 + 评分
+    const scoring = [
+        { id:"b1", ans:"ort.InferenceSession('flower-detection.onnx')", score:2 },
+        { id:"b2", ans:"open('labels.txt', 'r')", score:2 },
+        { id:"b3", ans:"Image.open('flower_test.png').convert('RGB')", score:2 },
+        { id:"b4", ans:"preprocess_image(image)", score:2 },
+        { id:"b5", ans:"session.run([output_name], {input_name: processed_image})[0]", score:2 },
+        { id:"b6", ans:"scipy.special.softmax(output, axis=-1)", score:2 },
+        { id:"b7", ans:"np.argmax(accuracy)", score:2 },
+        { id:"b8", ans:"accuracy[0, predicted_idx] * 100", score:2 },
+        { id:"b9", ans:"labels[predicted_idx]", score:2 },
+    ];
+
+    // 打分逻辑
+    document.getElementById('btnCheck').onclick = function(){
+        let total = 0;
+        let wrong = [];
+        let right = [];
+
+        // 代码题 18 分
+        scoring.forEach(item => {
+            const val = document.getElementById(item.id).value.trim();
+            if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push(`✅ ${item.id} 正确 +${item.score}分`);
+            } else {
+                wrong.push(`❌ ${item.id} 正确：${item.ans}`);
+            }
+        });
+
+        // 流程题 1 分 + 截图 1 分
+        const flow = document.getElementById('flowNorm').value.trim();
+        if (flow && flow.length > 8) {
+            total += 2;
+            right.push(`✅ 流程+截图 +2分`);
+        } else {
+            wrong.push(`❌ 请填写交互流程`);
+        }
+
+        total = Math.min(total, 20);
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确！';
+    };
+
+    // 重置
+    document.getElementById('btnReset').onclick = function(){
+        document.querySelectorAll('.blank').forEach(i=>i.value='');
+        document.querySelectorAll('.text-answer').forEach(i=>i.value='');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    };
+</script>
+</body>
+</html>

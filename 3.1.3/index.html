@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能手环数据分析答题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* 左右分栏 */
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+            height: calc(100vh - 120px);
+            min-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 20px;
+        }
+
+        .question-block h3 {
+            font-size: 15px;
+            color: #2c5282;
+            margin: 12px 0 8px;
+        }
+
+        .question-block p {
+            margin: 6px 0;
+        }
+
+        .question-block ul {
+            margin: 8px 0 8px 20px;
+        }
+        
+        /* 答题区样式 */
+        .answer-item {
+            margin-bottom: 20px;
+        }
+
+        .answer-label {
+            font-size: 14px;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .answer-input:focus {
+            border-color: #3182ce;
+        }
+
+        textarea.answer-input {
+            min-height: 80px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        
+        /* 按钮组 */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-check:hover {
+            background: #2c5282;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+
+        .btn-reset:hover {
+            background: #c53030;
+        }
+        
+        /* 结果展示 */
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .compare-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+        
+        .wrong-text {
+            color: #e53e3e;
+        }
+        
+        .right-text {
+            color: #38a169;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        智能手环数据分析 - 答题评分系统
+    </div>
+
+    <div class="container">
+        <!-- 左侧题目栏（已更新为你提供的完整试题，右侧答题区完全未改动） -->
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <div class="question-block">
+                    <p><strong>试题代码：</strong>3.1.3</p>
+                    <p><strong>试题名称：</strong>智能健康手环的数据分析与优化</p>
+                </div>
+
+                <div class="question-block">
+                    <h3>场地设备要求</h3>
+                    <p>(1) 人工智能训练师主机 1 台；</p>
+                    <p>(2) Python 编译环境；</p>
+                    <p>(3) 智能健康手环数据集。</p>
+                </div>
+
+                <div class="question-block">
+                    <p><strong>考核时间：</strong>20min</p>
+                </div>
+
+                <div class="question-block">
+                    <h3>工作任务</h3>
+                    <p>智能健康手环作为个人健康管理的重要工具，已经广泛应用于日常生活中。它们能够追踪用户的运动量、心率、睡眠质量等健康指标，通过与智能手机的应用程序同步，帮助用户监测和改善生活习惯。随着生物传感技术和机器学习算法的发展，智能手环的数据分析能力不断提升，但在市场竞争中，制造商需要通过精细化的数据分析来优化产品，提升用户满意度。数据分析在此过程中至关重要。通过分析用户的行为数据，企业可以了解用户对不同健康监测功能的偏好，发现使用模式和可能的改进点。例如，分析用户在什么时间段最活跃、哪些健康指标最常被关注、以及数据同步的效率问题，有助于制定精准的产品改进策略。</p>
+                    
+                    <p style="margin-top:12px">(1) 你作为人工智能训练师，根据给定的数据集（智能健康手环数据集.xlsx），从以下三方面：</p>
+                    <ul>
+                        <li>用户活动模式：分析用户在一周内不同时间段的活动水平，识别高峰时段和低谷时段。</li>
+                        <li>健康指标关注度：识别哪些健康指标（如步数、心率、睡眠时长）最受用户关注，哪些较少被查看。</li>
+                        <li>数据同步性能：评估手环与手机应用之间数据传输的平均延迟，找出影响同步传输速度的因素。</li>
+                    </ul>
+                    <p>给出一份在用户活动模式、健康指标关注度和数据同步性能方面的分析报告。</p>
+
+                    <p style="margin-top:12px">(2) 为了增强产品功能和用户体验，给出智能健康手环产品的2个优化方向和对应的解决方案。</p>
+                    <p>以上答题保存在3.1.3.xlsx。</p>
+                </div>
+
+                <div class="question-block">
+                    <h3>技能要求</h3>
+                    <p>(1) 能对单一智能产品使用的数据进行全面分析，输出分析报告；</p>
+                    <p>(2) 能对单一智能产品提出优化需求；</p>
+                    <p>(3) 能为单一智能产品的应用设计智能解决方案。</p>
+                </div>
+
+                <div class="question-block">
+                    <h3>质量指标</h3>
+                    <p>(1) 分析报告全面可靠；</p>
+                    <p>(2) 优化方向合理，具有良好应用价值；</p>
+                    <p>(3) 解决方案切实可行。</p>
+                </div>
+
+                <div class="question-block" style="margin-top:30px; border-top:2px solid #e2e8f0; padding-top:20px;">
+                    <p><strong>（对应右侧答题区的具体填空题目）</strong></p>
+                    <div class="question-item">（1）分析报告</div>
+                    <div class="question-item">一、用户活动模式：</div>
+                    <div class="question-item">早晨（06:00-08:00）时间段，用户的平均步数：__________</div>
+                    <div class="question-item">傍晚（17:00-20:00）时间段，用户的平均步数：__________</div>
+                    <div class="question-item">其余时间段的平均步数（步数为0时段不计入）：__________</div>
+                    <div class="question-item" style="margin-top:16px">二、健康指标关注度：</div>
+                    <div class="question-item">最受关注的指标：__________</div>
+                    <div class="question-item">较少关注的指标：__________、__________</div>
+                    <div class="question-item" style="margin-top:16px">三、数据同步性能：</div>
+                    <div class="question-item">平均延迟时间：__________</div>
+                    <div class="question-item">影响因素：__________、__________</div>
+                    <div class="question-item" style="margin-top:16px">（2）优化方向及解决方案（仅需回答3个优化方向和对应解决方案）</div>
+                    <div class="question-item">优化方向一：__________</div>
+                    <div class="question-item">对应解决方案：__________</div>
+                    <div class="question-item">优化方向二：__________</div>
+                    <div class="question-item">对应解决方案：__________</div>
+                    <div class="question-item">优化方向三：__________</div>
+                    <div class="question-item">对应解决方案：__________</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧答题区：完全保留你之前的版本，未做任何修改 -->
+        <div class="column" style="flex: 1;">
+            <div class="section-title">二、请填写答案</div>
+
+            <!-- 答题区 -->
+            <div class="answer-item">
+                <label class="answer-label">1. 早晨平均步数</label>
+                <input type="text" class="answer-input" id="ans1">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">2. 傍晚平均步数</label>
+                <input type="text" class="answer-input" id="ans2">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">3. 其余时段平均步数</label>
+                <input type="text" class="answer-input" id="ans3">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">4. 最受关注指标</label>
+                <input type="text" class="answer-input" id="ans4">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">5. 较少关注指标1</label>
+                <input type="text" class="answer-input" id="ans5">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">6. 较少关注指标2</label>
+                <input type="text" class="answer-input" id="ans6">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">7. 平均延迟时间</label>
+                <input type="text" class="answer-input" id="ans7">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">8. 影响因素1</label>
+                <input type="text" class="answer-input" id="ans8">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">9. 影响因素2</label>
+                <input type="text" class="answer-input" id="ans9">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">10. 优化方向一</label>
+                <input type="text" class="answer-input" id="ans10">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">11. 解决方案一</label>
+                <textarea class="answer-input" id="ans11"></textarea>
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">12. 优化方向二</label>
+                <input type="text" class="answer-input" id="ans12">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">13. 解决方案二</label>
+                <textarea class="answer-input" id="ans13"></textarea>
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">14. 优化方向三</label>
+                <input type="text" class="answer-input" id="ans14">
+            </div>
+            <div class="answer-item">
+                <label class="answer-label">15. 解决方案三</label>
+                <textarea class="answer-input" id="ans15"></textarea>
+            </div>
+
+            <!-- 按钮 -->
+            <div class="btn-group">
+                <button class="btn btn-check" onclick="checkScore()">检查并评分</button>
+                <button class="btn btn-reset" onclick="resetAnswer()">重置答题</button>
+            </div>
+
+            <!-- 评分结果 -->
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 15 分
+            </div>
+
+            <!-- 答案对比 -->
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比（错误题目）</div>
+                <div id="wrongAnswerList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标准答案（完全保留你之前的版本）
+        const standardAnswers = {
+            ans1: "5068.099048",
+            ans2: "5005.6475",
+            ans3: "1101.247792",
+            ans4: "步数",
+            ans5: "睡眠时长",
+            ans6: "心率",
+            ans7: "0.697956",
+            ans8: "网络连接稳定性欠佳",
+            ans9: "手环后台程序过多",
+            ans10: "根据用户活动进行个性化设置和指导",
+            ans11: "•定制化健康计划：基于用户的个人数据和偏好，制定个性化的健康管理方案。\n•不同时段采取不同模式：早晚时段或用户通常的活跃时段设置高精度模式，活跃低的时段进入省电模式。",
+            ans12: "加强健康指标教育",
+            ans13: "•鼓励用户定期检查所有健康指标，例如心率和睡眠时长，而不仅仅是步数。",
+            ans14: "优化数据同步效率",
+            ans15: "•优化网络同步协议：检查并优化现有的数据传输协议，确保即使在网络条件不佳的情况下也能保持较快的同步速度。\n•自动调整同步策略：根据用户的使用习惯，动态调整同步频率。\n•设计有效的电源管理方案：确保数据同步时有足够的电源。"
+        };
+
+        // 检查评分（完全保留你之前的逻辑）
+        function checkScore() {
+            let totalScore = 0;
+            let fullScore = 15;
+            let wrongList = [];
+
+            for (let i = 1; i <= 15; i++) {
+                let id = "ans" + i;
+                let userVal = document.getElementById(id).value.trim();
+                let stdVal = standardAnswers[id];
+                
+                if (userVal === stdVal) {
+                    totalScore++;
+                } else {
+                    wrongList.push({
+                        index: i,
+                        user: userVal || "(空)",
+                        standard: stdVal
+                    });
+                }
+            }
+
+            document.getElementById("finalScore").textContent = totalScore;
+            document.getElementById("scoreResult").style.display = "block";
+
+            let wrongHtml = "";
+            if (wrongList.length > 0) {
+                wrongList.forEach(item => {
+                    wrongHtml += `
+                        <div class='compare-item'>
+                            <div>第 ${item.index} 题：</div>
+                            <div>你的答案：<span class='wrong-text'>${item.user}</span></div>
+                            <div>正确答案：<span class='right-text'>${item.standard}</span></div>
+                        </div>
+                    `;
+                });
+                document.getElementById("wrongAnswerList").innerHTML = wrongHtml;
+                document.getElementById("answerComparison").style.display = "block";
+            } else {
+                document.getElementById("answerComparison").style.display = "none";
+            }
+        }
+
+        // 重置答题（完全保留你之前的逻辑）
+        function resetAnswer() {
+            for (let i = 1; i <= 15; i++) {
+                document.getElementById("ans" + i).value = "";
+            }
+            document.getElementById("scoreResult").style.display = "none";
+            document.getElementById("answerComparison").style.display = "none";
+        }
+    </script>
+</body>
+</html>

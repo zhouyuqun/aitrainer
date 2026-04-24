@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核 - 3.2.5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .text-answer {
+            width: 100%;
+            height: 80px;
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+            min-height: 120px;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+            min-height: 40px;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 3.2.5 人脸AI智能检测系统交互流程设计
+    </div>
+    <div class="container">
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>3.2.5</p>
+                <p><strong>试题名称：</strong>人脸AI智能检测系统交互流程设计</p>
+                <p><strong>考核时间：</strong>20min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>(1) 人工智能训练师主机 1 台；</p>
+                <p>(2) Python 编译环境；</p>
+                <p>(3) 人脸检测模型：version-RFB-320.onnx；</p>
+                <p>(4) 类别标签文件：voc-model-labels.txt；</p>
+                <p>(5) 待检测图片文件夹：imgs。</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>在安防监控、智能交通等领域，实时准确的人脸检测需求日益增长。传统的人脸检测方法在复杂光照、多角度、遮挡等场景下效果有限。基于深度神经网络的人脸检测模型具备强大的检测能力，ONNX 作为开放式神经网络交换格式，可实现模型跨平台高效运行。</p>
+                <p>现要求根据提供的 version-RFB-320.onnx 模型与 voc-model-labels.txt 标签文件，补全 3.2.5.ipynb 代码，完成以下任务：</p>
+                <p>(1) 正确加载类别标签文件与 ONNX 人脸检测模型；</p>
+                <p>(2) 读取 imgs 文件夹中所有图片并完成预处理；</p>
+                <p>(3) 使用模型对图片进行人脸检测，输出置信度与边界框；</p>
+                <p>(4) 在图片上绘制人脸检测框并保存至 detect_imgs_results_onnx 文件夹；</p>
+                <p>(5) 统计所有图片中人脸总数并输出；</p>
+                <p>(6) 将运行结果截图保存为 3.2.5-1.jpg，并设计人机交互最优流程（不少于3条）保存为 3.2.5.docx。</p>
+                
+                <h3>3. 技能要求</h3>
+                <p>(1) 能确保 ONNX 模型在单一场景下稳定运行；</p>
+                <p>(2) 能通过分析，设计单一场景下人工和智能交互的最优方式。</p>
+                
+                <h3>4. 质量指标</h3>
+                <p>(1) 模型运行稳定，检测结果准确；</p>
+                <p>(2) 人机交互流程合理、可落地。</p>
+            </div>
+        </div>
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import os
+import time
+import cv2
+import numpy as np
+import vision.utils.box_utils_numpy as box_utils
+import onnxruntime as ort
+
+# 定义预测函数，对模型输出的边界框和置信度进行后处理
+def predict(width, height, confidences, boxes, prob_threshold, iou_threshold=0.3, top_k=-1):
+    boxes = boxes[0]
+    confidences = confidences[0]
+    picked_box_probs = []
+    picked_labels = []
+    for class_index in range(1, confidences.shape[1]):
+        probs = confidences[:, class_index]
+        mask = probs > prob_threshold
+        probs = probs[mask]
+        if probs.shape[0] == 0:
+            continue
+        subset_boxes = boxes[mask, :]
+        box_probs = np.concatenate([subset_boxes, probs.reshape(-1, 1)], axis=1)
+        box_probs = box_utils.hard_nms(box_probs, iou_threshold=iou_threshold, top_k=top_k)
+        picked_box_probs.append(box_probs)
+        picked_labels.extend([class_index] * box_probs.shape[0])
+    if not picked_box_probs:
+        return np.array([]), np.array([]), np.array([])
+    picked_box_probs = np.concatenate(picked_box_probs)
+    picked_box_probs[:, 0] *= width
+    picked_box_probs[:, 1] *= height
+    picked_box_probs[:, 2] *= width
+    picked_box_probs[:, 3] *= height
+    return picked_box_probs[:, :4].astype(np.int32), np.array(picked_labels), picked_box_probs[:, 4]
+
+# M1 从标签文件读取并去空白，得到类别列表 2分
+class_names = [<input type="text" class="blank" id="b1"> for name in open('voc-model-labels.txt').readlines()]
+
+# M2 创建ONNX Runtime推理会话 2分
+ort_session = <input type="text" class="blank" id="b2">('version-RFB-320.onnx')
+
+# M3 获取模型输入的名称 2分
+input_name = <input type="text" class="blank" id="b3">()[0].name
+
+# 定义保存检测结果图像的目录路径
+result_path = "./detect_imgs_results_onnx"
+
+# 定义置信度阈值，用于筛选出置信度较高的检测结果
+threshold = 0.7
+# 定义存储待检测图像的目录路径
+path = "imgs"
+# 用于统计所有图像中检测到的目标框总数，初始化为 0
+sum = 0
+
+# M4 结果目录不存在则创建 2分
+if not os.path.exists(result_path):
+    os.<input type="text" class="blank" id="b4">
+    
+# 获取指定目录下的所有文件和文件夹名称列表
+listdir = os.listdir(path)
+
+# 遍历目录下的每个文件
+for file_path in listdir:
+    # 拼接图像文件的完整路径
+    img_path = os.path.join(path, file_path)
+    # M5 使用OpenCV读取图像文件 2分
+    orig_image = <input type="text" class="blank" id="b5">
+    # 将图像从 BGR 颜色空间转换为 RGB 颜色空间
+    image = cv2.cvtColor(orig_image, cv2.COLOR_BGR2RGB)
+    # M6 将图像调整为320x240尺寸 2分
+    image = <input type="text" class="blank" id="b6">(<input type="text" class="blank" id="b6_1">, (320, 240))
+    # M7 定义图像归一化的均值数组 2分
+    image_mean = <input type="text" class="blank" id="b7">([127, 127, 127])
+    # 对图像进行归一化处理，减去均值并除以 128
+    image = (image - image_mean) / 128
+    # 将图像的维度从 (高度, 宽度, 通道数) 转换为 (通道数, 高度, 宽度)
+    image = np.transpose(image, [2, 0, 1])
+    # M8 扩展维度为(1,通道数,高度,宽度) 1分
+    image = <input type="text" class="blank" id="b8">(image, axis=0)
+    # 将图像数据类型转换为 float32 类型
+    image = image.astype(np.float32)
+    # 记录开始时间，用于计算模型推理的耗时
+    time_time = time.time()
+    # M9 使用ONNX Runtime运行模型 2分
+    confidences, boxes = <input type="text" class="blank" id="b9">(None, {input_name: image})
+    # 计算并打印模型推理的耗时
+    print("cost time:{}".format(time.time() - time_time))
+    # 调用 predict 函数对模型输出的边界框和置信度进行后处理
+    boxes, labels, probs = predict(orig_image.shape[1], orig_image.shape[0], confidences, boxes, threshold)
+    # 遍历每个检测到的目标框
+    for i in range(boxes.shape[0]):
+        box = boxes[i, :]
+        label = f"{class_names[labels[i]]}: {probs[i]:.2f}"
+        cv2.rectangle(orig_image, (box[0], box[1]), (box[2], box[3]), (255, 255, 0), 4)
+        cv2.imwrite(os.path.join(result_path, file_path), orig_image)
+    sum += boxes.shape[0]
+print("sum:{}".format(sum))
+            </div>
+            <div style="margin-top:20px;">
+                <h3>M12 人机交互最优流程（不少于3条，最多1分）</h3>
+                <textarea class="text-answer" id="flowNorm" placeholder="请输入不少于3条人机交互优化方案，支持模糊匹配，最多得1分"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 20 分
+            </div>
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
+            </div>
+        </div>
+    </div>
+<script>
+    // 模糊匹配函数
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user.includes(correct) || correct.includes(user);
+    }
+
+    // 严格对应评分表M1-M9的标准答案与分值
+    const scoring = [
+        // M1 2分
+        { id:"b1", ans:"name.strip()", score:2 },
+        // M2 2分
+        { id:"b2", ans:"ort.InferenceSession", score:2 },
+        // M3 2分
+        { id:"b3", ans:"ort_session.get_inputs", score:2 },
+        // M4 2分
+        { id:"b4", ans:"makedirs(result_path)", score:2 },
+        // M5 2分
+        { id:"b5", ans:"cv2.imread(img_path)", score:2 },
+        // M6 2分（两个空合并判分）
+        { id:["b6","b6_1"], ans:"cv2.resize(image", score:2 },
+        // M7 2分
+        { id:"b7", ans:"np.array", score:2 },
+        // M8 1分
+        { id:"b8", ans:"np.expand_dims", score:1 },
+        // M9 2分
+        { id:"b9", ans:"ort_session.run", score:2 }
+    ];
+
+    // 打分逻辑
+    document.getElementById('btnCheck').onclick = function(){
+        let total = 0;
+        let wrong = [];
+        let right = [];
+
+        // 代码填空M1-M9 共17分
+        scoring.forEach(item => {
+            // 处理M6的双空
+            if (Array.isArray(item.id)) {
+                const val1 = document.getElementById(item.id[0]).value.trim();
+                const val2 = document.getElementById(item.id[1]).value.trim();
+                const userVal = val1 + val2;
+                if (fuzzyMatch(userVal, item.ans)) {
+                    total += item.score;
+                    right.push(`✅ M${right.length+1} 正确 +${item.score}分`);
+                } else {
+                    wrong.push(`❌ M${wrong.length+1} 正确：${item.ans}`);
+                }
+            } else {
+                const val = document.getElementById(item.id).value.trim();
+                if (fuzzyMatch(val, item.ans)) {
+                    total += item.score;
+                    right.push(`✅ M${right.length+1} 正确 +${item.score}分`);
+                } else {
+                    wrong.push(`❌ M${wrong.length+1} 正确：${item.ans}`);
+                }
+            }
+        });
+
+        // M10 1分（截图人脸数正确，代码页不判分，预留）
+        // M11 1分（标注框正确，代码页不判分，预留）
+        // M12 人机交互最多1分，模糊匹配
+        const flow = document.getElementById('flowNorm').value.trim();
+        // 模糊匹配：不少于3条，包含交互流程关键词即给1分
+        const flowKeywords = ["加载模型","加载图像","预处理","识别图像","返回结果","反馈","帮助"];
+        let matchCount = 0;
+        flowKeywords.forEach(k => {
+            if (flow.includes(k)) matchCount++;
+        });
+        // 满足不少于3条关键词，给1分，最多1分
+        if (matchCount >= 3) {
+            total += 1;
+            right.push(`✅ M12 人机交互流程 正确 +1分`);
+        } else if (flow.length > 0) {
+            // 有填写但不达标，给0分
+            wrong.push(`❌ M12 人机交互流程 不足3条有效优化方式，得0分`);
+        } else {
+            wrong.push(`❌ M12 人机交互流程 未填写，得0分`);
+        }
+
+        // 总分上限20分
+        total = Math.min(total, 20);
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确！';
+    };
+
+    // 重置功能
+    document.getElementById('btnReset').onclick = function(){
+        document.querySelectorAll('.blank').forEach(i => i.value = '');
+        document.querySelectorAll('.text-answer').forEach(i => i.value = '');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    };
+</script>
+</body>
+</html>

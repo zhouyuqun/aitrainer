@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核 - 2.1.1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .text-answer {
+            width: 100%;
+            height: 80px;
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+            min-height: 120px;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+            min-height: 40px;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 2.1.1 智能交通系统数据采集、处理和审核流程设计
+    </div>
+    <div class="container">
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>2.1.1</p>
+                <p><strong>试题名称：</strong>智能交通系统数据采集、处理和审核流程设计</p>
+                <p><strong>考核时间：</strong>30min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>(1) 人工智能训练师主机 1 台；</p>
+                <p>(2) Python 编译环境；</p>
+                <p>(3) 车辆行驶数据集（vehicle_traffic_data.csv）；</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>某智能交通系统希望通过车辆的行驶数据，利用人工智能技术进行交通流量预测和拥堵预警。现要求根据提供的车辆行驶数据集，补全 2.1.1.ipynb 代码，完成以下数据处理任务：</p>
+                <p>(1) 数据采集：从本地文件读取数据，加载到DataFrame，打印前5条记录，截图保存为1.1.5-1.jpg。</p>
+                <p>(2) 数据清洗与预处理：删除缺失值，转换字段数据类型，过滤异常年龄、车速、行驶距离、行驶时间，保存清洗后数据。</p>
+                <p>(3) 数据合理性审核：审核字段合理性并标记不合理数据，截图保存为1.1.5-2.jpg。</p>
+                <p>(4) 数据统计：统计交通事件次数、不同性别平均指标、不同年龄段驾驶员数，分别截图保存。</p>
+                <p>(5) 所有结果文件存入考生文件夹，命名为“准考证号+身份证号后六位”。</p>
+                
+                <h3>3. 技能要求</h3>
+                <p>(1) 能结合人工智能技术要求和业务特征，设计数据采集、处理、审核流程；</p>
+                <p>(2) 能完成数据清洗、类型转换、异常值处理、合理性审核与统计分析。</p>
+                
+                <h3>4. 质量指标</h3>
+                <p>(1) 数据完整性：无缺失，记录完整。</p>
+                <p>(2) 数据合理性：数值在合理范围，无异常。</p>
+                <p>(3) 数据一致性：字段类型正确，格式统一。</p>
+                <p>(4) 分析准确性：统计结果真实无偏差。</p>
+            </div>
+        </div>
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. 数据采集
+# 从本地文件中读取数据  2分
+data = <input type="text" class="blank" id="b1">
+print("数据采集完成，已加载到DataFrame中")
+
+# 打印数据的前5条记录 2分
+print(<input type="text" class="blank" id="b2">)
+
+# 2. 数据清洗与预处理
+# 处理缺失值（删除）  2分
+data = <input type="text" class="blank" id="b3">
+
+# 数据类型转换
+data<input type="text" class="blank" id="b4"> = <input type="text" class="blank" id="b5">       #Age转int 1分
+data<input type="text" class="blank" id="b6"> = <input type="text" class="blank" id="b7">     #Speed转float 1分
+data<input type="text" class="blank" id="b8"> = <input type="text" class="blank" id="b9">     #TravelDistance转float 1分
+data<input type="text" class="blank" id="b10"> = <input type="text" class="blank" id="b11">     #TravelTime转float 1分
+
+# 处理异常值  2分
+data = data[(<input type="text" class="blank" id="b12">(18,70))  & 
+            (<input type="text" class="blank" id="b13">(0, 200)) & 
+            (<input type="text" class="blank" id="b14">(1, 1000)) & 
+            (<input type="text" class="blank" id="b15">(1, 1440))]
+
+# 保存清洗后的数据  1分
+<input type="text" class="blank" id="b16">('cleaned_vehicle_traffic_data.csv', index=False)
+print("数据清洗完成，已保存为 'cleaned_vehicle_traffic_data.csv'")
+
+# 3. 数据合理性审核
+# 审核字段合理性 2分
+unreasonable_data = data[~((<input type="text" class="blank" id="b17">(18, 70)) & 
+                           (<input type="text" class="blank" id="b18">(0, 200)) & 
+                           (<input type="text" class="blank" id="b19">(1, 1000)) & 
+                           (<input type="text" class="blank" id="b20">(1, 1440)))]
+print("不合理的数据:\n", unreasonable_data)
+
+# 4. 数据统计
+# 统计每种交通事件的发生次数  2分
+traffic_event_counts = <input type="text" class="blank" id="b21">
+print("每种交通事件的发生次数:\n", traffic_event_counts)
+
+# 统计不同性别的平均车速、行驶距离和行驶时间  2分
+gender_stats = data.<input type="text" class="blank" id="b22">.<input type="text" class="blank" id="b23">
+print("不同性别的平均车速、行驶距离和行驶时间:\n", gender_stats)
+
+# 统计不同年龄段的驾驶员数  5分
+age_bins = [18, 26, 36, 46, 56, 66, np.inf]
+age_labels = ['18-25', '26-35', '36-45', '46-55', '56-65', '65+']
+data['AgeGroup'] = <input type="text" class="blank" id="b24">(<input type="text" class="blank" id="b25">,<input type="text" class="blank" id="b26">,<input type="text" class="blank" id="b27">, right=False)
+age_group_counts = <input type="text" class="blank" id="b28">
+print("不同年龄段的驾驶员数:\n", age_group_counts)
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 25 分
+            </div>
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
+            </div>
+        </div>
+    </div>
+<script>
+    // 模糊匹配
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user === correct || user.includes(correct) || correct.includes(user);
+    }
+    // 标准答案与分值
+    const scoring = [
+        { id:"b1", ans:"pd.read_csv('vehicle_traffic_data.csv')", score:2 },
+        { id:"b2", ans:"data.head()", score:2 },
+        { id:"b3", ans:"data.dropna()", score:2 },
+        { id:"b4", ans:"['Age']", score:0 },
+        { id:"b5", ans:"data['Age'].astype(int)", score:1 },
+        { id:"b6", ans:"['Speed']", score:0 },
+        { id:"b7", ans:"data['Speed'].astype(float)", score:1 },
+        { id:"b8", ans:"['TravelDistance']", score:0 },
+        { id:"b9", ans:"data['TravelDistance'].astype(float)", score:1 },
+        { id:"b10", ans:"['TravelTime']", score:0 },
+        { id:"b11", ans:"data['TravelTime'].astype(float)", score:1 },
+        { id:"b12", ans:"data['Age'].between", score:0 },
+        { id:"b13", ans:"data['Speed'].between", score:0 },
+        { id:"b14", ans:"data['TravelDistance'].between", score:0 },
+        { id:"b15", ans:"data['TravelTime'].between", score:2 },
+        { id:"b16", ans:"data.to_csv", score:1 },
+        { id:"b17", ans:"data['Age'].between", score:0 },
+        { id:"b18", ans:"data['Speed'].between", score:0 },
+        { id:"b19", ans:"data['TravelDistance'].between", score:0 },
+        { id:"b20", ans:"data['TravelTime'].between", score:2 },
+        { id:"b21", ans:"data['TrafficEvent'].value_counts()", score:2 },
+        { id:"b22", ans:"groupby('Gender')", score:0 },
+        { id:"b23", ans:"agg({'Speed':'mean','TravelDistance':'mean','TravelTime':'mean'})", score:2 },
+        { id:"b24", ans:"pd.cut", score:0 },
+        { id:"b25", ans:"data['Age']", score:0 },
+        { id:"b26", ans:"bins=age_bins", score:0 },
+        { id:"b27", ans:"labels=age_labels", score:0 },
+        { id:"b28", ans:"data['AgeGroup'].value_counts()", score:5 },
+    ];
+    document.getElementById('btnCheck').onclick = function(){
+        let total = 0;
+        let wrong = [];
+        let right = [];
+        // 代码打分
+        scoring.forEach(item => {
+            const val = document.getElementById(item.id).value.trim();
+            if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push(`✅ ${item.id}：正确 +${item.score}分`);
+            } else {
+                wrong.push(`❌ ${item.id} 正确：${item.ans}`);
+            }
+        });
+        // 截图项默认给分
+        total = Math.min(total,25);
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
+    };
+    document.getElementById('btnReset').onclick = function(){
+        document.querySelectorAll('.blank').forEach(i=>i.value='');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    };
+</script>
+</body>
+</html>

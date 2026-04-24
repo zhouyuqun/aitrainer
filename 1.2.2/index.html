@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老年人健康监测与管理服务业务模块效果优化 - 实操考试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", Arial, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 20px;
+            font-weight: normal;
+        }
+        .back-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 20px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .column {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .left-column {
+            flex: 1;
+            max-height: 85vh;
+        }
+        .right-column {
+            flex: 1;
+            max-height: 85vh;
+        }
+        h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            font-size: 16px;
+            margin: 20px 0 10px;
+            color: #e74c3c;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        .question-block p {
+            margin-bottom: 8px;
+        }
+        .question-block ul {
+            margin-left: 25px;
+            margin-bottom: 10px;
+        }
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .score-table th, .score-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .score-table th {
+            background-color: #f0f3f5;
+        }
+        .answer-area {
+            margin-bottom: 20px;
+        }
+        .answer-area label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        .answer-area textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .check-btn, .reset-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .check-btn {
+            background-color: #27ae60;
+            color: white;
+        }
+        .reset-btn {
+            background-color: #e67e22;
+            color: white;
+        }
+        .result-panel {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .result-pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .comparison-block {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .comparison-block h4 {
+            margin-bottom: 8px;
+            color: #856404;
+        }
+        .user-answer, .correct-answer {
+            margin-bottom: 8px;
+        }
+        .user-answer span, .correct-answer span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>人工智能训练师（三级）操作技能考核 - 老年人健康监测模块优化</h1>
+        <button class="back-btn" onclick="location.href='index.html'">返回</button>
+    </div>
+    <div class="container">
+        <!-- 左侧题目区 -->
+        <div class="column left-column">
+            <h2>考试题目</h2>
+            <div class="question-block">
+                <p><strong>准考证号：</strong></p>
+                <p><strong>试题代码：</strong></p>
+                <p><strong>试题名称：</strong>老年人健康监测与管理服务业务模块效果优化</p>
+                <p><strong>考核时间：</strong>30min</p>
+            </div>
+            <div class="question-block">
+                <h3>1. 场地设备要求</h3>
+                <p>(1) 人工智能训练师主机 1 台。</p>
+            </div>
+            <div class="question-block">
+                <h3>2. 工作任务</h3>
+                <p>某智慧养老平台的心率监测模块目前存在数据准确性不高、异常预警响应慢等问题，影响了老年人健康监测的体验和服务质量。作为人工智能训练师，你需要结合业务知识和人工智能技术，对该模块进行优化设计与实现。</p>
+                <p>(1) 列出心率监测模块当前存在的具体问题，如数据准确性、异常预警响应等；简述这些问题对老年人健康监测的影响；指出导致这些问题的主要技术或流程原因。</p>
+                <p>将上述答案写在 1.2.2.docx 答题卷上，题号为“1.2.2-1”。</p>
+                <p>(2) 简述针对心率监测模块问题的优化方案，可涉及技术、流程等方面；列出优化方案的关键实施步骤，如数据采集、预处理、模型训练等；概述如何协调团队资源以确保优化方案的实现，并简述预期效果。</p>
+                <p>将上述答案写在 1.2.2.docx 答题卷上，题号为“1.2.2-2”。</p>
+            </div>
+            <div class="question-block">
+                <h3>3. 技能要求</h3>
+                <p>(1) 能够结合业务知识，识别业务流程中单一模块的问题；</p>
+                <p>(2) 能够结合人工智能技术设计业务模块优化方案并推动实现。</p>
+            </div>
+            <div class="question-block">
+                <h3>4. 质量指标</h3>
+                <p>(1) 深刻理解数据，细致分析。</p>
+            </div>
+        </div>
+
+        <!-- 右侧答题与评分区 -->
+        <div class="column right-column">
+            <h2>答题区</h2>
+            <div class="answer-area">
+                <label for="answer1">1.2.2-1 问题分析</label>
+                <textarea id="answer1" placeholder="请在此处输入 1.2.2-1 的答案..."></textarea>
+            </div>
+            <div class="answer-area">
+                <label for="answer2">1.2.2-2 优化方案与实施</label>
+                <textarea id="answer2" placeholder="请在此处输入 1.2.2-2 的答案..."></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="check-btn" onclick="checkAnswer()">检查并打分</button>
+                <button class="reset-btn" onclick="resetAnswer()">重置</button>
+            </div>
+            <div id="resultPanel" class="result-panel"></div>
+        </div>
+    </div>
+
+    <script>
+        // 标准答案与评分规则
+        const standardAnswer = {
+            problem1: {
+                problems: ["数据准确性不高", "异常预警响应慢"],
+                impacts: [
+                    "不准确的心率数据可能导致误诊，使得老年人或其监护人无法及时了解真实的健康状况，从而延误必要的医疗干预。对于有心脏病等慢性疾病的老年人来说，这可能带来严重的健康风险。",
+                    "当心率出现异常时，如果系统不能实时、迅速发出警报，可能会错过最佳的急救时机，特别是在紧急情况下，这对老年人的生命安全构成威胁。"
+                ],
+                causes: [
+                    "传感器的精度不足、环境因素（如运动干扰）未被有效过滤、缺乏针对老年人生理特征的数据校正算法等。",
+                    "现有的异常检测和预警机制可能存在滞后性，比如算法不够高效，或是没有建立实时监控和快速反应机制。"
+                ]
+            },
+            problem2: {
+                optimizations: [
+                    "采用更先进和稳定的数据采集技术：A.升级医学设备的传感器数据采集模块，确保连续且高频率地采集心率数据；B.升级网络传输设备，确保网络延迟和干扰信息不会影响到数据的传输。",
+                    "使用更科学的异常检测算法进行模型训练：基于大量标注好的老年人心率数据集，训练深度学习模型以更精准地预测和分类心率状态。开发高效的实时数据分析引擎，一旦检测到异常心率模式，立即触发多渠道的通知系统（如短信、电话、APP推送）给指定联系人。",
+                    "优化数据预处理流程：应用滤波器去除噪声，利用机器学习模型识别并排除异常值。",
+                    "团队协调：A.与技术团队紧密合作，确保资源合理分配和有效使用，保证流程的畅通性。B.建立分层报警机制，确保异常预警信息的传达。"
+                ],
+                expectedEffects: [
+                    "提升心率监测数据的准确性至 98%以上，减少误报和漏报现象 60%；",
+                    "实现异常心率事件的即时预警，将异常预警的响应时间缩短到秒级；",
+                    "提升数据预处理的效率，自动处理 90%以上的数据去重、异常处理和标准化。"
+                ]
+            }
+        };
+
+        // 打分逻辑
+        function checkAnswer() {
+            const answer1 = document.getElementById('answer1').value.trim();
+            const answer2 = document.getElementById('answer2').value.trim();
+            const resultPanel = document.getElementById('resultPanel');
+            let score = 0;
+            let comparisonHtml = '';
+
+            // 1.2.2-1 评分（共12分）
+            // M1: 问题（4分）
+            const problemMatch = standardAnswer.problem1.problems.filter(p => answer1.includes(p));
+            score += problemMatch.length * 2;
+            comparisonHtml += `<div class="comparison-block">
+                <h4>1.2.2-1 问题识别（满分4分）</h4>
+                <div class="user-answer"><span>你的答案包含：</span>${problemMatch.join('、') || '无'}</div>
+                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem1.problems.join('、')}</div>
+            </div>`;
+
+            // M2: 影响（4分）
+            const impactMatch = standardAnswer.problem1.impacts.filter(i => answer1.includes(i.substring(0, 20)));
+            score += impactMatch.length * 2;
+            comparisonHtml += `<div class="comparison-block">
+                <h4>1.2.2-1 影响分析（满分4分）</h4>
+                <div class="user-answer"><span>你的答案包含：</span>${impactMatch.map(i=>i.substring(0,20)+'...').join('、') || '无'}</div>
+                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem1.impacts.join('')}</div>
+            </div>`;
+
+            // M3: 原因（4分）
+            const causeMatch = standardAnswer.problem1.causes.filter(c => answer1.includes(c.substring(0, 20)));
+            score += causeMatch.length * 2;
+            comparisonHtml += `<div class="comparison-block">
+                <h4>1.2.2-1 原因分析（满分4分）</h4>
+                <div class="user-answer"><span>你的答案包含：</span>${causeMatch.map(c=>c.substring(0,20)+'...').join('、') || '无'}</div>
+                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem1.causes.join('')}</div>
+            </div>`;
+
+            // 1.2.2-2 评分（共13分）
+            // M4: 优化方案（6分）
+            const optMatch = standardAnswer.problem2.optimizations.filter(o => answer2.includes(o.substring(0, 15)));
+            score += optMatch.length * 2;
+            comparisonHtml += `<div class="comparison-block">
+                <h4>1.2.2-2 优化方案（满分6分）</h4>
+                <div class="user-answer"><span>你的答案包含：</span>${optMatch.map(o=>o.substring(0,15)+'...').join('、') || '无'}</div>
+                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem2.optimizations.join('')}</div>
+            </div>`;
+
+            // M5: 实施步骤（6分）
+            const steps = ["数据采集", "数据预处理", "模型训练", "预警系统开发", "团队协作"];
+            const stepMatch = steps.filter(s => answer2.includes(s));
+            score += stepMatch.length * 2;
+            comparisonHtml += `<div class="comparison-block">
+                <h4>1.2.2-2 实施步骤（满分6分）</h4>
+                <div class="user-answer"><span>你的答案包含：</span>${stepMatch.join('、') || '无'}</div>
+                <div class="correct-answer"><span>标准答案应包含：</span>${steps.join('、')}</div>
+            </div>`;
+
+            // M6: 团队协调与预期效果（1分）
+            const teamEffectMatch = answer2.includes('团队协调') && answer2.includes('预期效果') && answer2.includes('98%') && answer2.includes('秒级');
+            if (teamEffectMatch) score += 1;
+            comparisonHtml += `<div class="comparison-block">
+                <h4>1.2.2-2 团队协调与预期效果（满分1分）</h4>
+                <div class="user-answer"><span>你的答案：</span>${teamEffectMatch ? '包含团队协调与预期效果描述' : '未完整覆盖'}</div>
+                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem2.expectedEffects.join('')}</div>
+            </div>`;
+
+            // 显示结果
+            resultPanel.style.display = 'block';
+            if (score >= 18) {
+                resultPanel.className = 'result-panel result-pass';
+                resultPanel.innerHTML = `<h3>✅ 得分：${score}/25 分（合格）</h3><p>你已掌握核心知识点，符合考核要求！</p>`;
+            } else {
+                resultPanel.className = 'result-panel result-fail';
+                resultPanel.innerHTML = `<h3>❌ 得分：${score}/25 分（不合格）</h3><p>请对照以下答案对比进行修正：</p>${comparisonHtml}`;
+            }
+        }
+
+        // 重置功能
+        function resetAnswer() {
+            document.getElementById('answer1').value = '';
+            document.getElementById('answer2').value = '';
+            document.getElementById('resultPanel').style.display = 'none';
+            document.getElementById('resultPanel').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

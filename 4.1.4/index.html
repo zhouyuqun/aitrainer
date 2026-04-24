@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.1.4 Pandas数据清洗 - 原题+答题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 25px;
+        }
+        
+        .left-original {
+            width: 50%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            line-height: 2;
+            font-size: 15px;
+            white-space: pre-line;
+        }
+        
+        .right-answer {
+            width: 50%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .module-header {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .question-item {
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .correct-answer {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #27ae60;
+            font-size: 14px;
+            display: none;
+            margin-bottom: 8px;
+        }
+        
+        .score-info {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .score-display {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .btn-group {
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-score {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-reset {
+            background-color: #e67e22;
+            color: white;
+        }
+        
+        .btn-show-answers {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .total-score {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #fff5f5;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .correct {
+            border-color: #27ae60 !important;
+            background-color: #f0fff4;
+        }
+        
+        .incorrect {
+            border-color: #e74c3c !important;
+            background-color: #fff0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-original">
+在下划线上填写答案。
+
+# 根据学习大纲补充学习目标
+
+Pandas简介与安装
+学习目标：________________
+内容：
+Pandas 核心功能与定位。
+安装 Pandas 与依赖库。
+开发环境配置与测试。
+
+数据筛选与过滤
+学习目标：________________
+内容：
+按条件筛选行/列。
+多条件组合筛选。
+数据切片、索引、定位。
+
+数据转换
+学习目标：________________
+内容：
+数据类型转换。
+时间序列处理。
+分列、合并、字段重组。
+
+数据合并与重塑
+学习目标：________________
+内容：
+Merge、Join、Concat 数据合并。
+数据透视表、长宽表转换。
+多层索引操作。
+
+数据分组与聚合
+学习目标：________________
+内容：
+GroupBy 分组统计。
+聚合函数：sum、mean、count 等。
+分组后数据可视化与导出。
+
+综合康复数据处理项目
+学习目标：熟练使用 Pandas 完成全流程数据处理。
+内容：
+真实康复数据加载。
+筛选、清洗、转换、合并、分组。
+最终数据导出与报告。
+
+总结、答疑、考核
+        </div>
+
+        <div class="right-answer">
+            <h2 class="title">4.1.4 Pandas数据清洗 — 答题区</h2>
+            <div class="module-header">请填写下划线部分</div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Pandas读取和保存数据的方法和操作技巧">
+                <div class="question-text">Pandas简介与安装 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Pandas读取和保存数据的方法和操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Pandas数据筛选、去重和缺失值处理的基本方法和操作技巧">
+                <div class="question-text">数据筛选与过滤 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Pandas数据筛选、去重和缺失值处理的基本方法和操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Pandas数据类型转换、时序处理、分列和合并的基本方法和操作技巧">
+                <div class="question-text">数据转换 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Pandas数据类型转换、时序处理、分列和合并的基本方法和操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Pandas数据合并和重塑的基本方法和操作技巧">
+                <div class="question-text">数据合并与重塑 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Pandas数据合并和重塑的基本方法和操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Pandas数据分组和聚合的基本方法和操作技巧">
+                <div class="question-text">数据分组与聚合 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Pandas数据分组和聚合的基本方法和操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-score" onclick="calculateScore()">自动评分</button>
+                <button class="btn btn-show-answers" onclick="showAnswers()">显示答案</button>
+                <button class="btn btn-reset" onclick="resetForm()">重置</button>
+            </div>
+
+            <div class="total-score" id="totalScore">本题得分：<span id="scoreValue">0</span>/25分</div>
+        </div>
+    </div>
+
+<script>
+function calculateScore() {
+    let totalScore = 0;
+    const questions = document.querySelectorAll('.question-item');
+    
+    questions.forEach(item => {
+        const userAnswer = item.querySelector('.answer-input').value.trim();
+        const correctAnswer = item.dataset.correct;
+        const score = parseInt(item.dataset.score);
+        
+        item.querySelector('.answer-input').classList.remove('correct', 'incorrect');
+        
+        if (userAnswer === '') {
+            item.querySelector('.answer-input').classList.add('incorrect');
+        } else if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+            totalScore += score;
+            item.querySelector('.answer-input').classList.add('correct');
+        } else {
+            item.querySelector('.answer-input').classList.add('incorrect');
+        }
+    });
+    
+    document.getElementById('scoreValue').textContent = totalScore;
+    document.getElementById('totalScore').style.display = 'block';
+}
+
+function showAnswers() {
+    document.querySelectorAll('.correct-answer').forEach(ans => {
+        ans.style.display = 'block';
+    });
+}
+
+function resetForm() {
+    document.querySelectorAll('.answer-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('correct', 'incorrect');
+    });
+    document.querySelectorAll('.correct-answer').forEach(ans => {
+        ans.style.display = 'none';
+    });
+    document.getElementById('totalScore').style.display = 'none';
+}
+</script>
+</body>
+</html>

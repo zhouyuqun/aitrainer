@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* 左右等宽（调整 flex 比例） */
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 金融机构信用评估系统中的业务数据审核流程设计
+    </div>
+    <div class="container">
+        <!-- 左侧题目（加宽） -->
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>1.1.3</p>
+                <p><strong>试题名称：</strong>金融机构信用评估系统中的业务数据审核流程设计</p>
+                <p><strong>考核时间：</strong>30min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>人工智能训练师主机：CPU(intel i5 及以上)、内存(不少于 16GB)、操作系统(windows10)、支持深度学习训练；</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>某金融机构计划引入智能信用评估系统，通过分析客户的历史交易数据和信用记录，使用机器学习算法预测客户的信用风险等级，从而辅助贷款审批和风险控制。为了确保数据的准确性和可靠性，该机构需要设计并实现一套全面的业务数据审核流程，确保数据在进入信用评估系统之前经过严格的审核和清洗。</p>
+                <p>我们提供一个客户信用数据集（credit_data.csv），包含以下字段：</p>
+                <ul>
+                    <li>CustomerID: 客户ID</li>
+                    <li>Name: 客户姓名</li>
+                    <li>Age: 年龄</li>
+                    <li>Income: 收入</li>
+                    <li>LoanAmount: 贷款金额</li>
+                    <li>LoanTerm: 贷款期限（月）</li>
+                    <li>CreditScore: 信用评分</li>
+                    <li>Default: 是否违约（0: 否，1: 是）</li>
+                    <li>TransactionHistory: 历史交易记录（JSON 格式）</li>
+                </ul>
+                
+                <p>你作为人工智能训练师，根据提供的credit_data.csv数据集和Python代码框架（1.1.3.ipynb），完成以下数据的审核和处理任务，确保数据的准确性和可靠性。请按照以下要求完成任务，确保结果准确并保存相应的截图。</p>
+                
+                <p>(1) 数据完整性审核：<br>
+                通过运行Python代码（1.1.3.ipynb）检查数据集中的每个字段是否存在缺失值和重复值。将上述审核结果截图以JPG的格式保存，命名为“1.1.3-1”。</p>
+                
+                <p>(2) 数据合理性审核：<br>
+                通过运行Python代码（1.1.3.ipynb）审核以下字段的合理性：<br>
+                - 年龄：应在18到70岁之间。<br>
+                - 收入：应大于2000。<br>
+                - 贷款金额：应小于收入的5倍。<br>
+                - 信用评分：应在300到850之间。<br>
+                对不合理的数据进行标记，并将审核结果截图以JPG的格式保存，命名为“1.1.3-2”。</p>
+                
+                <p>(3) 通过运行Python代码（1.1.3.ipynb）对数据进行清洗，处理异常值。具体要求如下：<br>
+                - 将不合理的数据进行标记，并对异常值所在行进行删除；<br>
+                - 清洗后的数据保存为新文件cleaned_credit_data.csv。</p>
+                
+                <p>所有结果文件储存在桌面新建的考生文件夹中，文件夹命名为“准考证号+身份证号后六位”。</p>
+                
+                <h3>3. 技能要求</h3>
+                <p>(1) 能结合人工智能技术要求和业务特征，设计整套业务数据处理流程；</p>
+                <p>(2) 能结合人工智能技术要求和业务特征，设计整套业务数据审核流程；</p>
+                
+                <h3>4. 质量指标</h3>
+                <p>(1) 完整性指标：数据集中无缺失值和重复记录。</p>
+                <p>(2) 合理性指标：所有数据点符合业务规则，无异常值存在。</p>
+                <p>(3) 清洗效果指标：清洗后的数据集完整、合理，且适于建模分析。</p>
+            </div>
+        </div>
+        <!-- 右侧代码区（纯空白、输入框填空） -->
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 读取数据集
+data = pd.read_csv('credit_data.csv')
+
+# 1. 数据完整性审核
+missing_values = data.<input type="text" class="blank" id="b1">       #数据缺失值统计 2分
+duplicate_values = data.<input type="text" class="blank" id="b2">     #数据重复值统计 2分
+
+# 输出结果
+print("缺失值统计:")
+print(missing_values)
+print("重复值统计:")
+print(duplicate_values)
+
+# 2. 数据合理性审核
+data['is_age_valid'] = <input type="text" class="blank" id="b3">.<input type="text" class="blank" id="b4">(18, 70)              #Age数据的合理性审核 2分
+data['is_income_valid'] = <input type="text" class="blank" id="b5"> > <input type="text" class="blank" id="b6">                 #Income数据的合理性审核 2分
+data['is_loan_amount_valid'] = <input type="text" class="blank" id="b7"> < (<input type="text" class="blank" id="b8"> * 5)      #LoanAmount数据的合理性审核 2分
+data['is_credit_score_valid'] = <input type="text" class="blank" id="b9">.<input type="text" class="blank" id="b10">(300, 850)   #CreditScore数据的合理性审核 2分
+
+# 合理性检查结果
+validity_checks = data[['is_age_valid', 'is_income_valid', 'is_loan_amount_valid', 'is_credit_score_valid']].all(axis=1)
+data['is_valid'] = validity_checks
+
+# 输出结果
+print("数据合理性检查:")
+print(data[['is_age_valid', 'is_income_valid', 'is_loan_amount_valid', 'is_credit_score_valid', 'is_valid']].describe())
+
+# 3. 数据清洗和异常值处理
+# 标记不合理数据
+invalid_rows = data[~data['is_valid']]
+# 删除不合理数据行
+cleaned_data = data[data['is_valid']]
+# 删除标记列
+cleaned_data = cleaned_data.drop(columns=['is_age_valid', 'is_income_valid', 'is_loan_amount_valid', 'is_credit_score_valid', 'is_valid'])
+# 保存清洗后的数据
+<input type="text" class="blank" id="b11">.<input type="text" class="blank" id="b12">(<input type="text" class="blank" id="b13">, index=False)
+
+print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查答案</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 20 分
+            </div>
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer"></div>
+                <div class="correct-answer" id="correctAnswer"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 【严格匹配评分表】标准答案与分值
+        const scoring = [
+            { id:"b1", ans:"isnull().sum()", score:2 },
+            { id:"b2", ans:"duplicated().sum()", score:2 },
+            { id:"b3", ans:"data['Age']", score:0 },
+            { id:"b4", ans:"between", score:2 },
+            { id:"b5", ans:"data['Income']", score:0 },
+            { id:"b6", ans:"2000", score:2 },
+            { id:"b7", ans:"data['LoanAmount']", score:0 },
+            { id:"b8", ans:"data['Income']", score:2 },
+            { id:"b9", ans:"data['CreditScore']", score:0 },
+            { id:"b10", ans:"between", score:2 },
+            { id:"b11", ans:"cleaned_data", score:0 },
+            { id:"b12", ans:"to_csv", score:0 },
+            { id:"b13", ans:"'cleaned_credit_data.csv'", score:2 },
+        ];
+        // 检查答案
+        document.getElementById('btnCheck').onclick = function(){
+            let total = 0;
+            let wrong = [];
+            let right = [];
+            
+            scoring.forEach(item => {
+                const val = document.getElementById(item.id).value.trim();
+                if(val === item.ans){
+                    total += item.score;
+                    right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
+                }else{
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                }
+            });
+            
+            document.getElementById('finalScore').textContent = total;
+            document.getElementById('scoreResult').style.display = 'block';
+            document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
+            document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
+            document.getElementById('answerComparison').style.display = 'block';
+        };
+        // 重置
+        document.getElementById('btnReset').onclick = function(){
+            document.querySelectorAll('.blank').forEach(i => i.value = '');
+            document.getElementById('scoreResult').style.display = 'none';
+            document.getElementById('answerComparison').style.display = 'none';
+        };
+    </script>
+</body>
+</html>

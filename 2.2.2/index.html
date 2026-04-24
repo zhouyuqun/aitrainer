@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核 - 2.2.2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column-left {
+            flex: 1.1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        .column-right {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+            min-height: 120px;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+            min-height: 40px;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+
+        /* --- 模型性能表格样式（空表格，可填写） --- */
+        .model-performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+            text-align: center;
+        }
+        .model-performance-table th, .model-performance-table td {
+            border: 1px solid #000;
+            padding: 8px 12px;
+        }
+        .model-performance-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        /* 表格内填空框（数字用） */
+        .table-blank {
+            width: 60px;
+            border: none;
+            border-bottom: 1px solid #333;
+            background: transparent;
+            text-align: center;
+            outline: none;
+            font-size: 14px;
+        }
+        /* 答题纸文本框 */
+        .answer-textarea {
+            width: 100%;
+            height: 80px;
+            border: 1px solid #ddd;
+            padding: 8px;
+            margin-top: 5px;
+            resize: vertical;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 2.2.2 智慧交通中燃油效率随机森林模型开发与测试
+    </div>
+    <div class="container">
+        <div class="column-left">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>2.2.2</p>
+                <p><strong>试题名称：</strong>智慧交通中燃油效率随机森林模型开发与测试</p>
+                <p><strong>考核时间：</strong>20min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <ol>
+                    <li>人工智能训练师主机 1 台；</li>
+                    <li>Python 编译环境；</li>
+                    <li>汽车燃油效率数据集（auto-mpg.csv）。</li>
+                </ol>
+                
+                <h3>2. 工作任务</h3>
+                <p>在现代交通中，燃油效率（MPG）是衡量汽车性能和交通系统优化的重要指标之一。高效的燃油利用不仅能够降低车辆运营成本，还能减少碳排放，促进环保。开发一个用于预测汽车燃油效率的模型可以帮助智慧交通系统优化路线规划和车辆调度，从而提升整体交通效率和减少能源消耗。此外，这样的模型还可以帮助消费者做出更明智的购车决策，并帮助厂商优化汽车设计。</p>
+                <p>现要求根据提供的汽车燃油效率数据集，补全 2.2.2.ipynb 代码。选择合适的特征，开发一个燃油效率预测模型。利用测试工具对模型进行测试，并对测试结果进行分析，完成测试报告，并运用工具对错误原因进行纠正。</p>
+                <ol>
+                    <li>正确加载数据集，显示前五行的数据。</li>
+                    <li>使用线性回归模型进行模型训练，要求设定自变量和因变量，并根据自变量特征进行模型训练，最终将训练好的模型以“2.2.2_model.pkl”命名保存到考生文件夹，结果文件以“2.2.2_results.txt”命名保存到考生文件夹。</li>
+                    <li>使用测试工具对模型进行测试，并记录测试结果，以“2.2.2_report.txt”命名保存到考生文件夹。</li>
+                    <li>运用工具分析算法中错误案例产生的原因并进行纠正，重新进行模型训练，并以“2.2.2_results_rf.txt”命名保存到考生文件夹。</li>
+                    <li>对测试结果进行详细分析，并编写测试报告，包括模型性能评估、错误分析及改进建议，将答案以“2.2.2.docx”命名写到答题卷文件中，并保存到考生文件夹。</li>
+                    <li>将以上代码以及运行结果，以 html 格式保存并命名为 2.2.2.html，保存到考生文件夹，考生文件夹命名为“准考证号+身份证后 6 位”。</li>
+                </ol>
+                
+                <h3>数据集说明</h3>
+                <ul>
+                    <li>mpg : 燃油效率，每加仑油可以行驶的英里数（因变量）；</li>
+                    <li>cylinders: 发动机气缸的数量；</li>
+                    <li>displacement: 发动机所有气缸的总容积；</li>
+                    <li>horsepower: 发动机的马力；</li>
+                    <li>weight: 车辆的重量；</li>
+                    <li>acceleration: 加速性能；</li>
+                    <li>model year: 车辆的生产年份；</li>
+                    <li>origin: 车辆的制造地或品牌所属国家；</li>
+                    <li>car name: 每辆车的具体名称或型号（无关特征）。</li>
+                </ul>
+                
+                <h3>3. 技能要求</h3>
+                <ol>
+                    <li>能维护日常训练集与测试集；</li>
+                    <li>能使用工具对算法进行训练；</li>
+                    <li>能使用测试工具对人工智能产品的使用进行测试；</li>
+                    <li>能对测试结果进行分析，编写测试报告；</li>
+                    <li>能运用工具，分析算法中错误案例产生的原因并进行纠正。</li>
+                </ol>
+                
+                <h3>4. 质量指标</h3>
+                <ol>
+                    <li>深入理解业务，训练符合业务需求的模型；</li>
+                    <li>数据预处理步骤完整，方法选择合理；</li>
+                    <li>代码实现正确，结果符合预期；</li>
+                    <li>测试结果分析全面，报告详细。</li>
+                </ol>
+            </div>
+        </div>
+        <div class="column-right">
+            <div class="section-title">代码填空区（严格对应评分表M1-M14）</div>
+            <div class="code-editor">
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+import pickle
+from sklearn.ensemble import RandomForestRegressor
+
+# M1：正确加载数据集，显示前五行的数据（2分）
+# 加载数据
+df = <input type="text" class="blank" id="M1_1">
+# 显示前五行数据
+print(<input type="text" class="blank" id="M1_2">)
+
+# M2：数据预处理（处理缺失值）（2分）
+# 将 'horsepower' 列中的所有值转换为数值类型
+df['horsepower'] = <input type="text" class="blank" id="M2_1">(<input type="text" class="blank" id="M2_2">, errors='coerce')
+# 删除包含缺失值的行
+df = <input type="text" class="blank" id="M2_3">
+
+# M3：定义自变量和因变量（2分）
+# 选择相关特征进行建模（定义自变量（返回一个DataFrame）和因变量）
+X = <input type="text" class="blank" id="M3_1">
+y = <input type="text" class="blank" id="M3_2">
+
+# M4：训练集与测试集的准确划分（1分）
+X_train, X_test, y_train, y_test = <input type="text" class="blank" id="M4_1">(<input type="text" class="blank" id="M4_2">, random_state=42)
+
+# M5：创建标准化+线性回归管道（2分）
+pipeline = <input type="text" class="blank" id="M5_1">([('scaler', <input type="text" class="blank" id="M5_2">),('linreg', <input type="text" class="blank" id="M5_3">)])
+
+# M6：训练线性回归模型（1分）
+<input type="text" class="blank" id="M6">
+
+# M7：正确保存线性回归模型文件（1分）
+with open('2.2.2_model.pkl', 'wb') as model_file:
+    pickle.<input type="text" class="blank" id="M7">
+
+# M8：使用线性回归模型在测试集上进行预测（1分）
+y_pred = <input type="text" class="blank" id="M8">
+
+# M9：保存线性回归预测结果（1分）
+results_df = pd.DataFrame(y_pred, columns=['预测结果'])
+<input type="text" class="blank" id="M9">('2.2.2_results.txt', index=False)
+
+# M10：创建随机森林回归模型实例（1分）
+# 创建随机森林回归模型实例（创建的决策树的数量为100）
+rf_model = <input type="text" class="blank" id="M10_1">(<input type="text" class="blank" id="M10_2">, random_state=42)
+
+# M11：训练随机森林回归模型（1分）
+<input type="text" class="blank" id="M11">
+
+# M12：使用随机森林模型进行预测（1分）
+y_pred_rf = <input type="text" class="blank" id="M12">
+
+# M13：保存随机森林预测结果（1分）
+results_rf_df = pd.DataFrame(y_pred_rf, columns=['预测结果'])
+<input type="text" class="blank" id="M13">('2.2.2_results_rf.txt', index=False)
+
+# 测试模型（自动执行，无需填空）
+with open('2.2.2_report.txt', 'w') as results_file:
+    results_file.write(f'训练集得分: {pipeline.score(X_train, y_train)}\\n')
+    results_file.write(f'测试集得分: {pipeline.score(X_test, y_test)}\\n')
+
+with open('2.2.2_report_rf.txt', 'w') as results_rf_file:
+    results_rf_file.write(f'训练集得分: {rf_model.score(X_train, y_train)}\\n')
+    results_rf_file.write(f'测试集得分: {rf_model.score(X_test, y_test)}\\n')
+            </div>
+            
+            <!-- --- 答题纸部分（对应M14，3分） --- -->
+            <div class="section-title">答题纸（M14：3分，模型性能评估+错误分析+改进建议）</div>
+            <div>
+                <p><strong>1. 模型性能评估（1分）：</strong></p>
+                <table class="model-performance-table">
+                    <tr>
+                        <th>模型类型</th>
+                        <th>训练集得分（R²）</th>
+                        <th>测试集得分（R²）</th>
+                        <th>泛化能力</th>
+                        <th>优缺点</th>
+                    </tr>
+                    <tr>
+                        <td>线性回归</td>
+                        <td><input type="text" class="table-blank" id="lr_train"></td>
+                        <td><input type="text" class="table-blank" id="lr_test"></td>
+                        <td><input type="text" class="table-blank" id="lr_generalize"></td>
+                        <td><input type="text" class="table-blank" id="lr_merit"></td>
+                    </tr>
+                    <tr>
+                        <td>随机森林回归</td>
+                        <td><input type="text" class="table-blank" id="rf_train"></td>
+                        <td><input type="text" class="table-blank" id="rf_test"></td>
+                        <td><input type="text" class="table-blank" id="rf_generalize"></td>
+                        <td><input type="text" class="table-blank" id="rf_merit"></td>
+                    </tr>
+                </table>
+
+                <div style="margin-top:15px;">
+                    <p><strong>2. 错误分析（1分）：</strong></p>
+                    <textarea class="answer-textarea" id="errorAnalysis" placeholder="请输入错误分析内容，写得差不多即给分（如线性回归拟合不足、随机森林过拟合等）"></textarea>
+                </div>
+
+                <div style="margin-top:15px;">
+                    <p><strong>3. 改进建议（1分）：</strong></p>
+                    <textarea class="answer-textarea" id="improveSuggest" placeholder="请输入改进建议内容，写得差不多即给分（如特征工程、参数调优、集成模型等）"></textarea>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 20 分
+            </div>
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
+            </div>
+        </div>
+    </div>
+<script>
+    // 模糊匹配函数：忽略空格、大小写，包含核心关键词即得分
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        // 统一格式：去空格、转小写
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        // 完全匹配 或 互相包含 即得分
+        return user === correct || user.includes(correct) || correct.includes(user);
+    }
+
+    // 严格对应评分表的20分标准（M1-M14）
+    const scoringRules = [
+        // M1：2分（加载数据1分 + 显示前5行1分）
+        { id: "M1_1", ans: "pd.read_csv('auto-mpg.csv')", score: 1, desc: "M1-加载数据集" },
+        { id: "M1_2", ans: "df.head()", score: 1, desc: "M1-显示前五行" },
+        // M2：2分（处理缺失值：转换类型1分 + 删除缺失行1分，中间参数不计分）
+        { id: "M2_1", ans: "pd.to_numeric", score: 1, desc: "M2-转换horsepower为数值类型" },
+        { id: "M2_2", ans: "df['horsepower']", score: 0, desc: "M2-转换列参数（不计分）" },
+        { id: "M2_3", ans: "df.dropna()", score: 1, desc: "M2-删除缺失值行" },
+        // M3：2分（定义自变量1分 + 因变量1分）
+        { id: "M3_1", ans: "df[['cylinders', 'displacement', 'horsepower', 'weight', 'acceleration', 'model year', 'origin']]", score: 1, desc: "M3-定义自变量" },
+        { id: "M3_2", ans: "df['mpg']", score: 1, desc: "M3-定义因变量" },
+        // M4：1分（划分训练测试集）
+        { id: "M4_1", ans: "train_test_split", score: 0.5, desc: "M4-划分函数" },
+        { id: "M4_2", ans: "X, y, test_size=0.2", score: 0.5, desc: "M4-划分参数" },
+        // M5：2分（管道1分 + 标准化1分 + 线性回归1分，总分2分封顶）
+        { id: "M5_1", ans: "Pipeline", score: 0.7, desc: "M5-创建管道" },
+        { id: "M5_2", ans: "StandardScaler()", score: 0.7, desc: "M5-标准化处理" },
+        { id: "M5_3", ans: "LinearRegression()", score: 0.6, desc: "M5-线性回归模型" },
+        // M6：1分（训练线性回归模型）
+        { id: "M6", ans: "pipeline.fit(X_train, y_train)", score: 1, desc: "M6-训练线性回归模型" },
+        // M7：1分（保存模型）
+        { id: "M7", ans: "dump(pipeline, model_file)", score: 1, desc: "M7-保存线性回归模型" },
+        // M8：1分（线性回归预测）
+        { id: "M8", ans: "pipeline.predict(X_test)", score: 1, desc: "M8-线性回归测试集预测" },
+        // M9：1分（保存线性回归结果）
+        { id: "M9", ans: "results_df.to_csv", score: 1, desc: "M9-保存线性回归预测结果" },
+        // M10：1分（创建随机森林模型）
+        { id: "M10_1", ans: "RandomForestRegressor", score: 0.5, desc: "M10-随机森林类" },
+        { id: "M10_2", ans: "n_estimators=100", score: 0.5, desc: "M10-决策树数量参数" },
+        // M11：1分（训练随机森林模型）
+        { id: "M11", ans: "rf_model.fit(X_train, y_train)", score: 1, desc: "M11-训练随机森林模型" },
+        // M12：1分（随机森林预测）
+        { id: "M12", ans: "rf_model.predict(X_test)", score: 1, desc: "M12-随机森林测试集预测" },
+        // M13：1分（保存随机森林结果）
+        { id: "M13", ans: "results_rf_df.to_csv", score: 1, desc: "M13-保存随机森林预测结果" },
+        // M14：3分（模型性能评估1分 + 错误分析1分 + 改进建议1分）
+        { id: "lr_train", ans: "0.81-0.85", score: 0.1, desc: "M14-线性回归训练集得分" },
+        { id: "lr_test", ans: "0.75-0.80", score: 0.1, desc: "M14-线性回归测试集得分" },
+        { id: "lr_generalize", ans: "较好", score: 0.1, desc: "M14-线性回归泛化能力" },
+        { id: "lr_merit", ans: "简单易解释，拟合一般", score: 0.1, desc: "M14-线性回归优缺点" },
+        { id: "rf_train", ans: "0.98-1.0", score: 0.1, desc: "M14-随机森林训练集得分" },
+        { id: "rf_test", ans: "0.88-0.92", score: 0.1, desc: "M14-随机森林测试集得分" },
+        { id: "rf_generalize", ans: "优秀", score: 0.1, desc: "M14-随机森林泛化能力" },
+        { id: "rf_merit", ans: "拟合强，泛化好，可解释性弱", score: 0.2, desc: "M14-随机森林优缺点" },
+        { id: "errorAnalysis", ans: "", score: 1, desc: "M14-错误分析（填写即得分）", isText: true },
+        { id: "improveSuggest", ans: "", score: 1, desc: "M14-改进建议（填写即得分）", isText: true }
+    ];
+
+    document.getElementById('btnCheck').onclick = function(){
+        let totalScore = 0;
+        let wrongList = [];
+        let rightList = [];
+
+        // 遍历所有评分项，严格按评分表打分
+        scoringRules.forEach(item => {
+            const userInput = document.getElementById(item.id).value.trim();
+            
+            // 文本类（错误分析/改进建议）：填写即得分，模糊匹配
+            if (item.isText) {
+                if (userInput.length > 0) {
+                    totalScore += item.score;
+                    rightList.push(`✅ ${item.desc} +${item.score}分`);
+                } else {
+                    wrongList.push(`❌ ${item.desc} 未填写，不得分`);
+                }
+                return;
+            }
+
+            // 代码/表格数字：模糊匹配校验
+            if (fuzzyMatch(userInput, item.ans)) {
+                totalScore += item.score;
+                rightList.push(`✅ ${item.desc} +${item.score}分`);
+            } else {
+                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}`);
+            }
+        });
+
+        // 分数四舍五入，上限20分
+        totalScore = Math.min(Math.round(totalScore * 100) / 100, 20);
+
+        // 渲染打分结果
+        document.getElementById('finalScore').textContent = totalScore;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrongList.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = rightList.join('<br>') || '全部正确！';
+    };
+
+    // 重置功能：清空所有填空+文本框，隐藏打分结果
+    document.getElementById('btnReset').onclick = function(){
+        // 清空代码填空框
+        document.querySelectorAll('.blank').forEach(i => i.value = '');
+        // 清空表格填空框
+        document.querySelectorAll('.table-blank').forEach(i => i.value = '');
+        // 清空答题纸文本框
+        document.querySelectorAll('.answer-textarea').forEach(i => i.value = '');
+        // 隐藏打分结果
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    };
+</script>
+</body>
+</html>

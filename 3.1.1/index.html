@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能音箱产品数据分析与优化</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#6B7280',
+                        success: '#00B42A',
+                        danger: '#F53F3F',
+                        warning: '#FF7D00',
+                        light: '#F2F3F5',
+                        dark: '#1D2129'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .exam-container {
+                @apply max-w-7xl mx-auto px-4 py-6;
+            }
+            .question-card {
+                @apply bg-white rounded-lg shadow-md p-5 mb-4 border border-gray-200;
+            }
+            .answer-input {
+                @apply w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 transition-all duration-200;
+            }
+            .btn-secondary {
+                @apply bg-gray-200 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-300 transition-all duration-200;
+            }
+            .btn-danger {
+                @apply bg-danger text-white px-6 py-2 rounded-md hover:bg-danger/90 transition-all duration-200;
+            }
+            .score-box {
+                @apply fixed top-5 right-5 bg-white shadow-lg rounded-lg p-4 w-64 z-50;
+            }
+            .compare-item {
+                @apply mb-3 p-3 rounded-md border-l-4;
+            }
+            /* 左侧题目滚动样式 */
+            .left-sidebar {
+                @apply overflow-y-auto max-h-[calc(100vh-120px)];
+            }
+            .title-section {
+                @apply border-b-2 border-gray-200 pb-3 mb-4;
+            }
+            .section-title {
+                @apply font-bold text-lg text-gray-800 mb-2;
+            }
+            .section-content {
+                @apply text-gray-700 leading-relaxed mb-6;
+            }
+            .requirement-item {
+                @apply mb-2 ml-4 list-decimal;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-primary">智能音箱产品数据分析与优化</h1>
+            <div class="flex gap-3">
+                <button onclick="location.href='index.html'" class="btn-secondary flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-left"></i> 返回
+                </button>
+                <button id="checkBtn" class="btn-primary flex items-center gap-1">
+                    <i class="fa-solid fa-check"></i> 检查打分
+                </button>
+                <button id="resetBtn" class="btn-danger flex items-center gap-1">
+                    <i class="fa-solid fa-rotate-right"></i> 重置
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="exam-container">
+        <!-- 分数弹窗 -->
+        <div id="scoreBox" class="score-box hidden">
+            <h3 class="font-bold text-lg mb-2">得分结果</h3>
+            <p class="text-2xl font-bold text-primary" id="scoreText">0/100</p>
+            <div class="mt-3 text-sm text-gray-600">
+                正确：<span id="correctCount">0</span> 题 | 错误：<span id="errorCount">0</span> 题
+            </div>
+        </div>
+
+        <!-- 双列布局 -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- 左侧：题目区域 (占8列) -->
+            <div class="md:col-span-5 left-sidebar">
+                <div class="question-card">
+                    <!-- 试题基本信息 -->
+                    <div class="title-section">
+                        <p><span class="font-semibold">试题代码</span></p>
+                        <p class="mt-1"><span class="font-semibold">试题名称</span>：智能音箱产品的数据分析与优化</p>
+                    </div>
+
+                    <!-- 场地设备要求 -->
+                    <div class="mb-6">
+                        <h3 class="section-title">场地设备要求</h3>
+                        <div class="section-content">
+                            <ul class="space-y-1">
+                                <li class="requirement-item">人工智能训练师主机 1 台；</li>
+                                <li class="requirement-item">Python 编译环境；</li>
+                                <li class="requirement-item">智能音箱数据集。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 考核时间 -->
+                    <div class="mb-6">
+                        <h3 class="section-title">考核时间</h3>
+                        <div class="section-content">
+                            20min
+                        </div>
+                    </div>
+
+                    <!-- 工作任务 -->
+                    <div class="mb-6">
+                        <h3 class="section-title">工作任务</h3>
+                        <div class="section-content">
+                            <p>智能音箱作为智能家居生态的重要组成部分，近年来经历了爆炸式的增长。随着人工智能技术的成熟，尤其是自然语言处理（NLP）和语音识别技术的进步，智能音箱已经成为许多家庭中不可或缺的智能设备。它们不仅能够播放音乐、提供天气预报和新闻更新，还能控制家中的智能设备，设定提醒，甚至帮助用户购物。然而，随着市场竞争的加剧，智能音箱制造商面临着如何持续优化产品性能，提升用户体验的挑战。数据分析在智能音箱的持续优化中扮演着核心角色。通过对用户行为的深入挖掘，企业可以了解用户偏好、使用模式和潜在的痛点。例如，分析用户何时最常使用智能音箱、他们最喜欢的功能是什么、以及哪些功能的响应时间过长等问题，可以帮助企业做出有针对性的改进决策。</p>
+                            <br>
+                            <p class="font-medium">(1) 你作为人工智能训练师，根据给定的数据集（智能音箱数据集.xlsx），从以下三方面：</p>
+                            <ul class="list-disc ml-6 mt-2 space-y-1">
+                                <li>用户使用习惯：分析哪些功能最常被使用；</li>
+                                <li>功能使用频率：识别最受欢迎的功能和较少使用的功能；</li>
+                                <li>响应时间：考察不同功能的平均响应时间，找出可能的瓶颈。</li>
+                            </ul>
+                            <p class="mt-2">给出一份在用户使用习惯、功能使用频率和响应时间方面的分析报告。</p>
+                            <br>
+                            <p class="font-medium">(2) 为了进一步提升用户体验，给出智能音箱产品的2个优化方向和对应的解决方案。</p>
+                            <br>
+                            <p>以上答题保存在3.1.1.xlsx。</p>
+                        </div>
+                    </div>
+
+                    <!-- 技能要求 -->
+                    <div class="mb-6">
+                        <h3 class="section-title">技能要求</h3>
+                        <div class="section-content">
+                            <ul class="space-y-1">
+                                <li class="requirement-item">能对单一智能产品使用的数据进行全面分析，输出分析报告；</li>
+                                <li class="requirement-item">能对单一智能产品提出优化需求；</li>
+                                <li class="requirement-item">能为单一智能产品的应用设计智能解决方案。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 质量指标 -->
+                    <div>
+                        <h3 class="section-title">质量指标</h3>
+                        <div class="section-content">
+                            <ul class="space-y-1">
+                                <li class="requirement-item">分析报告全面可靠；</li>
+                                <li class="requirement-item">优化方向合理，具有良好应用价值；</li>
+                                <li class="requirement-item">解决方案切实可行。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：答题区域 (占4列) -->
+            <div class="md:col-span-7 bg-white rounded-lg shadow-md p-6 overflow-y-auto max-h-[calc(100vh-120px)]">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">答题区</h2>
+                <form id="answerForm" class="space-y-5">
+                    <!-- 1. 最常使用功能 -->
+                    <div>
+                        <label class="block font-medium mb-1">1. 最常被使用的功能：</label>
+                        <input type="text" name="q1" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 2. 最受欢迎功能 -->
+                    <div>
+                        <label class="block font-medium mb-1">2. 最受欢迎的功能：</label>
+                        <input type="text" name="q2" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 3. 较少使用功能 -->
+                    <div>
+                        <label class="block font-medium mb-1">3. 较少使用的功能：</label>
+                        <input type="text" name="q3" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 4. 响应时间较长 -->
+                    <div>
+                        <label class="block font-medium mb-1">4. 响应时间较长的功能：</label>
+                        <input type="text" name="q4" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 5. 响应时间适中 -->
+                    <div>
+                        <label class="block font-medium mb-1">5. 响应时间适中的功能（3个）：</label>
+                        <input type="text" name="q5" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 6. 响应时间较短 -->
+                    <div>
+                        <label class="block font-medium mb-1">6. 响应时间较短的功能：</label>
+                        <input type="text" name="q6" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 7. 优化方向一 -->
+                    <div>
+                        <label class="block font-medium mb-1">7. 优化方向一：</label>
+                        <input type="text" name="q7" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 8. 解决方案一 -->
+                    <div>
+                        <label class="block font-medium mb-1">8. 对应解决方案一：</label>
+                        <textarea name="q8" rows="3" class="answer-input" placeholder="请输入答案"></textarea>
+                    </div>
+
+                    <!-- 9. 优化方向二 -->
+                    <div>
+                        <label class="block font-medium mb-1">9. 优化方向二：</label>
+                        <input type="text" name="q9" class="answer-input" placeholder="请输入答案">
+                    </div>
+
+                    <!-- 10. 解决方案二 -->
+                    <div>
+                        <label class="block font-medium mb-1">10. 对应解决方案二：</label>
+                        <textarea name="q10" rows="3" class="answer-input" placeholder="请输入答案"></textarea>
+                    </div>
+                </form>
+
+                <!-- 错误对比区域 -->
+                <div id="compareBox" class="mt-6 hidden">
+                    <h3 class="font-bold text-lg mb-3 text-danger">错误答案对比</h3>
+                    <div id="compareList" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 标准答案
+        const standardAnswers = {
+            q1: "调整音量、查询新闻、查天气",
+            q2: "调整音量",
+            q3: "播放音乐、控制家居",
+            q4: "控制家居",
+            q5: "查询知识、调整音量、提醒事项",
+            q6: "查询新闻",
+            q7: "优化网络连接和设备，缩短高响应时间功能的等待时间",
+            q8: "对于响应时间较长的功能（如控制家居），可以通过优化网络协议、增强本地计算能力或采用边缘计算技术减少数据传输延迟。",
+            q9: "使用先进技术，提升本地处理能力",
+            q10: "实施预加载机制，在用户可能发出指令之前预先准备相关信息或操作，从而加快响应速度，例如在播放音乐时首先从本地检索。"
+        };
+
+        // 题目名称映射
+        const questionNames = {
+            q1: "最常被使用的功能",
+            q2: "最受欢迎的功能",
+            q3: "较少使用的功能",
+            q4: "响应时间较长的功能",
+            q5: "响应时间适中的功能",
+            q6: "响应时间较短的功能",
+            q7: "优化方向一",
+            q8: "解决方案一",
+            q9: "优化方向二",
+            q10: "解决方案二"
+        };
+
+        // DOM元素
+        const checkBtn = document.getElementById('checkBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const answerForm = document.getElementById('answerForm');
+        const scoreBox = document.getElementById('scoreBox');
+        const scoreText = document.getElementById('scoreText');
+        const correctCount = document.getElementById('correctCount');
+        const errorCount = document.getElementById('errorCount');
+        const compareBox = document.getElementById('compareBox');
+        const compareList = document.getElementById('compareList');
+
+        // 检查打分
+        checkBtn.addEventListener('click', () => {
+            let correct = 0;
+            let error = 0;
+            const errorList = [];
+            const formData = new FormData(answerForm);
+
+            // 遍历答案
+            for (let [key, value] of formData) {
+                const userAnswer = value.trim();
+                const rightAnswer = standardAnswers[key].trim();
+                
+                if (userAnswer === rightAnswer) {
+                    correct++;
+                } else {
+                    error++;
+                    errorList.push({
+                        name: questionNames[key],
+                        user: userAnswer || '未填写',
+                        right: rightAnswer
+                    });
+                }
+            }
+
+            // 计算分数
+            const total = Object.keys(standardAnswers).length;
+            const score = Math.round((correct / total) * 100);
+            
+            // 显示分数
+            scoreText.textContent = `${score}/100`;
+            correctCount.textContent = correct;
+            errorCount.textContent = error;
+            scoreBox.classList.remove('hidden');
+
+            // 显示错误对比
+            if (error > 0) {
+                compareBox.classList.remove('hidden');
+                compareList.innerHTML = '';
+                
+                errorList.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'compare-item border-danger bg-red-50';
+                    div.innerHTML = `
+                        <p class="font-medium">${item.name}</p>
+                        <p class="text-danger">你的答案：${item.user}</p>
+                        <p class="text-success">正确答案：${item.right}</p>
+                    `;
+                    compareList.appendChild(div);
+                });
+            } else {
+                compareBox.classList.add('hidden');
+            }
+        });
+
+        // 重置
+        resetBtn.addEventListener('click', () => {
+            answerForm.reset();
+            scoreBox.classList.add('hidden');
+            compareBox.classList.add('hidden');
+        });
+    </script>

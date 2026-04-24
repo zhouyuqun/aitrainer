@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.1.5 数据可视化 - 原题+答题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 25px;
+        }
+        
+        .left-original {
+            width: 50%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            line-height: 2;
+            font-size: 15px;
+            white-space: pre-line;
+        }
+        
+        .right-answer {
+            width: 50%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .module-header {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .question-item {
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .correct-answer {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #27ae60;
+            font-size: 14px;
+            display: none;
+            margin-bottom: 8px;
+        }
+        
+        .score-info {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .score-display {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .btn-group {
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-score {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-reset {
+            background-color: #e67e22;
+            color: white;
+        }
+        
+        .btn-show-answers {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .total-score {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #fff5f5;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .correct {
+            border-color: #27ae60 !important;
+            background-color: #f0fff4;
+        }
+        
+        .incorrect {
+            border-color: #e74c3c !important;
+            background-color: #fff0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-original">
+在下划线上填写答案。
+
+# 根据学习大纲补充学习目标
+
+数据可视化基础理论
+学习目标：________________
+内容：
+数据可视化的价值与意义。
+常见图表类型与适用场景。
+可视化设计原则与配色规范。
+
+Matplotlib简介与安装
+学习目标：________________
+内容：
+Matplotlib 架构与组件。
+环境安装与基础配置。
+画布、子图、坐标轴基础操作。
+
+Matplotlib基本绘图
+学习目标：________________
+内容：
+折线图、柱状图、饼图、散点图。
+图表样式优化：标题、标签、图例、网格。
+康复数据可视化实战。
+
+Plotly简介与安装
+学习目标：________________
+内容：
+Plotly 交互式可视化优势。
+安装与环境配置。
+与 Matplotlib 对比。
+
+Plotly交互式绘图
+学习目标：________________
+内容：
+交互式折线图、柱状图、面积图。
+动态图表、下拉框、滑动条。
+康复数据交互式看板。
+
+综合可视化项目
+学习目标：完成康复数据可视化报告。
+内容：
+数据加载 → 清洗 → 分析 → 可视化 → 导出报告。
+
+总结、答疑、考核
+        </div>
+
+        <div class="right-answer">
+            <h2 class="title">4.1.5 数据可视化 — 答题区</h2>
+            <div class="module-header">请填写下划线部分</div>
+
+            <div class="question-item" data-score="5" data-correct="了解数据可视化的基本概念、目的、优势和类型">
+                <div class="question-text">数据可视化基础理论 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：了解数据可视化的基本概念、目的、优势和类型</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="了解Matplotlib库基本构架与常用组件及其安装方法">
+                <div class="question-text">Matplotlib简介与安装 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：了解Matplotlib库基本构架与常用组件及其安装方法</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Matplotlib绘制图表的方法和实践操作技巧">
+                <div class="question-text">Matplotlib基本绘图 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Matplotlib绘制图表的方法和实践操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="了解Plotly库的基本功能及其安装和使用方法">
+                <div class="question-text">Plotly简介与安装 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：了解Plotly库的基本功能及其安装和使用方法</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Plotly绘制交互式图表的方法和实践操作技巧">
+                <div class="question-text">Plotly交互式绘图 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Plotly绘制交互式图表的方法和实践操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-score" onclick="calculateScore()">自动评分</button>
+                <button class="btn btn-show-answers" onclick="showAnswers()">显示答案</button>
+                <button class="btn btn-reset" onclick="resetForm()">重置</button>
+            </div>
+
+            <div class="total-score" id="totalScore">本题得分：<span id="scoreValue">0</span>/25分</div>
+        </div>
+    </div>
+
+<script>
+function calculateScore() {
+    let totalScore = 0;
+    const questions = document.querySelectorAll('.question-item');
+    
+    questions.forEach(item => {
+        const userAnswer = item.querySelector('.answer-input').value.trim();
+        const correctAnswer = item.dataset.correct;
+        const score = parseInt(item.dataset.score);
+        
+        item.querySelector('.answer-input').classList.remove('correct', 'incorrect');
+        
+        if (userAnswer === '') {
+            item.querySelector('.answer-input').classList.add('incorrect');
+        } else if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+            totalScore += score;
+            item.querySelector('.answer-input').classList.add('correct');
+        } else {
+            item.querySelector('.answer-input').classList.add('incorrect');
+        }
+    });
+    
+    document.getElementById('scoreValue').textContent = totalScore;
+    document.getElementById('totalScore').style.display = 'block';
+}
+
+function showAnswers() {
+    document.querySelectorAll('.correct-answer').forEach(ans => {
+        ans.style.display = 'block';
+    });
+}
+
+function resetForm() {
+    document.querySelectorAll('.answer-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('correct', 'incorrect');
+    });
+    document.querySelectorAll('.correct-answer').forEach(ans => {
+        ans.style.display = 'none';
+    });
+    document.getElementById('totalScore').style.display = 'none';
+}
+</script>
+</body>
+</html>

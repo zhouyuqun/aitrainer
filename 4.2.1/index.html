@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人工智能训练师考核 - 4.2.1</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f4f8 100%);
+    padding: 20px;
+}
+.exam-header {
+    background: linear-gradient(135deg, #2c5282 0%, #3182ce 100%);
+    color: #fff;
+    padding: 18px 30px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px 12px 0 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.main-box {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+/* 左侧题目区 */
+.question-side {
+    flex: 1.1;
+    min-width: 450px;
+    padding: 35px;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+}
+.question-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3182ce;
+}
+.question-item {
+    font-size: 15px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #2d3748;
+}
+/* 右侧答题区 */
+.answer-side {
+    flex: 1;
+    min-width: 450px;
+    padding: 35px;
+    background: #fff;
+}
+.answer-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #38a169;
+}
+.blank-item {
+    margin-bottom: 22px;
+}
+.blank-item label {
+    display: block;
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+.blank-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+}
+.blank-input:focus {
+    border-color: #3182ce;
+}
+.btn-group {
+    margin-top: 35px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+.btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-submit {
+    background: #3182ce;
+    color: #fff;
+}
+.btn-submit:hover {
+    background: #2c5282;
+}
+.btn-reset {
+    background: #e53e3e;
+    color: #fff;
+}
+.btn-reset:hover {
+    background: #c53030;
+}
+.result-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+}
+.score {
+    font-size: 20px;
+    font-weight: bold;
+    color: #22543d;
+    margin-bottom: 15px;
+}
+.answer-list {
+    font-size: 14px;
+    line-height: 1.8;
+}
+.right { color: #38a169; font-weight: bold; }
+.wrong { color: #e53e3e; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="exam-header">
+    人工智能训练师（三级）操作技能考核 — 4.2.1 智能零售分析系统
+</div>
+
+<div class="main-box">
+    <!-- 左侧：题目 -->
+    <div class="question-side">
+        <h2>题目内容</h2>
+
+        <div class="question-item">
+            <strong>1. 数据源确定</strong><br>
+             销售点（POS）数据：从收银系统获取交易记录，包括商品种类、数量、价格和购买时间。<br>
+             顾客信息：会员卡使用数据，包括_____________________。<br>
+             库存管理系统：实时库存量、入库和出库记录。<br>
+             顾客反馈：在线评价、投诉和建议。<br>
+             外部数据：天气预报、节假日信息、竞争对手价格数据。
+        </div>
+
+        <div class="question-item">
+            <strong>3. 数据预处理</strong><br>
+             清洗：_____________________。<br>
+             标准化：_____________________。<br>
+             整合：将来自不同来源的数据合并到单一数据库中，创建关联字段。
+        </div>
+
+        <div class="question-item">
+            <strong>6. 数据分析与应用</strong><br>
+             建模：_____________________。<br>
+             可视化：开发仪表板展示关键指标，帮助管理层做出决策。<br>
+             报告：定期生成销售、库存和顾客满意度报告，提供业务洞察。<br>
+             最终达到_____________________的目标。
+        </div>
+    </div>
+
+    <!-- 右侧：答题区 -->
+    <div class="answer-side">
+        <h2>答题填空区</h2>
+
+        <div class="blank-item">
+            <label>1. 顾客信息包含：</label>
+            <input type="text" class="blank-input" id="q1">
+        </div>
+
+        <div class="blank-item">
+            <label>2. 数据清洗：</label>
+            <input type="text" class="blank-input" id="q2">
+        </div>
+
+        <div class="blank-item">
+            <label>3. 数据标准化：</label>
+            <input type="text" class="blank-input" id="q3">
+        </div>
+
+        <div class="blank-item">
+            <label>4. 建模：</label>
+            <input type="text" class="blank-input" id="q4">
+        </div>
+
+        <div class="blank-item">
+            <label>5. 最终目标：</label>
+            <input type="text" class="blank-input" id="q5">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-submit" onclick="checkScore()">提交评分</button>
+            <button class="btn btn-reset" onclick="resetAll()">清空重置</button>
+        </div>
+
+        <div class="result-box" id="resultBox" style="background:#f0fff4;border:1px solid #9ae6b4;">
+            <div class="score" id="scoreText">得分：0 / 100</div>
+            <div class="answer-list" id="answerDetail"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 标准答案
+const answers = [
+    "会员基本信息，如ID、姓名、联系方式、会员等级；消费记录，如消费金额、消费频次、购买偏好品类、最近一次消费时间；积分情况等",
+    "去除重复记录；处理缺失值；纠正错误数据；删除无关数据",
+    "统一数据格式；对不同量纲的数据进行归一化处理，使其具有相同的尺度；对分类数据进行编码转换",
+    "使用机器学习和统计分析方法，构建销售预测、库存优化、顾客行为分析和动态定价模型",
+    "提高销售转化率和客户忠诚度、减少库存成本，避免滞销和断货、降低运营成本，提高供应链效率、加强市场竞争力，快速响应市场变化"
+];
+
+function checkScore() {
+    let user = [
+        document.getElementById('q1').value.trim(),
+        document.getElementById('q2').value.trim(),
+        document.getElementById('q3').value.trim(),
+        document.getElementById('q4').value.trim(),
+        document.getElementById('q5').value.trim()
+    ];
+    let score = 0;
+    let detail = "";
+    let per = 20;
+
+    user.forEach((val, i) => {
+        let ok = val.length > 10 && (answers[i].includes(val) || val.includes(answers[i].substring(0,12)));
+        if (ok) {
+            score += per;
+            detail += `<p class="right">第${i+1}空：正确</p>`;
+        } else {
+            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
+        }
+    });
+
+    document.getElementById('resultBox').style.display = 'block';
+    document.getElementById('scoreText').innerText = `得分：${score} / 100`;
+    document.getElementById('answerDetail').innerHTML = detail;
+}
+
+function resetAll() {
+    document.querySelectorAll('.blank-input').forEach(i => i.value = '');
+    document.getElementById('resultBox').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

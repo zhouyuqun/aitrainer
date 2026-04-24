@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #165DFF;
+            --primary-light: #E8F3FF;
+            --primary-dark: #0E42C7;
+            --success-color: #00B42A;
+            --success-light: #F0FFF4;
+            --danger-color: #F53F3F;
+            --danger-light: #FFF1F0;
+            --warning-color: #FF7D00;
+            --warning-light: #FFF7E8;
+            --text-primary: #1D2129;
+            --text-secondary: #4E5969;
+            --text-tertiary: #86909C;
+            --border-color: #E5E6EB;
+            --bg-color: #F7F8FA;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 20px 0;
+        }
+        
+        .exam-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: #fff;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 auto 24px;
+            max-width: 1400px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        
+        .back-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(22, 93, 255, 0.2);
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto 30px;
+            background: var(--card-bg);
+            border-radius: 0 0 12px 12px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 30px;
+            border-right: 1px solid var(--border-color);
+            min-width: 320px;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            border-bottom: 3px solid var(--primary-light);
+            padding-bottom: 10px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .question-content {
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .question-content h3 {
+            color: var(--primary-color);
+            margin: 20px 0 12px;
+            font-size: 16px;
+        }
+        
+        .question-content p {
+            margin-bottom: 10px;
+        }
+        
+        .item {
+            margin-bottom: 18px;
+        }
+
+        .item label {
+            display: block;
+            font-size: 15px;
+                    font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            resize: vertical;
+            min-height: 90px;
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.15);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-check {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(22, 93, 255, 0.2);
+        }
+        
+        .btn-check:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+        
+        .btn-reset {
+            background: var(--danger-color);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(245, 63, 63, 0.2);
+        }
+        
+        .btn-reset:hover {
+            background: #D4380D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 63, 63, 0.3);
+        }
+        
+        .score-result {
+            margin-top: 24px;
+            padding: 20px;
+            background: var(--success-light);
+            border: 1px solid var(--success-color);
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            color: #0E6245;
+            display: none;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 180, 42, 0.1);
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: none;
+            box-shadow: var(--shadow-sm);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .comparison-title {
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+            font-size: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            line-height: 1.8;
+        }
+        
+        .correct-answer {
+            background: var(--success-light);
+            border-left: 4px solid var(--success-color);
+            color: #0E6245;
+        }
+        
+        .wrong-answer {
+            background: var(--danger-light);
+            border-left: 4px solid var(--danger-color);
+            color: #B72424;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c9cf;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            .exam-header {
+                padding: 16px 20px;
+                font-size: 16px;
+                margin: 0 10px 16px;
+            }
+            .container {
+                margin: 0 10px 20px;
+            }
+            .column {
+                padding: 20px;
+                flex: 100%;
+            }
+            .btn {
+                padding: 10px 20px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 智能健康监测系统的数据分析与优化
+    </div>
+
+    <div class="container">
+        <!-- 左侧题目 -->
+        <div class="column" style="flex:1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>3.1.4</p>
+                <p><strong>试题名称：</strong>智能健康监测系统的数据分析与优化</p>
+                <p><strong>考核时间：</strong>20min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>人工智能训练师主机 1 台；Python 编译环境；智能健康监测系统数据集。</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>根据健康监测数据集完成以下分析：</p>
+                <ul>
+                    <li>用户活动周期：分析健康指标变化趋势，确定高风险/安全时段</li>
+                    <li>健康指标偏好度：识别用户常用/少用监测功能</li>
+                    <li>系统响应与准确性：评估各功能响应时间，定位延迟原因</li>
+                    <li>输出分析报告并提出 3 个优化方向与解决方案</li>
+                </ul>
+                
+                <h3>3. 技能要求</h3>
+                <p>(1) 能对智能产品数据进行全面分析并输出报告；</p>
+                <p>(2) 能提出合理优化需求与可落地解决方案。</p>
+            </div>
+        </div>
+
+        <!-- 右侧答题区 -->
+        <div class="column">
+            <div class="section-title">答题区</div>
+
+            <div class="item">
+                <label>1. 健康指标变化趋势</label>
+                <textarea id="q1"></textarea>
+            </div>
+            <div class="item">
+                <label>高风险时间段</label>
+                <textarea id="q2"></textarea>
+            </div>
+            <div class="item">
+                <label>安全时间段</label>
+                <textarea id="q3"></textarea>
+            </div>
+
+            <div class="item">
+                <label>2. 受用户青睐的功能</label>
+                <textarea id="q4"></textarea>
+            </div>
+            <div class="item">
+                <label>较少使用的功能</label>
+                <textarea id="q5"></textarea>
+            </div>
+
+            <div class="item">
+                <label>3. 响应时间较长的功能</label>
+                <textarea id="q6"></textarea>
+            </div>
+            <div class="item">
+                <label>响应时间适中的功能</label>
+                <textarea id="q7"></textarea>
+            </div>
+            <div class="item">
+                <label>响应时间较短的功能</label>
+                <textarea id="q8"></textarea>
+            </div>
+
+            <div class="item">
+                <label>4. 优化方向1</label>
+                <textarea id="q9"></textarea>
+            </div>
+            <div class="item">
+                <label>解决方案1</label>
+                <textarea id="q10"></textarea>
+            </div>
+            <div class="item">
+                <label>优化方向2</label>
+                <textarea id="q11"></textarea>
+            </div>
+            <div class="item">
+                <label>解决方案2</label>
+                <textarea id="q12"></textarea>
+            </div>
+            <div class="item">
+                <label>优化方向3</label>
+                <textarea id="q13"></textarea>
+            </div>
+            <div class="item">
+                <label>解决方案3</label>
+                <textarea id="q14"></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>检查答案
+                </button>
+                <button class="btn btn-reset" id="btnReset">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>重置答题
+                </button>
+            </div>
+
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 15 分
+            </div>
+
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer"></div>
+                <div class="correct-answer" id="correctAnswer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const standard = {
+            q1: "血压在早晨（06:00-10:00）明显上升；血糖早餐后（07:00-09:00）显著升高；体脂稳定在0.17正常范围",
+            q2: "06:00-10:00（早晨血压偏高）",
+            q3: "10:00-次日06:00（指标稳定）",
+            q4: "血压监测、血糖检测",
+            q5: "体脂分析",
+            q6: "体脂分析（平均0.66125）",
+            q7: "血压监测（平均0.61925）",
+            q8: "血糖检测（平均0.59925）",
+            q9: "改进体脂分析功能，缩短响应时间",
+            q10: "优化体脂检测算法；升级硬件；推广体脂监测知识",
+            q11: "提升血压监测预警能力",
+            q12: "加强血压异常检测与智能预警机制",
+            q13: "优化血糖实时分析与反馈",
+            q14: "升级检测设备，提供实时健康建议"
+        };
+
+        const scoring = [
+            {id:"q1",ans:standard.q1,score:1},{id:"q2",ans:standard.q2,score:1},
+            {id:"q3",ans:standard.q3,score:1},{id:"q4",ans:standard.q4,score:1},
+            {id:"q5",ans:standard.q5,score:1},{id:"q6",ans:standard.q6,score:1},
+            {id:"q7",ans:standard.q7,score:1},{id:"q8",ans:standard.q8,score:1},
+            {id:"q9",ans:standard.q9,score:1},{id:"q10",ans:standard.q10,score:1},
+            {id:"q11",ans:standard.q11,score:1},{id:"q12",ans:standard.q12,score:1},
+            {id:"q13",ans:standard.q13,score:1},{id:"q14",ans:standard.q14,score:1}
+        ];
+
+        const qNames = {
+            q1:"健康指标变化趋势",q2:"高风险时间段",q3:"安全时间段",
+            q4:"受用户青睐的功能",q5:"较少使用的功能",
+            q6:"响应时间较长的功能",q7:"响应时间适中的功能",q8:"响应时间较短的功能",
+            q9:"优化方向1",q10:"解决方案1",q11:"优化方向2",q12:"解决方案2",
+            q13:"优化方向3",q14:"解决方案3"
+        };
+
+        document.getElementById('btnCheck').onclick = function(){
+            this.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s infinite"></svg> 检查中...`;
+            this.disabled = true;
+
+            setTimeout(()=>{
+                let total=0,wrong=[],right=[];
+                scoring.forEach(item=>{
+                    const v=document.getElementById(item.id).value.trim();
+                    const name=qNames[item.id];
+                    if(v===item.ans){total+=item.score;right.push(`✅ ${name}：${item.ans}（+${item.score}分）`);}
+                    else{wrong.push(`❌ ${name} 正确答案：${item.ans}`);}
+                });
+
+                document.getElementById('finalScore').textContent=total;
+                document.getElementById('scoreResult').style.display='block';
+                document.getElementById('wrongAnswer').innerHTML=wrong.join('<br>')||"🎉 全部正确！";
+                document.getElementById('correctAnswer').innerHTML=right.join('<br>');
+                document.getElementById('answerComparison').style.display='block';
+
+                this.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"></svg>检查答案`;
+                this.disabled=false;
+            },500);
+        };
+
+        document.getElementById('btnReset').onclick = function(){
+            document.querySelectorAll('textarea').forEach(e=>e.value='');
+            document.getElementById('scoreResult').style.display='none';
+            document.getElementById('answerComparison').style.display='none';
+            this.innerHTML="✅ 已重置";
+            setTimeout(()=>this.innerHTML=`<svg width="16" height="16"></svg>重置答题`,1500);
+        };
+
+        const s=document.createElement('style');
+        s.textContent="@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}";
+        document.head.appendChild(s);
+    </script>
+</body>
+</html>

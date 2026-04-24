@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核 - 3.2.2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .text-answer {
+            width: 100%;
+            height: 80px;
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+            min-height: 120px;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+            min-height: 40px;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 3.2.2 手写数字识别系统交互流程设计
+    </div>
+    <div class="container">
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>3.2.2</p>
+                <p><strong>试题名称：</strong>手写数字识别系统交互流程设计</p>
+                <p><strong>考核时间：</strong>20min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>(1) 人工智能训练师主机 1 台；</p>
+                <p>(2) Python 编译环境；</p>
+                <p>(3) Pytorch 框架；</p>
+                <p>(4) 模型文件：mnist.onnx、测试图片：img_test.png</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>手写数字识别系统是在数字化转型和自动化需求日益增长的社会背景下应运而生的。随着信息时代的到来，大量手写文档需要进行电子化处理，以提高数据存储、检索和分析的效率。</p>
+                <p>AI模型说明：提供的模型“mnist.onnx”是基于卷积神经网络训练得到的，专门用于进行手写数字的识别应用。</p>
+                <p><strong>模型使用流程：</strong></p>
+                <p>1) 加载模型“mnist.onnx”;</p>
+                <p>2) 加载本地图片“img_test.png”，预处理为模型输入格式；</p>
+                <p>3) 使用模型对图片进行预测；</p>
+                <p>4) 输出识别后的数字结果。</p>
+
+                <h3>3. 操作要求</h3>
+                <p>(1) 补全代码 3.2.2.ipynb，实现图片识别，结果截图命名为 3.2.2-1.jpg；</p>
+                <p>(2) 写出人机交互最优流程，保存为 3.2.2.docx；</p>
+                <p>(3) 所有文件保存到“准考证号+身份证号后六位”文件夹。</p>
+                
+                <h3>4. 技能要求</h3>
+                <p>(1) 能确保模型在单一场景下稳定运行；</p>
+                <p>(2) 能设计人工和智能交互的最优流程。</p>
+            </div>
+        </div>
+
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import onnxruntime
+import numpy as np
+from PIL import Image
+
+# 加载ONNX模型  2分
+ort_session = <input type="text" class="blank" id="b1">
+
+# 加载图像 2分
+image = <input type="text" class="blank" id="b2">('L')  # 转为灰度图
+
+# 图像预处理 
+image = <input type="text" class="blank" id="b3">  # 调整大小28×28  2分
+image_array = <input type="text" class="blank" id="b4">  # 转numpy数组 2分
+image_array = <input type="text" class="blank" id="b5">  # 添加batch维度 2分
+image_array = <input type="text" class="blank" id="b6">  # 添加通道维度 2分
+
+# 返回模型输入列表 2分
+ort_inputs = {<input type="text" class="blank" id="b7">: image_array}
+
+# 执行预测 2分
+ort_outs = <input type="text" class="blank" id="b8">
+
+# 获取预测结果 2分
+predicted_class = <input type="text" class="blank" id="b9">
+
+# 输出结果
+print(f"Predicted class: {predicted_class}")
+            </div>
+
+            <div style="margin-top:20px;">
+                <h3>3. 人机交互最优流程</h3>
+                <textarea class="text-answer" id="flowNorm"></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 20 分
+            </div>
+
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // 模糊匹配
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user.includes(correct) || correct.includes(user);
+    }
+
+    // 标准答案 + 评分（严格按你给的评分表）
+    const scoring = [
+        { id:"b1", ans:"onnxruntime.InferenceSession('mnist.onnx')", score:2 },
+        { id:"b2", ans:"Image.open('img_test.png').convert", score:2 },
+        { id:"b3", ans:"image.resize((28,28))", score:2 },
+        { id:"b4", ans:"np.array(image, dtype=np.float32)", score:2 },
+        { id:"b5", ans:"np.expand_dims(image_array, axis=0)", score:2 },
+        { id:"b6", ans:"np.expand_dims(image_array, axis=0)", score:2 },
+        { id:"b7", ans:"ort_session.get_inputs()[0].name", score:2 },
+        { id:"b8", ans:"ort_session.run(None, ort_inputs)", score:2 },
+        { id:"b9", ans:"np.argmax(ort_outs[0])", score:2 },
+    ];
+
+    // 打分逻辑
+    document.getElementById('btnCheck').onclick = function(){
+        let total = 0;
+        let wrong = [];
+        let right = [];
+
+        // 代码题 18分
+        scoring.forEach(item => {
+            const val = document.getElementById(item.id).value.trim();
+            if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push(`✅ ${item.id} 正确 +${item.score}分`);
+            } else {
+                wrong.push(`❌ ${item.id} 正确：${item.ans}`);
+            }
+        });
+
+        // 流程题 2分
+        const flow = document.getElementById('flowNorm').value.trim();
+        if (flow && flow.length > 10) {
+            total += 2;
+            right.push(`✅ 交互流程 +2分`);
+        } else {
+            wrong.push(`❌ 请填写人机交互流程`);
+        }
+
+        total = Math.min(total, 20);
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确！';
+    };
+
+    // 重置
+    document.getElementById('btnReset').onclick = function(){
+        document.querySelectorAll('.blank').forEach(i=>i.value='');
+        document.querySelectorAll('.text-answer').forEach(i=>i.value='');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    };
+</script>
+</body>
+</html>

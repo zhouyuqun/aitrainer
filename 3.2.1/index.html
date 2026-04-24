@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核 - 3.2.1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .text-answer {
+            width: 100%;
+            min-height: 120px;
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+            resize: vertical;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+            min-height: 120px;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+            min-height: 40px;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+
+        /* 答题纸表格样式（还原docx） */
+        .answer-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 1px solid #000;
+        }
+        .answer-table th, .answer-table td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+        }
+        .answer-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 3.2.1 ONNX格式ResNet模型图像识别部署
+    </div>
+    <div class="container">
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>3.2.1</p>
+                <p><strong>试题名称：</strong>ONNX格式ResNet模型图像识别部署</p>
+                <p><strong>考核时间：</strong>20min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>(1) 人工智能训练师主机 1 台；</p>
+                <p>(2) Python 编译环境；</p>
+                <p>(3) ONNX格式ResNet预训练模型（resnet.onnx）；</p>
+                <p>(4) 类别标签文件（labels.txt）；</p>
+                <p>(5) 测试图像文件（img_test.jpg）；</p>
+                <p>(6) 依赖库：onnxruntime、numpy、scipy、PIL。</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>ONNX（Open Neural Network Exchange）是一种开放式神经网络交换格式，可实现不同框架训练模型的跨平台部署。现要求补全代码，完成ONNX格式ResNet模型的加载、图像预处理、图像识别推理及结果输出，同时设计人机交互最优方式。</p>
+                <p>(1) 补全Python代码，实现模型加载、图像加载与预处理、推理预测、结果输出全流程。</p>
+                <p>(2) 设计单一场景下人工和智能交互的最优方式（每正确回答1个优化方式得1分，最高得2分）。</p>
+                <p>(3) 将代码运行结果截图保存为JPG格式，命名为"3.2.1-1"。</p>
+                <p>(4) 所有结果文件储存在桌面新建的考生文件夹中，文件夹命名为"准考证号+身份证号后六位"。</p>
+                
+                <h3>3. 技能要求</h3>
+                <p>(1) 能确保模型在单一场景下稳定运行；</p>
+                <p>(2) 能通过分析找到单一场景下人工和智能交互的最优方式。</p>
+                
+                <h3>4. 质量指标</h3>
+                <p>(1) 模型运行稳定，输出结果准确；</p>
+                <p>(2) 交互流程设计合理，代码规范。</p>
+            </div>
+        </div>
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区（总分18分）</div>
+            <div class="code-editor">
+import onnxruntime as ort
+import numpy as np
+import scipy.special
+from PIL import Image
+
+# 预处理图像
+def preprocess_image(image, resize_size=256, crop_size=224, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
+  image = image.resize((resize_size, resize_size), Image.BILINEAR)
+  w, h = image.size
+  left = (w - crop_size) / 2
+  top = (h - crop_size) / 2
+  image = image.crop((left, top, left + crop_size, top + crop_size))
+  image = np.array(image).astype(np.float32)
+  image = image / 255.0
+  image = (image - mean) / std
+  image = np.transpose(image, (2, 0, 1))
+  image = image.reshape((1,) + image.shape)
+  return image
+
+# 模型加载 2分
+session = <input type="text" class="blank" id="b1">
+
+# 加载类别标签
+labels_path = 'labels.txt'
+with open(labels_path) as f:
+  labels = [line.strip() for line in f.readlines()]
+
+# 获取模型输入和输出的名称
+input_name = session.get_inputs()[0].name
+output_name = session.get_outputs()[0].name
+
+# 加载图片 2分
+image = <input type="text" class="blank" id="b2">('RGB')
+
+# 预处理图片 2分
+processed_image = <input type="text" class="blank" id="b3">
+
+# 确保输入数据是 float32 类型
+processed_image = processed_image.astype(np.float32)
+
+# 进行图片识别 2分
+output = <input type="text" class="blank" id="b4">([output_name], {input_name: processed_image})[0]
+
+# 应用 softmax 函数获取概率 2分
+probabilities = <input type="text" class="blank" id="b5">(output, axis=-1)
+
+# 获取最高的5个概率和对应的类别索引 3分
+top5_idx = <input type="text" class="blank" id="b6">[-5:][::-1]
+top5_prob = <input type="text" class="blank" id="b7">
+
+# 打印结果
+print("Top 5 predicted classes:")
+for i in range(5):
+  print(f"{i+1}: {labels[top5_idx[i]]} - Probability: {top5_prob[i]}")
+            </div>
+            <!-- 答题纸：1:1还原3.2.1.docx -->
+            <div style="margin-top:20px;">
+                <div class="section-title">答题纸（总分2分）</div>
+                <p><strong>人机交互的最优方式（每正确回答1个优化方式得1分，最高得2分）</strong></p>
+                <table class="answer-table">
+                    <tr>
+                        <td>
+                            <textarea class="text-answer" id="interactionOpt" ></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <p style="font-size:12px; color:#666; margin-top:5px;">参考方向：加载模型优化、图片加载方式、结果展示、用户反馈、帮助指导等</p>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 20 分
+            </div>
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
+            </div>
+        </div>
+    </div>
+<script>
+    // 模糊匹配：代码精确匹配，答题纸模糊匹配
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        // 统一格式：去空格、转小写
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        // 代码题：精确匹配核心关键词；答题纸：包含合理优化方式即得分
+        return user === correct || user.includes(correct) || correct.includes(user);
+    }
+    // 标准答案（按提供的代码答案配置，总分18分）
+    const scoring = [
+        { id:"b1", ans:"ort.InferenceSession('resnet.onnx')", score:2, desc:"模型加载" },
+        { id:"b2", ans:"Image.open('img_test.jpg').convert", score:2, desc:"加载图片并转换为RGB" },
+        { id:"b3", ans:"preprocess_image(image)", score:2, desc:"预处理图片" },
+        { id:"b4", ans:"session.run", score:2, desc:"进行图片识别推理" },
+        { id:"b5", ans:"scipy.special.softmax", score:2, desc:"应用softmax函数获取概率" },
+        { id:"b6", ans:"np.argsort(probabilities[0])", score:2, desc:"获取Top5类别索引（排序部分）" },
+        { id:"b7", ans:"probabilities[0][top5_idx]", score:1, desc:"获取Top5对应概率" },
+    ];
+    document.getElementById('btnCheck').onclick = function(){
+        let total = 0;
+        let wrong = [];
+        let right = [];
+        // 代码题打分（18分）
+        scoring.forEach(item => {
+            const val = document.getElementById(item.id).value.trim();
+            if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push(`✅ ${item.desc} +${item.score}分`);
+            } else {
+                wrong.push(`❌ ${item.desc} 正确答案：${item.ans}`);
+            }
+        });
+        // 答题纸打分（2分）
+        const interaction = document.getElementById('interactionOpt').value.trim();
+        if (interaction) {
+            // 按优化方式数量计分，1个得1分，2个及以上得2分
+            const optCount = interaction.split(/\d+[.、)]/).filter(Boolean).length;
+            const interactionScore = Math.min(optCount, 2);
+            total += interactionScore;
+            right.push(`✅ 人机交互优化方式 +${interactionScore}分`);
+        } else {
+            wrong.push(`❌ 人机交互最优方式未填写，不得分`);
+        }
+        // 分数上限20分
+        total = Math.min(Math.round(total * 100) / 100, 20);
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
+    };
+    document.getElementById('btnReset').onclick = function(){
+        document.querySelectorAll('.blank').forEach(i=>i.value='');
+        document.querySelectorAll('.text-answer').forEach(i=>i.value='');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    };
+</script>
+</body>
+</html>

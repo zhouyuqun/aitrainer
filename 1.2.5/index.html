@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            height: calc(100vh - 40px);
+        }
+        /* 左侧题目区域 */
+        .question-area {
+            width: 50%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            overflow-y: auto;
+        }
+        .question-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .question-content {
+            line-height: 1.8;
+            color: #34495e;
+            font-size: 15px;
+        }
+        .question-content h3 {
+            margin: 15px 0 10px;
+            color: #2980b9;
+        }
+        /* 右侧答题区域 */
+        .answer-area {
+            width: 50%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .answer-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        textarea {
+            width: 100%;
+            height: 220px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            resize: none;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        /* 按钮区域 */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-check {
+            background: #3498db;
+            color: #fff;
+        }
+        .btn-reset {
+            background: #f39c12;
+            color: #fff;
+        }
+        .btn-back {
+            background: #95a5a6;
+            color: #fff;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        /* 评分与对比区域 */
+        .score-area {
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        .compare-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+        .compare-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .user-answer, .standard-answer {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .user-answer {
+            background: #fff3e0;
+            border: 1px solid #ffe0b2;
+        }
+        .standard-answer {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧题目 -->
+        <div class="question-area">
+            <div class="question-title">人工智能训练师（三级）操作技能考核</div>
+            <div class="question-content">
+                <h3>试题名称：腾讯云智能数智人系统业务模块效果优化</h3>
+                <p><strong>考核时间：</strong>30min</p>
+                <br>
+                <h3>1.场地设备要求</h3>
+                <p>（1）人工智能训练师主机1台。</p>
+                <br>
+                <h3>2.工作任务</h3>
+                <p>针对腾讯云智能数智人系统，目前用户反馈中存在一些显著的问题，如数智人响应不准确、缺乏个性化交互能力等，这些问题直接影响了用户的使用体验和系统的服务质量。作为人工智能训练师，任务是结合人工智能技术和业务知识，对该系统的相关模块进行优化设计与实现。</p>
+                <p>（1）请列举腾讯云智能数智人系统业务模块中用户反映最强烈的几个问题，并解释这些问题为什么会让用户感到不满，影响他们的使用体验。</p>
+                <p>（2）设你要优化腾讯云智能数智人系统业务模块，以提升用户体验和服务质量。请设计一个优化方案，列出关键的实施步骤，并描述你期望的优化效果。</p>
+                <br>
+                <h3>3.技能要求</h3>
+                <p>（1）能够结合业务知识，识别业务流程中单一模块的问题；</p>
+                <p>（2）能够结合人工智能技术设计业务模块优化方案并推动实现。</p>
+                <br>
+                <h3>4.质量指标</h3>
+                <p>（1）深刻理解数据，细致分析</p>
+                <br>
+                <h3>评分标准（总分25分）</h3>
+                <p>M1：列出问题，每个2分，共6分</p>
+                <p>M2：问题解释，每个2分，共6分</p>
+                <p>M3：优化方案步骤，每个2分，共6分</p>
+                <p>M4：步骤描述，每个2分，共6分</p>
+                <p>M5：优化效果描述，1分</p>
+            </div>
+        </div>
+
+        <!-- 右侧答题 -->
+        <div class="answer-area">
+            <div class="answer-title">1.2.5-1 请输入答案：</div>
+            <textarea id="answer1" placeholder="在此输入腾讯云智能数智人系统问题及原因解释..."></textarea>
+
+            <div class="answer-title">1.2.5-2 请输入答案：</div>
+            <textarea id="answer2" placeholder="在此输入优化方案、实施步骤及优化效果..."></textarea>
+
+            <div class="btn-group">
+                <button class="btn-check" onclick="checkScore()">检查打分</button>
+                <button class="btn-reset" onclick="resetAnswer()">重置题目</button>
+                <button class="btn-back" onclick="location.href='index.html'">返回首页</button>
+            </div>
+
+            <div id="scoreResult" class="score-area"></div>
+            <div id="compareArea" class="compare-box" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // 标准答案
+        const standardAnswer = {
+            answer1: `问题一：数智人响应不准确
+用户不满原因：数据准确性是智能数智人核心指标，回答错误会让用户失去信心，认为系统不可靠。
+影响体验：互动无效浪费时间，用户转向其他服务渠道。
+
+问题二：缺乏个性化交互能力
+用户不满原因：无法记住用户偏好与历史记录，不能个性化服务，用户感觉不被重视。
+影响体验：数智人不够智能，降低用户依赖度与忠诚度。
+
+问题三：用户界面不友好
+用户不满原因：操作步骤繁琐，紧急情况易焦虑，日常使用意愿低。
+影响体验：操作浪费时间，带来使用困惑。`,
+            answer2: `优化步骤1：算法优化提升响应准确性
+A. 收集并标注业务相关数据
+B. 深度学习模型训练与语义优化
+C. 结合用户反馈持续迭代
+
+优化步骤2：构建个性化推荐机制
+A. 基于用户行为构建用户画像
+B. 根据画像提供个性化服务
+C. 动态调整个性化推荐与界面
+
+优化步骤3：优化用户界面设计
+简化操作流程，减少冗余步骤，优化视觉展示
+
+优化效果：响应准确率提升，个性化体验增强，界面易用，用户满意度与忠诚度显著提高。`,
+            score: {
+                m1: 6,
+                m2: 6,
+                m3: 6,
+                m4: 6,
+                m5: 1
+            }
+        };
+
+        // 检查打分
+        function checkScore() {
+            const userAns1 = document.getElementById('answer1').value.trim();
+            const userAns2 = document.getElementById('answer2').value.trim();
+            const scoreResult = document.getElementById('scoreResult');
+            const compareArea = document.getElementById('compareArea');
+            
+            // 基础得分（匹配关键词）
+            let total = 0;
+            // 问题列出得分
+            if(userAns1.includes('响应不准确')) total += 2;
+            if(userAns1.includes('个性化交互')) total += 2;
+            if(userAns1.includes('界面不友好')) total += 2;
+            // 解释得分
+            if(userAns1.includes('不可靠') || userAns1.includes('浪费时间')) total += 2;
+            if(userAns1.includes('不被重视') || userAns1.includes('依赖度低')) total += 2;
+            if(userAns1.includes('步骤繁琐') || userAns1.includes('困惑')) total += 2;
+            // 方案步骤得分
+            if(userAns2.includes('算法优化')) total += 2;
+            if(userAns2.includes('个性化')) total += 2;
+            if(userAns2.includes('界面优化')) total += 2;
+            // 步骤描述得分
+            if(userAns2.includes('数据') && userAns2.includes('模型')) total += 2;
+            if(userAns2.includes('用户画像') && userAns2.includes('推荐')) total += 2;
+            if(userAns2.includes('简化流程') || userAns2.includes('操作')) total += 2;
+            // 效果得分
+            if(userAns2.includes('体验提升') || userAns2.includes('满意度')) total += 1;
+
+            // 显示结果
+            if(total === 25) {
+                scoreResult.className = 'score-area correct';
+                scoreResult.innerHTML = `✅ 得分：${total}/25分，答案完全正确！`;
+                compareArea.style.display = 'none';
+            } else {
+                scoreResult.className = 'score-area error';
+                scoreResult.innerHTML = `❌ 得分：${total}/25分，答案存在错误`;
+                
+                // 显示对比
+                compareArea.style.display = 'block';
+                compareArea.innerHTML = `
+                    <div class="compare-title">答案对比</div>
+                    <div class="user-answer">
+                        <strong>你的答案1：</strong><br>${userAns1 || '未填写'}
+                    </div>
+                    <div class="standard-answer">
+                        <strong>标准答案1：</strong><br>${standardAnswer.answer1}
+                    </div>
+                    <div class="user-answer">
+                        <strong>你的答案2：</strong><br>${userAns2 || '未填写'}
+                    </div>
+                    <div class="standard-answer">
+                        <strong>标准答案2：</strong><br>${standardAnswer.answer2}
+                    </div>
+                `;
+            }
+        }
+
+        // 重置答案
+        function resetAnswer() {
+            document.getElementById('answer1').value = '';
+            document.getElementById('answer2').value = '';
+            document.getElementById('scoreResult').innerHTML = '';
+            document.getElementById('compareArea').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .header {
+            background-color: #003366;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 20px;
+            font-weight: normal;
+        }
+        .back-btn {
+            background-color: #0059b3;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .back-btn:hover {
+            background-color: #0066cc;
+        }
+        .container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        .column {
+            width: 50%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .left-column {
+            background-color: white;
+            border-right: 1px solid #e0e0e0;
+        }
+        .right-column {
+            background-color: #fafafa;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #003366;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .question-block h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #003366;
+        }
+        .question-block p {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .answer-area {
+            margin-bottom: 20px;
+        }
+        .answer-area textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-check {
+            background-color: #009966;
+            color: white;
+        }
+        .btn-check:hover {
+            background-color: #00b377;
+        }
+        .btn-reset {
+            background-color: #ff9900;
+            color: white;
+        }
+        .btn-reset:hover {
+            background-color: #ffad33;
+        }
+        .score-display {
+            padding: 15px;
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .score-display h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        .score-item {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .comparison-block {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 4px;
+        }
+        .comparison-block h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #ef6c00;
+        }
+        .error-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .error-label {
+            font-weight: bold;
+            color: #d32f2f;
+        }
+        .correct-label {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>人工智能训练师（三级）操作技能考核 - 1.2.1 顾客评价情感识别业务模块效果优化</h1>
+        <button class="back-btn" onclick="location.href='index.html'">返回</button>
+    </div>
+    <div class="container">
+        <div class="column left-column">
+            <div class="section-title">试题信息</div>
+            <div class="question-block">
+                <p>准考证号：</p>
+                <p>试题代码：1.2.1</p>
+                <p>试题名称：顾客评价情感识别业务模块效果优化</p>
+                <p>考核时间：30min</p>
+            </div>
+            <div class="question-block">
+                <h3>1. 场地设备要求</h3>
+                <p>（1）人工智能训练师主机 1 台。</p>
+            </div>
+            <div class="section-title">题目内容</div>
+            <div class="question-block">
+                <h3>2. 工作任务</h3>
+                <p>在某电商平台的顾客评价情感识别中，用户反映的主要问题包括：情感识别准确性不高，导致分析结果偏差；响应速度慢，用户需长时间等待识别结果；用户界面不友好，操作复杂；缺乏定制化服务，无法满足特定需求。这些问题影响了用户的购物体验和满意度，需进行优化。</p>
+                <p style="margin-top: 10px;">（1）请列举顾客评价情感识别业务模块中用户反映最强烈的两个问题，并解释这两个问题为什么会让用户感到不满，影响他们的使用体验。</p>
+                <p>将上述答案写在 1.2.1.docx 答题卷上，题号为“1.2.1-1”。</p>
+                <p style="margin-top: 10px;">（2）请设计一个优化顾客评价情感识别业务模块的方案，包括关键的实施步骤和你期望的优化效果。要求方案具体、可行，能够有效提升用户体验和服务质量。</p>
+                <p>将上述答案写在 1.2.1.docx 答题卷上，题号为“1.2.1-2”。</p>
+            </div>
+            <div class="question-block">
+                <h3>评分标准</h3>
+                <p>M1：1.2.1-1每列举1个问题+3分，总共6分；</p>
+                <p>M2：1.2.1-1每列举1个问题包含合理解释+3分，总共6分；</p>
+                <p>M3：1.2.1-2每列举1个关键步骤+1分，总共3分；</p>
+                <p>M4：1.2.1-2每列举1个关键步骤详细可行+2分，总共6分；</p>
+                <p>M5：1.2.1-2每列举1个期望的优化效果+1分，总共4分；</p>
+                <p>合计配分：25分</p>
+            </div>
+        </div>
+        <div class="column right-column">
+            <div class="section-title">答题区</div>
+            <div class="answer-area">
+                <h3>1.2.1-1 答案</h3>
+                <textarea id="answer1" placeholder="请输入1.2.1-1的答案..."></textarea>
+            </div>
+            <div class="answer-area">
+                <h3>1.2.1-2 答案</h3>
+                <textarea id="answer2" placeholder="请输入1.2.1-2的答案..."></textarea>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-check" onclick="checkScore()">检查打分</button>
+                <button class="btn btn-reset" onclick="resetAnswers()">重置</button>
+            </div>
+            <div id="scoreResult" class="score-display" style="display: none;"></div>
+            <div id="comparisonResult" class="comparison-block" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // 标准答案
+        const standardAnswers = {
+            answer1: {
+                problems: [
+                    {
+                        problem: "情感识别准确性不高，导致分析结果偏差",
+                        explain: "情感识别的准确性是该业务模块的核心功能之一。用户发现系统自己的评价的情感识别不准确，与自己表达的反馈存在偏差，这会让用户认为系统不理解自己，导致不满情绪，最终离开系统。"
+                    },
+                    {
+                        problem: "响应速度慢，用户需长时间等待识别结果",
+                        explain: "在快节奏的电商环境中，用户期望能够即时得到反馈。当用户提交评价后需要等待较长时间才能看到情感分析结果时，这不仅浪费了用户的时间，也降低了平台的整体效率。造成大量用户的不满。"
+                    }
+                ],
+                scoreRules: { M1: 6, M2: 6 }
+            },
+            answer2: {
+                steps: [
+                    {
+                        step: "对现有算法进行优化，提高情感识别的准确性",
+                        detail: "a、数据优化：收集并标注更多的训练数据，以提高模型的泛化能力；b、模型改进：引入更先进的自然语言处理（NLP）技术，提高识别的准确性。"
+                    },
+                    {
+                        step: "通过优化算法和硬件升级，加速系统响应速度",
+                        detail: "硬件升级：部署高性能计算资源，如：GPU集群，提高模型计算速度。算法优化：系统改用多线程并发处理架构，采用异步处理、批量处理等方式提高系统的运行效率。"
+                    },
+                    {
+                        step: "改善用户界面设计",
+                        detail: "简化界面：简化操作流程，去除不必要的点击与输入。交互优化：提供简洁直观的展示界面，以醒目的颜色突出关注的区域"
+                    },
+                    {
+                        step: "提供定制服务接口",
+                        detail: "人性化设置：提供API接口，允许接入第三方开发者服务。调整情感识别的灵敏度、选择不同的语言风格。人性化模版：提供评价定制模板，不同用户可以使用不同的界面，实现一键评价。"
+                    }
+                ],
+                effects: [
+                    "识别的准确性显著提升，达到95%以上。",
+                    "平均响应时间明显提升，缩短到2秒以内。",
+                    "用户界面更加友好，关键信息在一屏内显示，易用性大大提高，交互步骤减少40%以上。",
+                    "实现定制服务，满足用户个性化服务的需求，提升用户忠诚度10%。"
+                ],
+                scoreRules: { M3: 3, M4: 6, M5: 4 }
+            },
+            totalScore: 25
+        };
+
+        // 检查打分
+        function checkScore() {
+            let score = 0;
+            let errors = [];
+            let answer1 = document.getElementById('answer1').value.trim();
+            let answer2 = document.getElementById('answer2').value.trim();
+
+            // 检查1.2.1-1
+            let m1 = 0, m2 = 0;
+            standardAnswers.answer1.problems.forEach((item, index) => {
+                if (answer1.includes(item.problem)) {
+                    m1 += 3;
+                    if (answer1.includes(item.explain)) {
+                        m2 += 3;
+                    } else {
+                        errors.push({
+                            type: "1.2.1-1 问题" + (index + 1),
+                            user: "未完整解释问题",
+                            correct: item.explain
+                        });
+                    }
+                } else {
+                    errors.push({
+                        type: "1.2.1-1 问题" + (index + 1),
+                        user: "未列举该问题",
+                        correct: item.problem + " " + item.explain
+                    });
+                }
+            });
+            score += m1 + m2;
+
+            // 检查1.2.1-2 步骤
+            let m3 = 0, m4 = 0;
+            standardAnswers.answer2.steps.forEach((item, index) => {
+                if (answer2.includes(item.step)) {
+                    m3 += 1;
+                    if (answer2.includes(item.detail)) {
+                        m4 += 2;
+                    } else {
+                        errors.push({
+                            type: "1.2.1-2 步骤" + (index + 1),
+                            user: "步骤描述不完整",
+                            correct: item.detail
+                        });
+                    }
+                } else {
+                    errors.push({
+                        type: "1.2.1-2 步骤" + (index + 1),
+                        user: "未列举该步骤",
+                        correct: item.step + " " + item.detail
+                    });
+                }
+            });
+            score += m3 + m4;
+
+            // 检查1.2.1-2 效果
+            let m5 = 0;
+            standardAnswers.answer2.effects.forEach((item, index) => {
+                if (answer2.includes(item)) {
+                    m5 += 1;
+                } else {
+                    errors.push({
+                        type: "1.2.1-2 优化效果" + (index + 1),
+                        user: "未列举该效果",
+                        correct: item
+                    });
+                }
+            });
+            score += m5;
+
+            // 显示分数
+            let scoreDiv = document.getElementById('scoreResult');
+            scoreDiv.style.display = 'block';
+            scoreDiv.innerHTML = `
+                <h4>评分结果</h4>
+                <div class="score-item">M1(问题列举): ${m1}/6分</div>
+                <div class="score-item">M2(问题解释): ${m2}/6分</div>
+                <div class="score-item">M3(关键步骤列举): ${m3}/3分</div>
+                <div class="score-item">M4(步骤详细性): ${m4}/6分</div>
+                <div class="score-item">M5(优化效果列举): ${m5}/4分</div>
+                <div class="score-item" style="font-weight: bold; margin-top: 10px;">总分: ${score}/${standardAnswers.totalScore}分</div>
+            `;
+
+            // 显示对比
+            let comparisonDiv = document.getElementById('comparisonResult');
+            if (errors.length > 0) {
+                comparisonDiv.style.display = 'block';
+                let html = `<h4>错误对比</h4>`;
+                errors.forEach(item => {
+                    html += `
+                        <div class="error-item">
+                            <div><span class="error-label">${item.type} - 你的答案:</span> ${item.user}</div>
+                            <div><span class="correct-label">正确答案:</span> ${item.correct}</div>
+                        </div>
+                    `;
+                });
+                comparisonDiv.innerHTML = html;
+            } else {
+                comparisonDiv.style.display = 'none';
+            }
+        }
+
+        // 重置答案
+        function resetAnswers() {
+            document.getElementById('answer1').value = '';
+            document.getElementById('answer2').value = '';
+            document.getElementById('scoreResult').style.display = 'none';
+            document.getElementById('comparisonResult').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

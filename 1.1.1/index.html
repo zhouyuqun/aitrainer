@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* 左右等宽（调整 flex 比例） */
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 智能医疗系统中的业务数据处理流程设计
+    </div>
+
+    <div class="container">
+        <!-- 左侧题目（加宽） -->
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>1.1.1</p>
+                <p><strong>试题名称：</strong>智能医疗系统中的业务数据处理流程设计</p>
+                <p><strong>考核时间：</strong>30min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>人工智能训练师主机：CPU(intel i5 及以上)、内存(不少于 16GB)、操作系统(windows10)、支持深度学习训练；</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>某医疗机构计划引入智能医疗系统，以提升诊断效率和准确性。通过分析患者的历史数据，使用机器学习算法预测患者的健康风险，从而辅助医生进行诊断和治疗。为此，该机构需要设计一套全面的业务数据处理流程，确保数据处理的高效性和准确性，为人工智能模型提供可靠的输入数据。</p>
+                <p>我们提供一个患者数据集(patient_data.csv)，包含以下字段：</p>
+                <ul>
+                    <li>PatientID: 患者ID</li>
+                    <li>Age: 年龄</li>
+                    <li>BMI: 体重指数</li>
+                    <li>BloodPressure: 血压</li>
+                    <li>Cholesterol: 胆固醇水平</li>
+                    <li>DaysInHospital: 住院天数</li>
+                </ul>
+                
+                <p>(1) 通过补全并运行Python代码(1.1.1.ipynb)分别统计住院天数超过7天的患者数量及其占比。这类患者被定义为高风险患者，反之为低风险患者。将上述统计结果截图以JPG的格式保存，命名为"1.1.1-1"。</p>
+                <p>(2) 通过补全并运行Python代码(1.1.1.ipynb)统计不同BMI区间中高风险患者的比例和统计不同BMI区间中的患者数。BMI区间分类设置为：偏瘦(低于18.5)，正常(18.5~23.9)，超重(24.0~27.9)，肥胖(28.0及以上)，将上述统计结果截图以JPG的格式保存，命名为"1.1.1-2"。</p>
+                <p>(3) 通过补全并运行Python代码(1.1.1.ipynb)统计不同年龄区间中高风险患者的比例和统计不同年龄区间中的患者数。年龄区间分类设置为：≤25岁，26-35岁，36-45岁，46-55岁，56-65岁，>65岁，将上述统计结果截图以JPG的格式保存，命名为"1.1.1-3"。</p>
+                
+                <p>所有结果文件储存在桌面新建的考生文件夹中，文件夹命名为"准考证号+身份证号后六位"。</p>
+                
+                <h3>3. 技能要求</h3>
+                <p>(1) 能结合人工智能技术要求和业务特征，设计整套业务数据处理流程；</p>
+                
+                <h3>4. 质量指标</h3>
+                <p>(1) 设计出的业务数据底层逻辑清晰，有效合理。</p>
+            </div>
+        </div>
+
+        <!-- 右侧代码区（纯空白、输入框填空） -->
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import pandas as pd
+import numpy as np
+
+# 读取数据集 1分
+data = <input type="text" class="blank" id="b1">
+
+# 1. 统计住院天数超过7天的患者数量及其占比
+# 创建新列'RiskLevel'，根据住院天数判断风险等级 3分
+<input type="text" class="blank" id="b2"> = <input type="text" class="blank" id="b3">(<input type="text" class="blank" id="b4">, '高风险患者', '低风险患者')
+
+# 统计不同风险等级的患者数量 2分
+risk_counts = data[<input type="text" class="blank" id="b5">].<input type="text" class="blank" id="b6">
+
+# 计算高风险患者占比 1分
+high_risk_ratio = risk_counts['高风险患者'] / <input type="text" class="blank" id="b7">
+
+# 计算低风险患者占比 1分
+low_risk_ratio = risk_counts['低风险患者'] / <input type="text" class="blank" id="b8">
+
+# 输出结果
+print("高风险患者数量:", risk_counts['高风险患者'])
+print("低风险患者数量:", risk_counts['低风险患者'])
+print("高风险患者占比:", high_risk_ratio)
+print("低风险患者占比:", low_risk_ratio)
+
+# 2. 统计不同BMI区间中高风险患者的比例和统计不同BMI区间中的患者数
+# 定义BMI区间和标签
+bmi_bins = [0, 18.5, 24, 28, np.inf]
+bmi_labels = ['偏瘦', '正常', '超重', '肥胖']
+
+# 根据BMI值划分指定区间 4分
+data['BMIRange'] = <input type="text" class="blank" id="b9">(<input type="text" class="blank" id="b10">, <input type="text" class="blank" id="b11">, <input type="text" class="blank" id="b12">, right=False)
+
+# 计算每个BMI区间中高风险患者的比例 2分
+bmi_risk_rate = <input type="text" class="blank" id="b13">(<input type="text" class="blank" id="b14">)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
+
+# 统计每个BMI区间的患者数量 1分
+bmi_patient_count = data['BMIRange']<input type="text" class="blank" id="b15">
+
+# 输出结果
+print("BMI区间中高风险患者的比例和患者数:")
+print(bmi_risk_rate) 
+print(bmi_patient_count)
+
+# 3. 统计不同年龄区间中高风险患者的比例和统计不同年龄区间中的患者数
+# 定义年龄区间和标签
+age_bins = [0, 26, 36, 46, 56, 66, np.inf]
+age_labels = ['≤25岁', '26-35岁', '36-45岁', '46-55岁', '56-65岁', '＞65岁']
+
+# 根据年龄值划分指定区间 4分
+data['AgeRange'] = <input type="text" class="blank" id="b16">(<input type="text" class="blank" id="b17">, <input type="text" class="blank" id="b18">, <input type="text" class="blank" id="b19">, right=False)
+
+# 计算每个年龄区间中高风险患者的比例 2分
+age_risk_rate = <input type="text" class="blank" id="b20">(<input type="text" class="blank" id="b21">)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
+
+# 统计每个年龄区间的患者数量 1分
+age_patient_count = data['AgeRange']<input type="text" class="blank" id="b22">
+
+# 输出结果
+print("年龄区间中高风险患者的比例和患者数:")
+print(age_risk_rate) 
+print(age_patient_count)
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查答案</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 25 分
+            </div>
+
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer"></div>
+                <div class="correct-answer" id="correctAnswer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 【严格匹配评分表】标准答案与分值
+        const scoring = [
+            { id:"b1", ans:"pd.read_csv('patient_data.csv')", score:1 },  // M4
+            { id:"b2", ans:"data['RiskLevel']", score:3 },             // M5
+            { id:"b3", ans:"np.where", score:0 },
+            { id:"b4", ans:"data['DaysInHospital']>7", score:0 },
+            { id:"b5", ans:"'RiskLevel'", score:0 },
+            { id:"b6", ans:"value_counts()", score:2 },                 // M6
+            { id:"b7", ans:"len(data)", score:1 },                     // M7
+            { id:"b8", ans:"len(data)", score:1 },                     // M8
+            { id:"b9", ans:"pd.cut", score:0 },
+            { id:"b10", ans:"data['BMI']", score:0 },
+            { id:"b11", ans:"bins=bmi_bins", score:0 },
+            { id:"b12", ans:"labels=bmi_labels", score:4 },                    // M9
+            { id:"b13", ans:"data.groupby", score:0 },
+            { id:"b14", ans:"'BMIRange'", score:2 },                   // M10
+            { id:"b15", ans:"value_counts().sort_index()", score:1 },                    // M11
+            { id:"b16", ans:"pd.cut", score:0 },
+            { id:"b17", ans:"data['Age']", score:0 },
+            { id:"b18", ans:"bins=age_bins", score:0 },
+            { id:"b19", ans:"labels=age_labels", score:4 },                    // M12
+            { id:"b20", ans:"data.groupby", score:0 },
+            { id:"b21", ans:"'AgeRange'", score:2 },                   // M13
+            { id:"b22", ans:"value_counts().sort_index()", score:1 },                    // M14
+        ];
+
+        // 检查答案
+        document.getElementById('btnCheck').onclick = function(){
+            let total = 0;
+            let wrong = [];
+            let right = [];
+            
+            scoring.forEach(item => {
+                const val = document.getElementById(item.id).value.trim();
+                if(val === item.ans){
+                    total += item.score;
+                    right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
+                }else{
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                }
+            });
+            
+            document.getElementById('finalScore').textContent = total;
+            document.getElementById('scoreResult').style.display = 'block';
+            document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
+            document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
+            document.getElementById('answerComparison').style.display = 'block';
+        };
+
+        // 重置
+        document.getElementById('btnReset').onclick = function(){
+            document.querySelectorAll('.blank').forEach(i => i.value = '');
+            document.getElementById('scoreResult').style.display = 'none';
+            document.getElementById('answerComparison').style.display = 'none';
+        };
+// 👇 把得分存到本地，给首页统计
+//localStorage.setItem('score_' + location.pathname.split('/').pop(), total);
+    </script>
+</body>
+</html>

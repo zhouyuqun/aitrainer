@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能照明系统的数据分析与优化 - 在线答题</title>
+    <style>
+        /* 全局样式，匹配目标网站风格 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 头部样式 */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .header .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .header .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* 主容器分栏布局 */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* 左侧题目栏 */
+        .question-column {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .question-column h2 {
+            color: #1e3a8a;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .question-content {
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .question-content h3 {
+            font-size: 16px;
+            margin: 15px 0 8px;
+            color: #334155;
+        }
+
+        .question-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .question-content table th,
+        .question-content table td {
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .question-content table th {
+            background-color: #f1f5f9;
+            font-weight: 500;
+        }
+
+        /* 右侧答题栏 */
+        .answer-column {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .answer-column h2 {
+            color: #1e3a8a;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .answer-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        .code-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .code-input-group label {
+            font-weight: 500;
+            color: #334155;
+            font-size: 15px;
+        }
+
+        .code-input {
+            width: 100%;
+            min-height: 300px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            background-color: #f8fafc;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* 按钮组 */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-check:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+        }
+
+        /* 评分结果区域 */
+        .score-area {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #f1f5f9;
+            display: none;
+        }
+
+        .score-area.show {
+            display: block;
+        }
+
+        .score-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .score-detail {
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .correct {
+            color: #059669;
+            font-weight: 500;
+        }
+
+        .wrong {
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        .answer-compare {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .answer-compare pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: "Consolas", monospace;
+            font-size: 13px;
+            margin: 5px 0;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .question-column, .answer-column {
+                flex: none;
+                min-height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>试题：智能照明系统的数据分析与优化</h1>
+        <button class="back-btn" onclick="window.location.href='index.html'">返回首页</button>
+    </div>
+
+    <div class="main-container">
+        <!-- 左侧题目栏 -->
+        <div class="question-column">
+            <h2>题目要求</h2>
+            <div class="question-content">
+                <p><strong>准考证号：</strong></p>
+                <p><strong>试题代码：</strong>3.1.2</p>
+                <p><strong>试题名称：</strong>智能照明系统的数据分析与优化</p>
+                <p><strong>考核时间：</strong>20min</p>
+
+                <h3>1. 场地设备要求</h3>
+                <p>（1）人工智能训练师主机 1 台；</p>
+                <p>（2）Python 编译环境；</p>
+                <p>（3）智能照明系统数据集。</p>
+
+                <h3>2. 工作任务</h3>
+                <p>智能照明系统是智能家居领域的一个关键部分，它利用传感器和互联网连接，根据用户的需求和环境条件自动调节光线强度和颜色。随着物联网（IoT）技术和机器学习的进步，智能照明系统变得越来越智能化，能够实现节能、提高生活质量和增强安全性。但是，为了在市场中保持竞争力，制造商需要不断优化产品，提升用户体验。数据分析在这一过程中扮演了重要角色。通过分析用户行为和系统性能数据，企业可以了解用户偏好、使用模式和可能存在的问题，进而做出相应的改进决策。</p>
+
+                <p><strong>（1）你作为人工智能训练师，根据给定的数据集（智能照明系统数据集.xlsx），从以下三方面：</strong></p>
+                <ul>
+                    <li>用户使用习惯：分析用户在一天中不同时段对灯光亮度和颜色的偏好；</li>
+                    <li>功能使用频率：识别哪些智能场景被频繁使用，哪些较少使用；</li>
+                    <li>响应时间：考察智能照明系统在接收到用户指令后至灯光调整完成之间的平均响应时间，找出可能的延迟瓶颈。</li>
+                </ul>
+                <p>给出一份在用户使用习惯、功能使用频率和响应时间方面的分析报告，将其保存为docx文件，命名为3.1.2-1.docx。</p>
+
+                <p><strong>（2）为了进一步提升用户体验和系统性能，给出智能照明系统的3个优化方向和对应解决方案，将其保存为docx文件，命名为3.1.2-2.docx。</strong></p>
+
+                <h3>分析报告模板</h3>
+                <h4>用户使用习惯</h4>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>平均光线亮度值</th>
+                        <th>平均色温值</th>
+                    </tr>
+                    <tr>
+                        <td>06:00 - 12:00</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>12:00 - 18:00</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>18:00 - 24:00</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <h4>智能场景使用频率</h4>
+                <table>
+                    <tr>
+                        <td>频繁使用的场景</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>适中使用的场景</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>较少使用的场景</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </table>
+
+                <h4>响应时间分析</h4>
+                <table>
+                    <tr>
+                        <td>平均响应时间</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>延迟瓶颈</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 右侧答题栏 -->
+        <div class="answer-column">
+            <h2>答题区</h2>
+            <div class="answer-area">
+                <div class="code-input-group">
+                    <label for="codeInput1">任务1：数据分析Python代码（生成3.1.2-1.docx分析报告）</label>
+                    <textarea id="codeInput1" class="code-input" placeholder="请在此输入你的Python代码..."></textarea>
+                </div>
+
+                <div class="code-input-group">
+                    <label for="codeInput2">任务2：优化方案Python代码/方案说明（生成3.1.2-2.docx）</label>
+                    <textarea id="codeInput2" class="code-input" placeholder="请在此输入你的Python代码/方案说明..."></textarea>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-check" onclick="checkAnswer()">检查并打分</button>
+                <button class="btn btn-reset" onclick="resetAnswer()">重置答题</button>
+            </div>
+
+            <div class="score-area" id="scoreArea">
+                <div class="score-title">📊 评分结果</div>
+                <div class="score-detail" id="scoreDetail"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标准答案（可根据实际需求修改）
+        const standardAnswers = {
+            task1: `# 任务1：智能照明系统数据分析代码
+import pandas as pd
+import numpy as np
+from docx import Document
+from docx.shared import Inches
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+# 1. 加载数据集
+df = pd.read_excel("智能照明系统数据集.xlsx")
+
+# 2. 数据预处理：提取时段
+df['时间'] = pd.to_datetime(df['时间'])
+df['时段'] = df['时间'].apply(lambda x: 
+    '06:00-12:00' if 6 <= x.hour < 12 
+    else '12:00-18:00' if 12 <= x.hour < 18 
+    else '18:00-24:00'
+)
+
+# 3. 用户使用习惯分析：分时段计算平均亮度和色温
+habit_analysis = df.groupby('时段').agg({
+    '亮度值': 'mean',
+    '色温值': 'mean'
+}).round(2)
+
+# 4. 智能场景使用频率分析
+scene_count = df['场景类型'].value_counts()
+freq_scene = scene_count[scene_count >= scene_count.quantile(0.7)].index.tolist()
+mid_scene = scene_count[(scene_count >= scene_count.quantile(0.3)) & (scene_count < scene_count.quantile(0.7))].index.tolist()
+low_scene = scene_count[scene_count < scene_count.quantile(0.3)].index.tolist()
+
+# 5. 响应时间分析
+avg_response = df['响应时间'].mean().round(2)
+# 识别延迟瓶颈：响应时间>95分位数的场景
+bottleneck = df[df['响应时间'] > df['响应时间'].quantile(0.95)]['场景类型'].unique().tolist()
+
+# 6. 生成分析报告docx
+doc = Document()
+doc.add_heading('智能照明系统数据分析报告', 0)
+
+# 用户使用习惯部分
+doc.add_heading('一、用户使用习惯分析', level=1)
+table = doc.add_table(rows=4, cols=3)
+table.style = 'Table Grid'
+hdr_cells = table.rows[0].cells
+hdr_cells[0].text = '时段'
+hdr_cells[1].text = '平均光线亮度值'
+hdr_cells[2].text = '平均色温值'
+for i, (idx, row) in enumerate(habit_analysis.iterrows()):
+    row_cells = table.rows[i+1].cells
+    row_cells[0].text = idx
+    row_cells[1].text = str(row['亮度值'])
+    row_cells[2].text = str(row['色温值'])
+
+# 场景使用频率部分
+doc.add_heading('二、智能场景使用频率分析', level=1)
+doc.add_paragraph(f'频繁使用的场景：{", ".join(freq_scene)}')
+doc.add_paragraph(f'适中使用的场景：{", ".join(mid_scene)}')
+doc.add_paragraph(f'较少使用的场景：{", ".join(low_scene)}')
+
+# 响应时间部分
+doc.add_heading('三、响应时间分析', level=1)
+doc.add_paragraph(f'平均响应时间：{avg_response}s')
+doc.add_paragraph(f'延迟瓶颈场景：{", ".join(bottleneck)}')
+
+# 保存报告
+doc.save('3.1.2-1.docx')
+print("分析报告3.1.2-1.docx已生成！")`,
+            task2: `# 任务2：智能照明系统优化方案代码
+from docx import Document
+
+# 定义3个优化方向和解决方案
+optimization_plan = [
+    {
+        "方向": "1. 基于用户习惯的自适应调光优化",
+        "方案": "根据分时段亮度/色温偏好数据，训练机器学习模型，实现根据时间、环境光自动匹配用户习惯的灯光参数，减少手动调节，提升舒适度并节能。"
+    },
+    {
+        "方向": "2. 高频场景一键化与低频场景优化",
+        "方案": "将频繁使用的场景设置为首页快捷入口，优化低频场景的触发逻辑，合并相似场景，简化操作流程，提升系统响应效率。"
+    },
+    {
+        "方向": "3. 延迟瓶颈场景性能优化",
+        "方案": "针对延迟瓶颈场景，优化设备通信协议，增加本地缓存机制，减少云端请求，将高频控制逻辑本地化，降低响应时间，提升用户体验。"
+    }
+]
+
+# 生成优化方案报告docx
+doc = Document()
+doc.add_heading('智能照明系统优化方案报告', 0)
+
+for item in optimization_plan:
+    doc.add_heading(item['方向'], level=1)
+    doc.add_paragraph(item['方案'])
+
+# 保存报告
+doc.save('3.1.2-2.docx')
+print("优化方案报告3.1.2-2.docx已生成！")`
+        };
+
+        // 评分标准
+        const scoringRules = {
+            task1: {
+                total: 50,
+                keyPoints: [
+                    {name: "数据集加载", keyword: "pd.read_excel", score: 5},
+                    {name: "时段划分", keyword: "groupby|时段|apply", score: 10},
+                    {name: "亮度色温统计", keyword: "mean|亮度值|色温值", score: 10},
+                    {name: "场景频率分析", keyword: "value_counts|频繁|较少", score: 10},
+                    {name: "响应时间分析", keyword: "响应时间|mean|瓶颈", score: 10},
+                    {name: "报告生成", keyword: "Document|docx|3.1.2-1", score: 5}
+                ]
+            },
+            task2: {
+                total: 50,
+                keyPoints: [
+                    {name: "3个优化方向", keyword: "优化方向|3个", score: 15},
+                    {name: "对应解决方案", keyword: "方案|解决", score: 20},
+                    {name: "报告生成", keyword: "Document|docx|3.1.2-2", score: 15}
+                ]
+            }
+        };
+
+        // 检查答案并打分
+        function checkAnswer() {
+            const userAnswer1 = document.getElementById('codeInput1').value.trim();
+            const userAnswer2 = document.getElementById('codeInput2').value.trim();
+            const scoreArea = document.getElementById('scoreArea');
+            const scoreDetail = document.getElementById('scoreDetail');
+
+            let totalScore = 0;
+            let task1Score = 0;
+            let task2Score = 0;
+            let task1Detail = [];
+            let task2Detail = [];
+
+            // 评分任务1
+            for (let point of scoringRules.task1.keyPoints) {
+                if (new RegExp(point.keyword, 'i').test(userAnswer1)) {
+                    task1Score += point.score;
+                    task1Detail.push(`✅ ${point.name}：+${point.score}分`);
+                } else {
+                    task1Detail.push(`❌ ${point.name}：0分`);
+                }
+            }
+
+            // 评分任务2
+            for (let point of scoringRules.task2.keyPoints) {
+                if (new RegExp(point.keyword, 'i').test(userAnswer2)) {
+                    task2Score += point.score;
+                    task2Detail.push(`✅ ${point.name}：+${point.score}分`);
+                } else {
+                    task2Detail.push(`❌ ${point.name}：0分`);
+                }
+            }
+
+            totalScore = task1Score + task2Score;
+
+            // 生成评分结果HTML
+            let html = `
+                <p><strong>总分：${totalScore} / 100分</strong></p>
+                <p><strong>任务1（数据分析，50分）：${task1Score}分</strong></p>
+                <ul>${task1Detail.map(item => `<li>${item}</li>`).join('')}</ul>
+                <p><strong>任务2（优化方案，50分）：${task2Score}分</strong></p>
+                <ul>${task2Detail.map(item => `<li>${item}</li>`).join('')}</ul>
+                <div class="answer-compare">
+                    <p><strong>标准答案对比：</strong></p>
+                    <p><strong>任务1 标准答案：</strong></p>
+                    <pre>${standardAnswers.task1}</pre>
+                    <p><strong>任务2 标准答案：</strong></p>
+                    <pre>${standardAnswers.task2}</pre>
+                </div>
+            `;
+
+            scoreDetail.innerHTML = html;
+            scoreArea.classList.add('show');
+        }
+
+        // 重置答题
+        function resetAnswer() {
+            document.getElementById('codeInput1').value = '';
+            document.getElementById('codeInput2').value = '';
+            document.getElementById('scoreArea').classList.remove('show');
+            document.getElementById('scoreDetail').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

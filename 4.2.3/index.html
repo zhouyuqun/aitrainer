@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人工智能训练师考核 - 4.2.3</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f4f8 100%);
+    padding: 20px;
+}
+.exam-header {
+    background: linear-gradient(135deg, #2c5282 0%, #3182ce 100%);
+    color: #fff;
+    padding: 18px 30px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px 12px 0 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.main-box {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+/* 左侧题目区 */
+.question-side {
+    flex: 1.1;
+    min-width: 450px;
+    padding: 35px;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+}
+.question-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3182ce;
+}
+.question-item {
+    font-size: 15px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #2d3748;
+}
+/* 右侧答题区 */
+.answer-side {
+    flex: 1;
+    min-width: 450px;
+    padding: 35px;
+    background: #fff;
+}
+.answer-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #38a169;
+}
+.blank-item {
+    margin-bottom: 22px;
+}
+.blank-item label {
+    display: block;
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+.blank-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+}
+.blank-input:focus {
+    border-color: #3182ce;
+}
+.btn-group {
+    margin-top: 35px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+.btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-submit {
+    background: #3182ce;
+    color: #fff;
+}
+.btn-submit:hover {
+    background: #2c5282;
+}
+.btn-reset {
+    background: #e53e3e;
+    color: #fff;
+}
+.btn-reset:hover {
+    background: #c53030;
+}
+.result-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+}
+.score {
+    font-size: 20px;
+    font-weight: bold;
+    color: #22543d;
+    margin-bottom: 15px;
+}
+.answer-list {
+    font-size: 14px;
+    line-height: 1.8;
+}
+.right { color: #38a169; font-weight: bold; }
+.wrong { color: #e53e3e; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="exam-header">
+    人工智能训练师（三级）操作技能考核 — 4.2.3 智能安防监控系统
+</div>
+
+<div class="main-box">
+    <!-- 左侧：题目 -->
+    <div class="question-side">
+        <h2>题目内容</h2>
+        <div class="question-item">
+            <strong>1. 数据采集方法</strong><br>
+             高清视频流采集：部署高清摄像头，确保视频画面清晰，便于AI算法识别细节。<br>
+             多角度覆盖：合理布置摄像头，确保_____________________无死角，覆盖所有入口、出口和敏感区域。<br>
+             夜间与低光环境适应：使用带有红外夜视功能的摄像头，保证夜间或低光条件下仍能捕捉到清晰图像。<br>
+             数据传输与存储：采用稳定的数据传输网络，确保视频流的实时传输，同时建立安全的_____________________，保存原始视频和分析结果。
+        </div>
+        <div class="question-item">
+            <strong>2. 数据处理方案</strong><br>
+             视频流预处理：_____________________。<br>
+             行为分析与异常检测：_____________________。<br>
+             隐私保护算法：在不影响异常行为识别的前提下，对视频中无关个体进行模糊处理，保护个人隐私。<br>
+             数据融合与决策支持：结合多个摄像头的数据，进行空间和时间上的数据融合，构建更全面的场景理解，为安全决策提供依据。
+        </div>
+        <div class="question-item">
+            <strong>3. 系统优化与安全措施</strong><br>
+             算法优化：持续训练和优化AI模型，提升_____________________。<br>
+             隐私合规：确保系统设计和运营遵守GDPR、CCPA等数据保护法规，定期进行隐私影响评估。<br>
+             安全防护：实施数据加密、访问控制和防火墙等安全措施，防止数据泄露和系统被攻击。
+        </div>
+    </div>
+
+    <!-- 右侧：答题区 -->
+    <div class="answer-side">
+        <h2>答题填空区</h2>
+        <div class="blank-item">
+            <label>1. 多角度覆盖填空：</label>
+            <input type="text" class="blank-input" id="q1">
+        </div>
+        <div class="blank-item">
+            <label>2. 数据传输与存储填空：</label>
+            <input type="text" class="blank-input" id="q2">
+        </div>
+        <div class="blank-item">
+            <label>3. 视频流预处理：</label>
+            <input type="text" class="blank-input" id="q3">
+        </div>
+        <div class="blank-item">
+            <label>4. 行为分析与异常检测：</label>
+            <input type="text" class="blank-input" id="q4">
+        </div>
+        <div class="blank-item">
+            <label>5. 算法优化填空：</label>
+            <input type="text" class="blank-input" id="q5">
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-submit" onclick="checkScore()">提交评分</button>
+            <button class="btn btn-reset" onclick="resetAll()">清空重置</button>
+        </div>
+        <div class="result-box" id="resultBox" style="background:#f0fff4;border:1px solid #9ae6b4;">
+            <div class="score" id="scoreText">得分：0 / 100</div>
+            <div class="answer-list" id="answerDetail"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 标准答案
+const answers = [
+    "关键区域",
+    "数据存储系统",
+    "对视频流进行降噪、压缩、格式转换、增强对比度等预处理操作，提高视频质量，便于后续分析",
+    "用深度学习算法对视频流进行实时分析，识别异常行为，如闯入禁区、夜间徘徊、暴力冲突等",
+    "异常行为识别的准确性和响应速度"
+];
+
+function checkScore() {
+    let user = [
+        document.getElementById('q1').value.trim(),
+        document.getElementById('q2').value.trim(),
+        document.getElementById('q3').value.trim(),
+        document.getElementById('q4').value.trim(),
+        document.getElementById('q5').value.trim()
+    ];
+    let score = 0;
+    let detail = "";
+    let per = 20;
+
+    user.forEach((val, i) => {
+        let ok = val.length > 4 && (answers[i].includes(val) || val.includes(answers[i].substring(0,10)));
+        if (ok) {
+            score += per;
+            detail += `<p class="right">第${i+1}空：正确</p>`;
+        } else {
+            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
+        }
+    });
+
+    document.getElementById('resultBox').style.display = 'block';
+    document.getElementById('scoreText').innerText = `得分：${score} / 100`;
+    document.getElementById('answerDetail').innerHTML = detail;
+}
+
+function resetAll() {
+    document.querySelectorAll('.blank-input').forEach(i => i.value = '');
+    document.getElementById('resultBox').style.display = 'none';
+}
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人工智能训练师考核 - 4.2.3</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f4f8 100%);
+    padding: 20px;
+}
+.exam-header {
+    background: linear-gradient(135deg, #2c5282 0%, #3182ce 100%);
+    color: #fff;
+    padding: 18px 30px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px 12px 0 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.main-box {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+/* 左侧题目区 */
+.question-side {
+    flex: 1.1;
+    min-width: 450px;
+    padding: 35px;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+}
+.question-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3182ce;
+}
+.question-item {
+    font-size: 15px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #2d3748;
+}
+/* 右侧答题区 */
+.answer-side {
+    flex: 1;
+    min-width: 450px;
+    padding: 35px;
+    background: #fff;
+}
+.answer-side h2 {
+    font-size: 19px;
+    color: #2c5282;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #38a169;
+}
+.blank-item {
+    margin-bottom: 22px;
+}
+.blank-item label {
+    display: block;
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+.blank-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+}
+.blank-input:focus {
+    border-color: #3182ce;
+}
+.btn-group {
+    margin-top: 35px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+.btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-submit {
+    background: #3182ce;
+    color: #fff;
+}
+.btn-submit:hover {
+    background: #2c5282;
+}
+.btn-reset {
+    background: #e53e3e;
+    color: #fff;
+}
+.btn-reset:hover {
+    background: #c53030;
+}
+.result-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+}
+.score {
+    font-size: 20px;
+    font-weight: bold;
+    color: #22543d;
+    margin-bottom: 15px;
+}
+.answer-list {
+    font-size: 14px;
+    line-height: 1.8;
+}
+.right { color: #38a169; font-weight: bold; }
+.wrong { color: #e53e3e; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="exam-header">
+    人工智能训练师（三级）操作技能考核 — 4.2.3 智能安防监控系统
+</div>
+
+<div class="main-box">
+    <!-- 左侧：题目 -->
+    <div class="question-side">
+        <h2>题目内容</h2>
+        <div class="question-item">
+            <strong>1. 数据采集方法</strong><br>
+             高清视频流采集：部署高清摄像头，确保视频画面清晰，便于AI算法识别细节。<br>
+             多角度覆盖：合理布置摄像头，确保_____________________无死角，覆盖所有入口、出口和敏感区域。<br>
+             夜间与低光环境适应：使用带有红外夜视功能的摄像头，保证夜间或低光条件下仍能捕捉到清晰图像。<br>
+             数据传输与存储：采用稳定的数据传输网络，确保视频流的实时传输，同时建立安全的_____________________，保存原始视频和分析结果。
+        </div>
+        <div class="question-item">
+            <strong>2. 数据处理方案</strong><br>
+             视频流预处理：_____________________。<br>
+             行为分析与异常检测：_____________________。<br>
+             隐私保护算法：在不影响异常行为识别的前提下，对视频中无关个体进行模糊处理，保护个人隐私。<br>
+             数据融合与决策支持：结合多个摄像头的数据，进行空间和时间上的数据融合，构建更全面的场景理解，为安全决策提供依据。
+        </div>
+        <div class="question-item">
+            <strong>3. 系统优化与安全措施</strong><br>
+             算法优化：持续训练和优化AI模型，提升_____________________。<br>
+             隐私合规：确保系统设计和运营遵守GDPR、CCPA等数据保护法规，定期进行隐私影响评估。<br>
+             安全防护：实施数据加密、访问控制和防火墙等安全措施，防止数据泄露和系统被攻击。
+        </div>
+    </div>
+
+    <!-- 右侧：答题区 -->
+    <div class="answer-side">
+        <h2>答题填空区</h2>
+        <div class="blank-item">
+            <label>1. 多角度覆盖填空：</label>
+            <input type="text" class="blank-input" id="q1">
+        </div>
+        <div class="blank-item">
+            <label>2. 数据传输与存储填空：</label>
+            <input type="text" class="blank-input" id="q2">
+        </div>
+        <div class="blank-item">
+            <label>3. 视频流预处理：</label>
+            <input type="text" class="blank-input" id="q3">
+        </div>
+        <div class="blank-item">
+            <label>4. 行为分析与异常检测：</label>
+            <input type="text" class="blank-input" id="q4">
+        </div>
+        <div class="blank-item">
+            <label>5. 算法优化填空：</label>
+            <input type="text" class="blank-input" id="q5">
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-submit" onclick="checkScore()">提交评分</button>
+            <button class="btn btn-reset" onclick="resetAll()">清空重置</button>
+        </div>
+        <div class="result-box" id="resultBox" style="background:#f0fff4;border:1px solid #9ae6b4;">
+            <div class="score" id="scoreText">得分：0 / 100</div>
+            <div class="answer-list" id="answerDetail"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 标准答案
+const answers = [
+    "关键区域",
+    "数据存储系统",
+    "对视频流进行降噪、压缩、格式转换、增强对比度等预处理操作，提高视频质量，便于后续分析",
+    "用深度学习算法对视频流进行实时分析，识别异常行为，如闯入禁区、夜间徘徊、暴力冲突等",
+    "异常行为识别的准确性和响应速度"
+];
+
+function checkScore() {
+    let user = [
+        document.getElementById('q1').value.trim(),
+        document.getElementById('q2').value.trim(),
+        document.getElementById('q3').value.trim(),
+        document.getElementById('q4').value.trim(),
+        document.getElementById('q5').value.trim()
+    ];
+    let score = 0;
+    let detail = "";
+    let per = 20;
+
+    user.forEach((val, i) => {
+        let ok = val.length > 4 && (answers[i].includes(val) || val.includes(answers[i].substring(0,10)));
+        if (ok) {
+            score += per;
+            detail += `<p class="right">第${i+1}空：正确</p>`;
+        } else {
+            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
+        }
+    });
+
+    document.getElementById('resultBox').style.display = 'block';
+    document.getElementById('scoreText').innerText = `得分：${score} / 100`;
+    document.getElementById('answerDetail').innerHTML = detail;
+}
+
+function resetAll() {
+    document.querySelectorAll('.blank-input').forEach(i => i.value = '');
+    document.getElementById('resultBox').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

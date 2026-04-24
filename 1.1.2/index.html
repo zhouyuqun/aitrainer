@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 智能农业系统中的业务数据采集和处理流程设计
+    </div>
+    <div class="container">
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>1.1.2</p>
+                <p><strong>试题名称：</strong>智能农业系统中的业务数据采集和处理流程设计</p>
+                <p><strong>考核时间：</strong>30min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>人工智能训练师主机：CPU（intel i5 及以上）、内存（不少于 16GB）、操作系统（windows10）、支持深度学习训练；</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>某农业公司计划引入智能农业系统，通过安装在农田中的各种传感器（如温度传感器、湿度传感器、土壤传感器等）实时监控农田环境，收集数据并进行分析，以优化作物管理和提高产量。为此，公司需要设计并实现一套数据采集和处理流程，确保数据的高效采集、传输和处理，为智能分析提供可靠的数据支持。</p>
+                <p>我们提供一个传感器数据集（sensor_data.csv），包含以下字段：</p>
+                <ul>
+                    <li>SensorID: 传感器 ID</li>
+                    <li>Timestamp: 时间戳</li>
+                    <li>SensorType: 传感器类型（Temperature 温度, Humidity 湿度, SoilMoisture 土壤水分, SoilPH 土壤酸碱度, Light 光传感器）</li>
+                    <li>Value: 传感器读数</li>
+                    <li>Location: 传感器安装位置</li>
+                </ul>
+                
+                <p>(1) 统计每种传感器的数据数量和平均值，将结果截图保存为1.1.2-1.JPG；</p>
+                <p>(2) 按位置统计温度和湿度传感器数据的平均值，将结果截图保存为1.1.2-2.JPG；</p>
+                <p>(3) 完成传感器数据清洗和异常值处理：标记并统计异常温湿度数据、填补缺失值，将清洗后的数据保存为cleaned_sensor_data.csv，验证文件有效性后截图保存为1.1.2-3.JPG；</p>
+                
+                <p>所有结果文件储存在桌面新建的考生文件夹中，文件夹命名为"准考证号+身份证号后六位"。</p>
+                
+                <h3>3. 技能要求</h3>
+                <ol>
+                    <li>能结合人工智能技术要求和业务特征，设计整套业务数据采集流程；</li>
+                    <li>能结合人工智能技术要求和业务特征，设计整套业务数据处理流程。</li>
+                </ol>
+                
+                <h3>4. 质量指标</h3>
+                <ol>
+                    <li>设计出的业务数据底层逻辑清晰，有效合理；</li>
+                    <li>数据完整性：每个传感器数据记录数应完整，缺失值尽量少；</li>
+                    <li>数据准确性：传感器数据应合理，与参考数据偏差小。</li>
+                </ol>
+                <h3>评分标准（总分25分）</h3>
+                <ul>
+                    <li>M1: 1.1.2-1.JPG 数据正确（2分）</li>
+                    <li>M2: 1.1.2-2.JPG 数据正确（2分）</li>
+                    <li>M3: cleaned_sensor_data.csv 数据正确（1分）</li>
+                    <li>M4: 读取数据集代码正确（2分）</li>
+                    <li>M5: 传感器类型分组统计代码正确（3分）</li>
+                    <li>M6: 按位置统计温湿度代码正确（2分）</li>
+                    <li>M7: 标记异常值代码正确（3分）</li>
+                    <li>M8: 输出异常值数量代码正确（2分）</li>
+                    <li>M9: 缺失值填补代码正确（4分）</li>
+                    <li>M10: 保存清洗后数据代码正确（4分）</li>
+                </ul>
+            </div>
+        </div>
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+# 读取数据集 2分
+data = <input type="text" class="blank" id="b1">
+# 1. 传感器数据统计
+# 对传感器类型进行分组，并计算每个组的数据数量和平均值 3分
+sensor_stats = <input type="text" class="blank" id="b2">(<input type="text" class="blank" id="b3">)['Value'].<input type="text" class="blank" id="b4">
+# 输出结果
+print("传感器数据数量和平均值:")
+print(sensor_stats)
+# 2. 按位置统计温度和湿度数据
+# 筛选出温度和湿度数据，然后按位置和传感器类型分组，计算每个组的平均值 2分
+location_stats = data[data['SensorType'].<input type="text" class="blank" id="b7">].<input type="text" class="blank" id="b8">['Value'].mean().unstack()
+# 输出结果
+print("每个位置的温度和湿度数据平均值:")
+print(location_stats)
+# 3. 数据清洗和异常值处理
+# 标记异常值 3分
+data['is_abnormal'] = <input type="text" class="blank" id="a4">(
+    ((<input type="text" class="blank" id="a5">) & ((data['Value'] < -10) | (data['Value'] > 50))) |
+    ((<input type="text" class="blank" id="a6">) & ((data['Value'] < 0) | (data['Value'] > 100))),
+    True, False
+)
+# 输出异常值数量 2分
+print("异常值数量:", data['is_abnormal'].<input type="text" class="blank" id="a7">)
+# 填补缺失值 4分
+data['Value'].<input type="text" class="blank" id="a8">(<input type="text" class="blank" id="a9">, inplace=True)
+data['Value'].<input type="text" class="blank" id="a10">(<input type="text" class="blank" id="a11">, inplace=True)
+# 保存清洗后的数据 4分
+cleaned_data = <input type="text" class="blank" id="a12">(<input type="text" class="blank" id="a13">=['is_abnormal'])
+<input type="text" class="blank" id="a14">('cleaned_sensor_data.csv', <input type="text" class="blank" id="a15">)
+print("数据清洗完成，已保存为 'cleaned_sensor_data.csv'")
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查答案</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 25 分
+            </div>
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer"></div>
+                <div class="correct-answer"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const scoring = [
+            // M4 读取数据集（2分）
+            { id:"b1", ans:"pd.read_csv('sensor_data.csv')", score:2 },
+            // M5 传感器类型分组统计（3分）
+            { id:"b2", ans:"data.groupby", score:0 },
+            { id:"b3", ans:"'SensorType'", score:0 },
+            { id:"b4", ans:"agg(['count','mean'])", score:3 },
+            // M6 按位置统计温湿度（2分）
+            { id:"b7", ans:"isin(['Temperature','Humidity'])", score:0 },
+            { id:"b8", ans:"groupby(['Location','SensorType'])", score:2 },
+            // M7 标记异常值（3分）
+            { id:"a4", ans:"np.where", score:0 },
+            { id:"a5", ans:"data['SensorType']=='Temperature'", score:0 },
+            { id:"a6", ans:"data['SensorType']=='Humidity'", score:3 },
+            // M8 输出异常值数量（2分）
+            { id:"a7", ans:"sum()", score:2 },
+            // M9 缺失值填补（4分）
+            { id:"a8", ans:"fillna", score:0 },
+            { id:"a9", ans:"method='ffill'", score:0 },
+            { id:"a10", ans:"fillna", score:0 },
+            { id:"a11", ans:"method='bfill'", score:4 },
+            // M10 保存清洗后数据（4分）
+            { id:"a12", ans:"data.drop", score:0 },
+            { id:"a13", ans:"columns", score:0 },
+            { id:"a14", ans:"cleaned_data.to_csv", score:0 },
+            { id:"a15", ans:"index=False", score:4 },
+            // 人工核验项
+            { id:"m1", ans:"", score:2, desc:"M1: 1.1.2-1.JPG 数据正确" },
+            { id:"m2", ans:"", score:2, desc:"M2: 1.1.2-2.JPG 数据正确" },
+            { id:"m3", ans:"", score:1, desc:"M3: cleaned_sensor_data.csv 数据正确" }
+        ];
+
+        document.getElementById('btnCheck').onclick = function(){
+            let total = 0;
+            let wrong = [];
+            let right = [];
+            
+            scoring.forEach(item => {
+                if (item.desc) {
+                    right.push(`✅ ${item.desc}（${item.score}分，需人工核验）`);
+                } else {
+                    const val = document.getElementById(item.id)?.value.trim() || '';
+                    if(val === item.ans){
+                        total += item.score;
+                        right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
+                    }else{
+                        wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                    }
+                }
+            });
+            
+            document.getElementById('finalScore').textContent = total;
+            document.getElementById('scoreResult').style.display = 'block';
+            
+            const wrongRow = document.querySelector('.wrong-answer');
+            const correctRow = document.querySelector('.correct-answer');
+            wrongRow.innerHTML = wrong.join('<br>') || "代码填空无错误！";
+            correctRow.innerHTML = right.join('<br>') || "全部正确！";
+            document.getElementById('answerComparison').style.display = 'block';
+        };
+
+        document.getElementById('btnReset').onclick = function(){
+            document.querySelectorAll('.blank').forEach(i => i.value = '');
+            document.getElementById('scoreResult').style.display = 'none';
+            document.getElementById('answerComparison').style.display = 'none';
+        };
+    </script>
+</body>
+</html>

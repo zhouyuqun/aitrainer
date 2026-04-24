@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工智能训练师（三级）操作技能考核</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .exam-header {
+            background: #2c5282;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            max-width: 1400px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: #fff;
+            color: #2c5282;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .question-content {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .code-editor {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 2;
+            white-space: pre;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border: none;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            padding: 0 4px;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background: #3182ce;
+            color: #fff;
+        }
+        
+        .btn-reset {
+            background: #e53e3e;
+            color: #fff;
+        }
+        
+        .score-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #22543d;
+            display: none;
+        }
+        
+        .answer-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .comparison-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c53030;
+        }
+        
+        .correct-answer, .wrong-answer {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+        
+        .correct-answer {
+            background: #e6f9f0;
+            border-left: 4px solid #38a169;
+        }
+        
+        .wrong-answer {
+            background: #fee;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-header">
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 用户行为数据处理与分析流程设计
+    </div>
+    <div class="container">
+        <div class="column" style="flex: 1.1;">
+            <div class="section-title">考试题目</div>
+            <div class="question-content">
+                <p><strong>准考证号：</strong>__________</p>
+                <p><strong>试题代码：</strong>1.1.4</p>
+                <p><strong>试题名称：</strong>用户行为数据处理与分析流程设计</p>
+                <p><strong>考核时间：</strong>30min</p>
+                
+                <h3>1. 场地设备要求</h3>
+                <p>人工智能训练师主机：CPU(intel i5 及以上)、内存(不少于 16GB)、操作系统(windows10)、支持深度学习训练；</p>
+                
+                <h3>2. 工作任务</h3>
+                <p>某电商平台需要分析用户行为数据，通过机器学习算法挖掘用户购买偏好，提升营销精准度。需要设计完整的数据处理流程，保证数据质量并完成统计分析。</p>
+                <p>我们提供用户行为数据集(user_behavior_data.csv)，包含以下字段：</p>
+                <ul>
+                    <li>UserID: 用户ID</li>
+                    <li>Age: 年龄</li>
+                    <li>Gender: 性别</li>
+                    <li>PurchaseCategory: 购买类别</li>
+                    <li>PurchaseAmount: 购买金额</li>
+                    <li>ReviewScore: 评价评分</li>
+                </ul>
+                
+                <p>(1) 数据采集：通过补全并运行Python代码(1.1.4.ipynb)读取user_behavior_data.csv并加载到DataFrame，打印前5条数据，截图保存为"1.1.4-1.jpg"。</p>
+                <p>(2) 数据清洗与预处理：处理缺失值、转换数据类型、删除异常值、标准化购买金额与评价评分，清洗后保存为cleaned_user_behavior_data.csv。</p>
+                <p>(3) 数据统计：统计各购买类别用户数、不同性别平均购买金额、不同年龄段用户数，结果分别截图保存为"1.1.4-2.jpg"、"1.1.4-3.jpg"。</p>
+                
+                <p>所有结果文件储存在桌面新建的考生文件夹中，文件夹命名为"准考证号+身份证号后六位"。</p>
+                
+                <h3>3. 技能要求</h3>
+                <p>(1) 能结合人工智能技术要求和业务特征，设计整套业务数据采集流程；</p>
+                <p>(2) 能结合人工智能技术要求和业务特征，设计整套业务数据处理流程；</p>
+                
+                <h3>4. 质量指标</h3>
+                <p>(1) 完整性指标：数据集中无缺失值和重复记录。</p>
+                <p>(2) 合理性指标：所有数据点符合业务规则，无异常值存在。</p>
+                <p>(3) 清洗效果指标：清洗后的数据集完整、合理，且适于建模分析。</p>
+            </div>
+        </div>
+
+        <div class="column" style="flex: 1;">
+            <div class="section-title">代码填空区</div>
+            <div class="code-editor">
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. 数据采集
+# 读取数据集 2分
+data = <input type="text" class="blank" id="b1">
+# 打印前5条数据 2分
+print(<input type="text" class="blank" id="b2">)
+
+# 2. 数据清洗与预处理
+# 处理缺失值（删除） 2分
+data = <input type="text" class="blank" id="b3">
+
+# 数据类型转换 2分/个
+data<input type="text" class="blank" id="b4"> = <input type="text" class="blank" id="b5">  # Age转int
+data<input type="text" class="blank" id="b6"> = <input type="text" class="blank" id="b7">  # PurchaseAmount转float
+data<input type="text" class="blank" id="b8"> = <input type="text" class="blank" id="b9">  # ReviewScore转int
+
+# 处理异常值（年龄18-70，评分1-5） 2分
+data = data[(<input type="text" class="blank" id="b10">) & 
+            (data['PurchaseAmount'] > 0) & 
+            (<input type="text" class="blank" id="b11">)]
+
+# 数据标准化 2分/个
+data['PurchaseAmount'] = (data['PurchaseAmount'] - <input type="text" class="blank" id="b12">) / <input type="text" class="blank" id="b13">
+data['ReviewScore'] = (data['ReviewScore'] - <input type="text" class="blank" id="b14">) / <input type="text" class="blank" id="b15">
+
+# 保存清洗后数据 1分
+<input type="text" class="blank" id="b16">
+
+# 3. 数据统计
+# 统计各购买类别用户数 2分
+purchase_counts = <input type="text" class="blank" id="b17">
+print("购买类别用户数：\n", purchase_counts)
+
+# 统计不同性别平均购买金额 2分
+gender_avg = <input type="text" class="blank" id="b18">
+print("性别平均购买金额：\n", gender_avg)
+
+# 统计年龄段用户数 2分
+age_bins = [18,26,36,46,56,66,np.inf]
+age_labels = ['18-25','26-35','36-45','46-55','56-65','65+']
+data['AgeGroup'] = <input type="text" class="blank" id="b19">
+age_counts = data['AgeGroup'].value_counts().sort_index()
+print("年龄段用户数：\n", age_counts)
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-check" id="btnCheck">检查答案</button>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
+            </div>
+
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 25 分
+            </div>
+
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer"></div>
+                <div class="correct-answer" id="correctAnswer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scoring = [
+            { id:"b1", ans:"pd.read_csv('user_behavior_data.csv')", score:2 },
+            { id:"b2", ans:"data.head()", score:2 },
+            { id:"b3", ans:"data.dropna()", score:2 },
+            
+            { id:"b4", ans:"['Age']", score:0 },
+            { id:"b5", ans:"data['Age'].astype(int)", score:2 },
+            
+            { id:"b6", ans:"['PurchaseAmount']", score:0 },
+            { id:"b7", ans:"data['PurchaseAmount'].astype(float)", score:2 },
+            
+            { id:"b8", ans:"['ReviewScore']", score:0 },
+            { id:"b9", ans:"data['ReviewScore'].astype(int)", score:2 },
+            
+            { id:"b10", ans:"data['Age'].between(18,70)", score:0 },
+            { id:"b11", ans:"data['ReviewScore'].between(1,5)", score:2 },
+            
+            { id:"b12", ans:"data['PurchaseAmount'].mean()", score:0 },
+            { id:"b13", ans:"data['PurchaseAmount'].std()", score:2 },
+            
+            { id:"b14", ans:"data['ReviewScore'].mean()", score:0 },
+            { id:"b15", ans:"data['ReviewScore'].std()", score:2 },
+            
+            { id:"b16", ans:"data.to_csv('cleaned_user_behavior_data.csv',index=False)", score:1 },
+            
+            { id:"b17", ans:"data['PurchaseCategory'].value_counts()", score:2 },
+            { id:"b18", ans:"data.groupby('Gender')['PurchaseAmount'].mean()", score:2 },
+            { id:"b19", ans:"pd.cut(data['Age'],bins=age_bins,labels=age_labels,right=False)", score:2 },
+        ];
+
+        document.getElementById('btnCheck').onclick = function(){
+            let total = 0;
+            let wrong = [];
+            let right = [];
+            
+            scoring.forEach(item => {
+                const val = document.getElementById(item.id).value.trim();
+                if(val === item.ans){
+                    total += item.score;
+                    right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
+                }else{
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                }
+            });
+            
+            document.getElementById('finalScore').textContent = total;
+            document.getElementById('scoreResult').style.display = 'block';
+            document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
+            document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
+            document.getElementById('answerComparison').style.display = 'block';
+        };
+
+        document.getElementById('btnReset').onclick = function(){
+            document.querySelectorAll('.blank').forEach(i => i.value = '');
+            document.getElementById('scoreResult').style.display = 'none';
+            document.getElementById('answerComparison').style.display = 'none';
+        };
+    </script>
+</body>
+</html>

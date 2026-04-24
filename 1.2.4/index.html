@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能卖点生成系统答题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #165DFF 0%, #4080FF 100%);
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 24px auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .question-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 24px;
+            height: fit-content;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .question-panel h2 {
+            color: #165DFF;
+            font-size: 18px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .task-section {
+            margin-bottom: 24px;
+        }
+
+        .task-section h3 {
+            font-size: 16px;
+            margin: 12px 0;
+            color: #333;
+        }
+
+        .task-section p {
+            margin: 8px 0;
+            text-indent: 2em;
+            font-size: 15px;
+        }
+
+        .task-section ul {
+            margin: 8px 0 8px 2em;
+            font-size: 15px;
+        }
+
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .score-table th, .score-table td {
+            border: 1px solid #dcdfe6;
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        .score-table th {
+            background-color: #f5f7fa;
+            font-weight: 500;
+        }
+
+        .answer-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 24px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .answer-panel h2 {
+            color: #165DFF;
+            font-size: 18px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .answer-item {
+            margin-bottom: 24px;
+        }
+
+        .answer-item h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #606266;
+        }
+
+        .answer-input {
+            width: 100%;
+            min-height: 200px;
+            padding: 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #165DFF;
+            box-shadow: 0 0 0 2px rgba(22, 93, 255, 0.2);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-check {
+            background-color: #165DFF;
+            color: white;
+        }
+
+        .btn-check:hover {
+            background-color: #4080FF;
+        }
+
+        .btn-reset {
+            background-color: #f5f7fa;
+            color: #606266;
+            border: 1px solid #dcdfe6;
+        }
+
+        .btn-reset:hover {
+            background-color: #e4e7ed;
+        }
+
+        .score-result {
+            margin-top: 24px;
+            padding: 16px;
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            border: 1px solid #b3d8ff;
+            display: none;
+        }
+
+        .score-result h3 {
+            color: #165DFF;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .score-detail {
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #dcdfe6;
+        }
+
+        .score-detail:last-child {
+            border-bottom: none;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 4px 0;
+            font-size: 14px;
+        }
+
+        .total-score {
+            font-size: 18px;
+            font-weight: bold;
+            color: #165DFF;
+            margin-top: 12px;
+            text-align: right;
+        }
+
+        .answer-compare {
+            margin-top: 16px;
+            display: none;
+        }
+
+        .compare-item {
+            margin-bottom: 16px;
+        }
+
+        .compare-item h4 {
+            font-size: 15px;
+            color: #606266;
+            margin-bottom: 8px;
+        }
+
+        .user-answer, .correct-answer {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .user-answer {
+            background-color: #fef0f0;
+            border: 1px solid #fbc4c4;
+        }
+
+        .correct-answer {
+            background-color: #f0f9ff;
+            border: 1px solid #b3d8ff;
+        }
+
+        .label {
+            font-weight: bold;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .question-panel, .answer-panel {
+                max-height: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>智能卖点生成系统 - 答题评测</h1>
+        <button class="back-btn" onclick="window.location.href='index.html'">返回首页</button>
+    </div>
+
+    <div class="container">
+        <div class="question-panel">
+            <h2>题目要求</h2>
+            <div class="task-section">
+                <h3>2. 工作任务</h3>
+                <p>针对智能卖点生成系统，目前用户反馈中存在卖点生成不准确、缺乏个性化定制等一些显著的问题，这些问题直接影响了用户的使用体验和系统的服务质量。作为人工智能训练师，任务是结合人工智能技术和业务知识，对该系统的相关模块进行优化设计与实现。</p>
+                <p style="text-indent: 0; margin-top: 12px;"><strong>(1)</strong> 请列举智能卖点生成系统业务模块中用户反映最强烈的几个问题，并解释这些问题为什么会让用户感到不满，影响他们的使用体验。</p>
+                <p style="text-indent: 0;">将上述答案写在 1.2.4. docx 答题卷上，题号为“1.2.4-1”。</p>
+                <p style="text-indent: 0; margin-top: 12px;"><strong>(2)</strong> 假设你要优化智能卖点生成系统业务模块，以提升用户体验和服务质量，请设计一个优化方案，列出关键的实施步骤，并描述你期望的优化效果。</p>
+                <p style="text-indent: 0;">将上述答案写在 1.2.4. docx 答题卷上，题号为“1.2.4-2”。</p>
+            </div>
+
+            <div class="task-section">
+                <h3>3. 技能要求</h3>
+                <ul>
+                    <li>能够结合业务知识，识别业务流程中单一模块的问题；</li>
+                    <li>能够结合人工智能技术设计业务模块优化方案并推动实现。</li>
+                </ul>
+            </div>
+
+            <div class="task-section">
+                <h3>4. 质量指标</h3>
+                <ul>
+                    <li>深刻理解数据，细致分析。</li>
+                </ul>
+            </div>
+
+            <div class="task-section">
+                <h3>测量评分表</h3>
+                <table class="score-table">
+                    <thead>
+                        <tr>
+                            <th>细则编号</th>
+                            <th>配分</th>
+                            <th>评分细则描述</th>
+                            <th>规定或标称值</th>
+                            <th>结果或实际值</th>
+                            <th>得分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>M1</td>
+                            <td>6</td>
+                            <td>1.2.4-1 智能卖点生成系统业务模块中用户反映最强烈的问题,每列出1个+2分，总共6分;</td>
+                            <td>根据数据</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>M2</td>
+                            <td>6</td>
+                            <td>1.2.4-1 对每个问题进行合理解释, 每个解释+2分，总共6分;</td>
+                            <td>根据数据</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>M3</td>
+                            <td>6</td>
+                            <td>1.2.4-2 优化方案关键实施步骤,每列出1个+2分，总共6分;</td>
+                            <td>根据数据</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>M4</td>
+                            <td>6</td>
+                            <td>1.2.4-2 对步骤详细描述解释,每个解释+2分，总共6分;</td>
+                            <td>根据数据</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>M5</td>
+                            <td>1</td>
+                            <td>1.2.4-2 清晰描述期望优化效果,总共1分;</td>
+                            <td>根据数据</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>合计配分</td>
+                            <td>25</td>
+                            <td>合计得分</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="answer-panel">
+            <h2>答题区域</h2>
+            <div class="answer-item">
+                <h3>1.2.4-1 智能卖点生成系统业务模块问题列举与分析</h3>
+                <textarea class="answer-input" id="answer1" placeholder="请在此输入你的答案..."></textarea>
+            </div>
+
+            <div class="answer-item">
+                <h3>1.2.4-2 智能卖点生成系统优化方案设计</h3>
+                <textarea class="answer-input" id="answer2" placeholder="请在此输入你的答案..."></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-reset" onclick="resetAnswer()">重置答题</button>
+                <button class="btn btn-check" onclick="checkAnswer()">检查评分</button>
+            </div>
+
+            <div class="score-result" id="scoreResult">
+                <h3>评分结果</h3>
+                <div class="score-detail">
+                    <div class="score-item"><span>M1 问题列举（满分6分）：</span><span id="scoreM1">0</span></div>
+                    <div class="score-item"><span>M2 问题解释（满分6分）：</span><span id="scoreM2">0</span></div>
+                    <div class="score-item"><span>M3 步骤列举（满分6分）：</span><span id="scoreM3">0</span></div>
+                    <div class="score-item"><span>M4 步骤解释（满分6分）：</span><span id="scoreM4">0</span></div>
+                    <div class="score-item"><span>M5 效果描述（满分1分）：</span><span id="scoreM5">0</span></div>
+                </div>
+                <div class="total-score">总分：<span id="totalScore">0</span>/25分</div>
+
+                <div class="answer-compare" id="answerCompare">
+                    <h3>答案对比</h3>
+                    <div class="compare-item">
+                        <h4>1.2.4-1 问题列举与分析</h4>
+                        <div class="label">你的答案：</div>
+                        <div class="user-answer" id="userAnswer1"></div>
+                        <div class="label">参考答案：</div>
+                        <div class="correct-answer" id="correctAnswer1"></div>
+                    </div>
+
+                    <div class="compare-item">
+                        <h4>1.2.4-2 优化方案设计</h4>
+                        <div class="label">你的答案：</div>
+                        <div class="user-answer" id="userAnswer2"></div>
+                        <div class="label">参考答案：</div>
+                        <div class="correct-answer2" id="correctAnswer2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            answer1: `问题一：卖点生成不准确
+- 用户为什么不满：当系统生成的卖点与产品或服务的实际特点不符时，会导致营销信息误导消费者，进而影响品牌形象和销售转化率。
+- 影响使用体验：用户可能会对系统的可靠性产生怀疑，降低他们对平台的信任度，并可能转向其他更可靠的解决方案。
+
+问题二：缺乏个性化定制
+- 用户为什么不满：每个品牌、产品或服务都有其独特之处，但当前的智能卖点生成系统未能充分考虑这些个性化的因素，提供的内容千篇一律，无法有效吸引目标受众。这使得企业在竞争激烈的市场中难以脱颖而出。
+- 影响使用体验：用户会觉得系统提供的卖点不够贴合实际需求，降低了使用的意愿，因为他们需要花费额外的时间和精力进行调整以适应自身的需求。
+
+问题三：响应速度慢
+- 用户为什么不满：在快节奏的商业环境中，时间就是金钱。如果智能卖点生成系统响应缓慢，企业可能错失最佳的市场推广时机，尤其是在快速变化的社交媒体平台上。
+- 影响使用体验：缓慢的响应速度会影响工作效率，增加用户的等待时间和挫败感，最终可能导致用户放弃使用该系统。`,
+            answer2: `1. 对现有算法进行优化，并引进更先进的算法，提高智能卖点生成的准确性
+A. 数据收集和标注：收集大量与产品卖点相关的文本数据，包括产品说明书、用户评价、销售文案等，并对其进行标注，明确哪些是产品的核心卖点。例如，对于电子产品，标注其高分辨率屏幕、长续航电池等卖点。
+B. 模型训练和优化，应用深度学习算法进行文本理解和语义分析，从海量数据中挖掘出更有价值的产品或服务特性。
+C. 用户反馈和迭代，将模型集成到现有系统中，根据用户反馈，对模型进行持续迭代优化，不断改进卖点生成的准确性。
+
+2. 个性化推荐机制建设
+A. 基于历史行为、购买记录、浏览习惯等因素构建用户画像。
+B. 根据用户画像为每个用户提供个性化的卖点建议。
+C. 根据用户反馈提供更多个性化推荐，改进现有卖点推荐。
+D. 提供个性化的用户界面，吸引更多用户。
+
+3. 加速响应性能优化
+A. 硬件升级：部署高性能计算资源，如GPU集群，用于加快模型推理过程。
+B. 模型优化和轻量化：对现有的卖点生成模型进行优化，采用轻量化的模型架构，在不显著降低模型性能的前提下，提高模型的运行速度。例如，使用模型剪枝、量化等技术减少模型的计算量。
+C. 采用异步处理架构，允许系统在后台进行卖点生成的同时不影响前台用户体验。
+
+预期效果：
+- 卖点生成的准确性显著提高，减少了人工干预的需求，提升了用户体验和服务质量。
+- 提供了高度个性化的内容，增强了品牌的差异化竞争力，提高了用户满意度。
+- 系统响应速度大幅提升，支持实时生成卖点，帮助企业抓住每一个市场机会。`
+        };
+
+        // 严谨评分：关键词匹配 + 长度判断
+        function checkAnswer() {
+            let u1 = document.getElementById('answer1').value.trim();
+            let u2 = document.getElementById('answer2').value.trim();
+
+            // ========== M1 问题列举（3个，每个2分） ==========
+            let m1 = 0;
+            if (u1.includes('卖点生成不准确')) m1 += 2;
+            if (u1.includes('缺乏个性化定制')) m1 += 2;
+            if (u1.includes('响应速度慢')) m1 += 2;
+            m1 = Math.min(m1, 6);
+
+            // ========== M2 问题解释（有解释内容才给分） ==========
+            let m2 = 0;
+            let hasExplain1 = u1.length > 150;
+            if (hasExplain1) {
+                m2 = m1; // 有几个问题就给几分解释分
+            }
+            m2 = Math.min(m2, 6);
+
+            // ========== M3 优化步骤列举（3个，每个2分） ==========
+            let m3 = 0;
+            if (u2.includes('算法优化') || u2.includes('模型训练')) m3 += 2;
+            if (u2.includes('个性化') || u2.includes('用户画像')) m3 += 2;
+            if (u2.includes('性能优化') || u2.includes('响应速度')) m3 += 2;
+            m3 = Math.min(m3, 6);
+
+            // ========== M4 步骤详细解释 ==========
+            let m4 = 0;
+            let hasExplain2 = u2.length > 300;
+            if (hasExplain2) {
+                m4 = m3;
+            }
+            m4 = Math.min(m4, 6);
+
+            // ========== M5 优化效果描述 ==========
+            let m5 = 0;
+            if (u2.includes('效果') || u2.includes('提升') || u2.includes('体验') || u2.includes('质量')) {
+                m5 = 1;
+            }
+            m5 = Math.min(m5, 1);
+
+            // 总分
+            let total = m1 + m2 + m3 + m4 + m5;
+
+            // 展示
+            document.getElementById('scoreM1').textContent = m1;
+            document.getElementById('scoreM2').textContent = m2;
+            document.getElementById('scoreM3').textContent = m3;
+            document.getElementById('scoreM4').textContent = m4;
+            document.getElementById('scoreM5').textContent = m5;
+            document.getElementById('totalScore').textContent = total;
+
+            document.getElementById('userAnswer1').textContent = u1 || '未作答';
+            document.getElementById('correctAnswer1').textContent = correctAnswers.answer1;
+            document.getElementById('userAnswer2').textContent = u2 || '未作答';
+            document.getElementById('correctAnswer2').textContent = correctAnswers.answer2;
+
+            document.getElementById('scoreResult').style.display = 'block';
+            document.getElementById('answerCompare').style.display = 'block';
+        }
+
+        function resetAnswer() {
+            document.getElementById('answer1').value = '';
+            document.getElementById('answer2').value = '';
+            document.getElementById('scoreResult').style.display = 'none';
+            document.getElementById('answerCompare').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

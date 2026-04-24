@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.1.1 数据标注 - 原题+答题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 25px;
+        }
+        
+        /* 左侧：原题完整内容 */
+        .left-original {
+            width: 50%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            line-height: 2;
+            font-size: 15px;
+            white-space: pre-line;
+        }
+        
+        /* 右侧：答题区 */
+        .right-answer {
+            width: 50%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .module-header {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .question-item {
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .correct-answer {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #27ae60;
+            font-size: 14px;
+            display: none;
+            margin-bottom: 8px;
+        }
+        
+        .score-info {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .score-display {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .btn-group {
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-score {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-reset {
+            background-color: #e67e22;
+            color: white;
+        }
+        
+        .btn-show-answers {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .total-score {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #fff5f5;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .correct {
+            border-color: #27ae60 !important;
+            background-color: #f0fff4;
+        }
+        
+        .incorrect {
+            border-color: #e74c3c !important;
+            background-color: #fff0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===================== 左侧：完整原题 ===================== -->
+        <div class="left-original">
+在下划线上填写答案。
+
+# 根据学习大纲补充学习目标
+
+引言
+学习目标：了解数据标注的重要性和应用场景。
+内容：
+介绍人工智能在康复训练中的应用，数据标注在个性化康复训练计划中的作用。
+
+数据标注基础理论
+学习目标：________________
+内容：
+什么是数据标注？
+数据标注的类型：文本、图像、视频、音频。
+数据标注在人工智能中的作用和重要性。
+
+Label Studio简介与安装
+学习目标：________________
+内容：
+Label Studio简介及应用场景。
+安装与配置Label Studio。
+Label Studio界面介绍和基本操作。
+
+文本数据标注
+学习目标：________________
+内容：
+文本标注类型：命名实体识别、情感分析等。
+Label Studio文本标注功能演示。
+实践操作：标注一个文本数据集。
+
+图像数据标注
+学习目标：________________
+内容：
+图像标注类型：图像分类、目标检测、图像分割等。
+Label Studio图像标注功能演示。
+实践操作：标注一个图像数据集。
+
+视频数据标注
+学习目标：________________
+内容：
+视频标注类型：动作识别、事件检测等。
+Label Studio视频标注功能演示。
+实践操作：标注一个视频数据集。
+
+音频数据标注
+学习目标：掌握音频数据标注的方法和技巧。
+内容：
+音频标注类型：语音识别、情感分析等。
+Label Studio音频标注功能演示。
+实践操作：标注一个音频数据集。
+
+综合项目实践
+学习目标：综合运用所学知识进行数据标注项目。
+内容：
+项目介绍：为康复训练项目进行多模态数据标注（包括文本、图像、视频、音频）。
+数据标注：学员分组进行实际数据标注任务。
+项目评审：展示标注成果，讲解标注思路和遇到的问题。
+
+总结与答疑
+学习目标：巩固所学内容，解决学员疑问。
+内容：培训内容总结，关键点回顾，学员提问与解答。
+
+评估测试
+学习目标：评估学员掌握的数据标注技能。
+内容：
+理论测试：关于数据标注基本概念和Label Studio使用的笔试。
+实操测试：要求学员完成指定的数据标注任务。
+        </div>
+
+        <!-- ===================== 右侧：答题区 ===================== -->
+        <div class="right-answer">
+            <h2 class="title">4.1.1 数据标注 — 答题区</h2>
+            <div class="module-header">请填写下划线部分</div>
+
+            <div class="question-item" data-score="5" data-correct="了解数据标注的概念、类型及其作用和重要性">
+                <div class="question-text">数据标注基础理论 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：了解数据标注的概念、类型及其作用和重要性</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握Label Studio的安装与配置方法和基本功能/操作">
+                <div class="question-text">Label Studio简介与安装 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握Label Studio的安装与配置方法和基本功能/操作</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握文本标注方法和实践操作技巧">
+                <div class="question-text">文本数据标注 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握文本标注方法和实践操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握图像标注方法和实践操作技巧">
+                <div class="question-text">图像数据标注 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握图像标注方法和实践操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="question-item" data-score="5" data-correct="掌握视频标注方法和实践操作技巧">
+                <div class="question-text">视频数据标注 学习目标：</div>
+                <input type="text" class="answer-input" placeholder="请输入答案">
+                <div class="correct-answer">正确答案：掌握视频标注方法和实践操作技巧</div>
+                <div class="score-info">本题分值：<span class="score-display">5分</span></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-score" onclick="calculateScore()">自动评分</button>
+                <button class="btn btn-show-answers" onclick="showAnswers()">显示答案</button>
+                <button class="btn btn-reset" onclick="resetForm()">重置</button>
+            </div>
+
+            <div class="total-score" id="totalScore">本题得分：<span id="scoreValue">0</span>/25分</div>
+        </div>
+    </div>
+
+<script>
+function calculateScore() {
+    let totalScore = 0;
+    const questions = document.querySelectorAll('.question-item');
+    
+    questions.forEach(item => {
+        const userAnswer = item.querySelector('.answer-input').value.trim();
+        const correctAnswer = item.dataset.correct;
+        const score = parseInt(item.dataset.score);
+        
+        item.querySelector('.answer-input').classList.remove('correct', 'incorrect');
+        
+        if (userAnswer === '') {
+            item.querySelector('.answer-input').classList.add('incorrect');
+        } else if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+            totalScore += score;
+            item.querySelector('.answer-input').classList.add('correct');
+        } else {
+            item.querySelector('.answer-input').classList.add('incorrect');
+        }
+    });
+    
+    document.getElementById('scoreValue').textContent = totalScore;
+    document.getElementById('totalScore').style.display = 'block';
+}
+
+function showAnswers() {
+    document.querySelectorAll('.correct-answer').forEach(ans => {
+        ans.style.display = 'block';
+    });
+}
+
+function resetForm() {
+    document.querySelectorAll('.answer-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('correct', 'incorrect');
+    });
+    document.querySelectorAll('.correct-answer').forEach(ans => {
+        ans.style.display = 'none';
+    });
+    document.getElementById('totalScore').style.display = 'none';
+}
+</script>
+</body>
+</html>
