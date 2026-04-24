@@ -162,7 +162,7 @@
         // 检查是否已登录管理账号
         const adminUser = localStorage.getItem('adminUser');
         if (!adminUser) {
-            window.location.href = 'login.html';
+            window.location.href = '/aitrainer/login.html';
         }
         
         // 下载模板
@@ -179,7 +179,7 @@
         
         // 显示统计
         function showStats() {
-            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const students = JSON.parse(localStorage.getItem('exam_students') || '[]');
             const statsInfo = document.getElementById('statsInfo');
             if (students.length === 0) {
                 statsInfo.textContent = '暂无学员数据';
@@ -226,9 +226,8 @@
                             
                             if (name && idCard && idCard.length >= 6) {
                                 students.push({
-                                    name: name,
-                                    idCard: idCard,
-                                    password: idCard.slice(-6)
+                                    id: idCard,  // 统一用 id
+                                    name: name
                                 });
                             } else {
                                 errorCount++;
@@ -244,7 +243,7 @@
                     }
                     
                     // 保存到 localStorage
-                    localStorage.setItem('students', JSON.stringify(students));
+                    localStorage.setItem('exam_students', JSON.stringify(students));
                     
                     result.className = 'result success';
                     result.style.display = 'block';
