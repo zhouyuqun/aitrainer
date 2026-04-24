@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学员管理 - 人工智能训练师考核系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .info-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        .info-box p {
+            color: #2e7d32;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .info-box strong {
+            color: #1b5e20;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.02);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .result.success {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            color: #2e7d32;
+        }
+        .result.error {
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #c62828;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .stats h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .stats p {
+            color: #666;
+            margin: 5px 0;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 学员管理</h1>
+        
+        <div class="info-box">
+            <p><strong>操作说明：</strong></p>
+            <p>1. 点击「下载导入模板」获取 CSV 文件</p>
+            <p>2. 在模板中填写学员信息（姓名 + 身份证号）</p>
+            <p>3. 点击「导入」上传填写好的 CSV 文件</p>
+        </div>
+        
+        <div class="form-group">
+            <button onclick="downloadTemplate()">📥 下载导入模板</button>
+        </div>
+        
+        <div class="form-group">
+            <label>选择 CSV 文件导入学员：</label>
+            <input type="file" id="fileInput" accept=".csv">
+        </div>
+        
+        <button onclick="importStudents()">📤 导入学员名单</button>
+        
+        <div id="result" class="result"></div>
+        
+        <div class="stats" id="stats">
+            <h3>📊 当前学员统计</h3>
+            <p id="statsInfo">正在加载...</p>
+        </div>
+        
+        <a href="index.html" class="back-link">← 返回考核系统</a>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // 检查是否已登录管理账号
+        const adminUser = localStorage.getItem('adminUser');
+        if (!adminUser) {
+            window.location.href = 'login.html';
+        }
+        
+        // 下载模板
+        function downloadTemplate() {
+            const template = '姓名,身份证号\n张三,310101199001011234\n李四,310102199002022345';
+            const blob = new Blob(['\ufeff' + template], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '学员导入模板.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 显示统计
+        function showStats() {
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const statsInfo = document.getElementById('statsInfo');
+            if (students.length === 0) {
+                statsInfo.textContent = '暂无学员数据';
+            } else {
+                statsInfo.innerHTML = `共 <strong>${students.length}</strong> 名学员<br>账号为身份证号，密码为身份证后6位`;
+            }
+        }
+        
+        // 导入学员
+        function importStudents() {
+            const fileInput = document.getElementById('fileInput');
+            const result = document.getElementById('result');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                result.className = 'result error';
+                result.style.display = 'block';
+                result.textContent = '请先选择 CSV 文件';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    const lines = content.split('\n').filter(line => line.trim());
+                    
+                    if (lines.length < 2) {
+                        result.className = 'result error';
+                        result.style.display = 'block';
+                        result.textContent = 'CSV 文件内容格式错误，请检查是否包含表头和数据';
+                        return;
+                    }
+                    
+                    const students = [];
+                    let errorCount = 0;
+                    
+                    for (let i = 1; i < lines.length; i++) {
+                        const parts = lines[i].split(',');
+                        if (parts.length >= 2) {
+                            const name = parts[0].trim().replace(/"/g, '');
+                            const idCard = parts[1].trim().replace(/"/g, '');
+                            
+                            if (name && idCard && idCard.length >= 6) {
+                                students.push({
+                                    name: name,
+                                    idCard: idCard,
+                                    password: idCard.slice(-6)
+                                });
+                            } else {
+                                errorCount++;
+                            }
+                        }
+                    }
+                    
+                    if (students.length === 0) {
+                        result.className = 'result error';
+                        result.style.display = 'block';
+                        result.textContent = '没有找到有效的学员数据';
+                        return;
+                    }
+                    
+                    // 保存到 localStorage
+                    localStorage.setItem('students', JSON.stringify(students));
+                    
+                    result.className = 'result success';
+                    result.style.display = 'block';
+                    result.innerHTML = `✅ 成功导入 <strong>${students.length}</strong> 名学员！<br>密码为身份证号后6位`;
+                    
+                    if (errorCount > 0) {
+                        result.innerHTML += `<br>（${errorCount} 行数据格式错误已跳过）`;
+                    }
+                    
+                    showStats();
+                    
+                } catch (error) {
+                    result.className = 'result error';
+                    result.style.display = 'block';
+                    result.textContent = '文件解析失败：' + error.message;
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // 页面加载时显示统计
+        showStats();
+    </script>
+</body>
+</html>
