@@ -495,8 +495,16 @@ function renderQuestions(questions) {
     questions.forEach(q => {
         const a = document.createElement("a");
         a.className = "result-item";
-        a.href = "v2-"+q;
-        a.textContent = q.replace(".html", "");
+        // 提取题目编号 (如 v2-1.1.4.html -> 1.1.4)
+        const match = q.match(/v2-(\d+\.\d+\.\d+)\.html/);
+        if (match) {
+            const questionId = match[1]; // 如 "1.1.4"
+            a.href = questionId + "/";  // 链接到对应文件夹
+            a.textContent = questionId;
+        } else {
+            a.href = q;
+            a.textContent = q.replace(".html", "");
+        }
         a.onclick = playWoodenFish;
         list.appendChild(a);
     });
