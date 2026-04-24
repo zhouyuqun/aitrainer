@@ -152,8 +152,9 @@
     </div>
 
     <script>
-        // 学员数据（从 localStorage 读取）
-        // 数据格式：[{"name":"姓名","id":"身份证号"}]
+        // 老师账号
+        const ADMIN_ID = '310107198411110933';
+        const ADMIN_PWD = 'Shsgm3920';
         
         document.getElementById('loginForm').onsubmit = function(e) {
             e.preventDefault();
@@ -161,22 +162,27 @@
             const idCard = document.getElementById('username').value.trim();
             const pwd = document.getElementById('password').value.trim();
             
-            // 获取学员数据
-            const students = JSON.parse(localStorage.getItem('exam_students') || '[]');
+            // 检查是否为老师账号
+            if (idCard === ADMIN_ID && pwd === ADMIN_PWD) {
+                // 老师登录成功
+                localStorage.setItem('adminUser', 'true');
+                localStorage.setItem('exam_logged_in', 'true');
+                window.location.href = 'admin.html';
+                return;
+            }
             
-            // 查找匹配的学员
+            // 检查是否为学员账号
+            const students = JSON.parse(localStorage.getItem('exam_students') || '[]');
             const student = students.find(s => {
-                const expectedPwd = s.id.slice(-6); // 身份证后6位
+                const expectedPwd = s.id.slice(-6);
                 return s.id === idCard && expectedPwd === pwd;
             });
             
             if (student) {
-                // 登录成功，保存登录状态
+                // 学员登录成功
                 localStorage.setItem('exam_logged_in', 'true');
                 localStorage.setItem('exam_student_name', student.name);
                 localStorage.setItem('exam_student_id', student.id);
-                
-                // 跳转到考核系统
                 window.location.href = 'index.html';
             } else {
                 // 登录失败
