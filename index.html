@@ -6,9 +6,13 @@
     <title>人工智能训练师（三级）操作技能考核</title>
     <script>
         // 登录验证 - 内联版本
-        if (!localStorage.getItem('exam_logged_in')) {
-            window.location.href = 'login.html';
-        }
+        (function() {
+            var loggedIn = localStorage.getItem('exam_logged_in');
+            console.log('index.html 检查登录状态:', loggedIn);
+            if (!loggedIn) {
+                window.location.href = 'login.html';
+            }
+        })();
     </script>
     <style>
         * {

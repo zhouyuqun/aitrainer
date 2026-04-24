@@ -185,7 +185,7 @@
                 localStorage.setItem('exam_student_id', student.id);
                 // 调试：验证存储是否成功
                 console.log('登录成功，学生:', student.name);
-                console.log('exam_logged_in:', localStorage.getItem('exam_logged_in'));
+                console.log('exam_logged_in 已设置为:', localStorage.getItem('exam_logged_in'));
                 window.location.href = 'index.html';
             } else {
                 // 登录失败
