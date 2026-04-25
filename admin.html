@@ -473,7 +473,7 @@
                     alert('未能解析到有效的学员数据');
                 }
             };
-            reader.readAsText(file);
+            reader.readAsText(file, 'UTF-8');
             e.target.value = '';
         };
     </script>
