@@ -224,6 +224,7 @@
             <div class="btn-group">
                 <button class="check-btn" onclick="checkAnswer()">检查并打分</button>
                 <button class="reset-btn" onclick="resetAnswer()">重置</button>
+                <button class="btn-export" style="padding:10px 20px;background:#38a169;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px;" onclick="exportScore()">📤 导出成绩</button>
             </div>
             <div id="resultPanel" class="result-panel"></div>
         </div>
@@ -341,6 +342,78 @@
             document.getElementById('resultPanel').style.display = 'none';
             document.getElementById('resultPanel').innerHTML = '';
         }
+
+        // ── 答题保存/导出功能 ────────────────────────────────
+        const QID = '1.2.2';
+        const QNAME = '智慧养老健康监测系统业务模块问题识别与优化方案设计';
+        const QMAX = 25;
+
+        function getStudentInfo() {
+            return {
+                name: localStorage.getItem('exam_student_name') || '',
+                id: localStorage.getItem('exam_logged_in') || ''
+            };
+        }
+
+        function saveAnswers() {
+            const answers = {
+                answer1: document.getElementById('answer1').value,
+                answer2: document.getElementById('answer2').value
+            };
+            localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
+            const panel = document.getElementById('resultPanel');
+            if (panel && panel.innerText.includes('得分')) {
+                const scoreText = panel.innerText.match(/得分：(\S+)/);
+                if (scoreText) {
+                    localStorage.setItem('exam_score_' + QID, scoreText[1]);
+                    localStorage.setItem('exam_done_' + QID, '1');
+                }
+            }
+        }
+
+        function restoreAnswers() {
+            const saved = localStorage.getItem('exam_answers_' + QID);
+            if (saved) {
+                const answers = JSON.parse(saved);
+                if (answers.answer1) document.getElementById('answer1').value = answers.answer1;
+                if (answers.answer2) document.getElementById('answer2').value = answers.answer2;
+            }
+        }
+
+        function exportScore() {
+            const stu = getStudentInfo();
+            const panel = document.getElementById('resultPanel');
+            const scoreText = panel ? panel.innerText.match(/得分：(\S+)/) : null;
+            const score = scoreText ? scoreText[1] : '0';
+            const record = {
+                name: stu.name,
+                id: stu.id,
+                question: QID,
+                questionName: QNAME,
+                score: score,
+                maxScore: QMAX,
+                time: new Date().toLocaleString('zh-CN'),
+                answers: {
+                    answer1: document.getElementById('answer1').value,
+                    answer2: document.getElementById('answer2').value
+                }
+            };
+            const blob = new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = stu.name + '_' + QID + '_成绩.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        const _origCheck2 = window.checkAnswer;
+        window.checkAnswer = function() {
+            _origCheck2.apply(this, arguments);
+            saveAnswers();
+        };
+
+        restoreAnswers();
     </script>
 </body>
 </html>

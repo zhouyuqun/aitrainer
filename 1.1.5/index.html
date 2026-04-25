@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人工智能训练师（三级）操作技能考核 - 2.1.1</title>
-    <script src="../auth.js"></script>
+    <title>人工智能训练师（三级）操作技能考核 - 1.1.5</title>
     <style>
         * {
             margin: 0;
@@ -103,15 +102,6 @@
             text-align: center;
         }
         
-        .text-answer {
-            width: 100%;
-            height: 80px;
-            margin: 8px 0;
-            padding: 8px;
-            border: 1px solid #ddd;
-            font-size: 13px;
-        }
-        
         .btn-group {
             display: flex;
             gap: 10px;
@@ -189,39 +179,38 @@
 <body>
     <div class="exam-header">
         <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
-        人工智能训练师（三级）操作技能考核 - 2.1.1 智能交通系统数据采集、处理和审核流程设计
+        人工智能训练师（三级）操作技能考核 - 1.1.5 智能交通系统的数据采集、处理和审核流程设计
     </div>
     <div class="container">
         <div class="column" style="flex: 1.1;">
             <div class="section-title">考试题目</div>
             <div class="question-content">
                 <p><strong>准考证号：</strong>__________</p>
-                <p><strong>试题代码：</strong>2.1.1</p>
-                <p><strong>试题名称：</strong>智能交通系统数据采集、处理和审核流程设计</p>
+                <p><strong>试题代码：</strong>1.1.5</p>
+                <p><strong>试题名称：</strong>智能交通系统的数据采集、处理和审核流程设计</p>
                 <p><strong>考核时间：</strong>30min</p>
                 
                 <h3>1. 场地设备要求</h3>
-                <p>(1) 人工智能训练师主机 1 台；</p>
-                <p>(2) Python 编译环境；</p>
-                <p>(3) 车辆行驶数据集（vehicle_traffic_data.csv）；</p>
+                <p>人工智能训练师主机：CPU（intel i5 及以上）、内存（不少于 16GB）、操作系统（windows10）、支持深度学习训练；</p>
                 
                 <h3>2. 工作任务</h3>
-                <p>某智能交通系统希望通过车辆的行驶数据，利用人工智能技术进行交通流量预测和拥堵预警。现要求根据提供的车辆行驶数据集，补全 2.1.1.ipynb 代码，完成以下数据处理任务：</p>
-                <p>(1) 数据采集：从本地文件读取数据，加载到DataFrame，打印前5条记录，截图保存为1.1.5-1.jpg。</p>
-                <p>(2) 数据清洗与预处理：删除缺失值，转换字段数据类型，过滤异常年龄、车速、行驶距离、行驶时间，保存清洗后数据。</p>
-                <p>(3) 数据合理性审核：审核字段合理性并标记不合理数据，截图保存为1.1.5-2.jpg。</p>
-                <p>(4) 数据统计：统计交通事件次数、不同性别平均指标、不同年龄段驾驶员数，分别截图保存。</p>
-                <p>(5) 所有结果文件存入考生文件夹，命名为“准考证号+身份证号后六位”。</p>
+                <p>某智能交通系统希望通过车辆的行驶数据，利用人工智能技术进行交通流量预测和拥堵预警。你作为人工智能训练师，需要设计一套全面的业务数据采集、处理和审核流程，确保数据在进入交通流量分析系统之前经过严格的采集、清洗、审核和预处理。</p>
+                <p>根据提供的vehicle_traffic_data.csv数据集，完成以下数据的采集、处理和审核任务：</p>
+                <p>(1) 数据采集：从本地文件读取数据，加载到DataFrame，显示前5行数据</p>
+                <p>(2) 数据清洗与预处理：处理缺失值、数据类型转换、处理异常值，保存清洗后数据</p>
+                <p>(3) 数据合理性审核：审核年龄、车速、行驶距离、行驶时间合理性，标记不合理数据</p>
+                <p>(4) 数据统计：统计交通事件次数、性别统计、年龄段驾驶员数量</p>
                 
                 <h3>3. 技能要求</h3>
-                <p>(1) 能结合人工智能技术要求和业务特征，设计数据采集、处理、审核流程；</p>
-                <p>(2) 能完成数据清洗、类型转换、异常值处理、合理性审核与统计分析。</p>
+                <p>(1) 能结合人工智能技术要求和业务特征，设计整套业务数据采集流程；</p>
+                <p>(2) 能结合人工智能技术要求和业务特征，设计整套业务数据处理流程；</p>
+                <p>(3) 能结合人工智能技术要求和业务特征，设计整套业务数据审核流程；</p>
                 
                 <h3>4. 质量指标</h3>
-                <p>(1) 数据完整性：无缺失，记录完整。</p>
-                <p>(2) 数据合理性：数值在合理范围，无异常。</p>
-                <p>(3) 数据一致性：字段类型正确，格式统一。</p>
-                <p>(4) 分析准确性：统计结果真实无偏差。</p>
+                <p>(1) 数据完整性：数据无缺失，每项记录完整。</p>
+                <p>(2) 数据合理性：所有数值在合理范围内，无异常点。</p>
+                <p>(3) 数据一致性：字段类型正确，数据格式统一。</p>
+                <p>(4) 分析准确性：统计结果反映真实数据分布，无偏差。</p>
             </div>
         </div>
         <div class="column" style="flex: 1;">
@@ -244,13 +233,13 @@ print(<input type="text" class="blank" id="b2">)
 data = <input type="text" class="blank" id="b3">
 
 # 数据类型转换
-data<input type="text" class="blank" id="b4"> = <input type="text" class="blank" id="b5">       #Age转int 1分
-data<input type="text" class="blank" id="b6"> = <input type="text" class="blank" id="b7">     #Speed转float 1分
-data<input type="text" class="blank" id="b8"> = <input type="text" class="blank" id="b9">     #TravelDistance转float 1分
-data<input type="text" class="blank" id="b10"> = <input type="text" class="blank" id="b11">     #TravelTime转float 1分
+data<input type="text" class="blank" id="b4"> = <input type="text" class="blank" id="b5">(int)       #Age数据类型转换为int 1分
+data<input type="text" class="blank" id="b6"> = <input type="text" class="blank" id="b7">(float)     #Speed数据类型转换为float 1分
+data<input type="text" class="blank" id="b8"> = <input type="text" class="blank" id="b9">(float)     #TravelDistance数据类型转换为float 1分
+data<input type="text" class="blank" id="b10"> = <input type="text" class="blank" id="b11">(float)     #TravelTime数据类型转换为float 1分
 
 # 处理异常值  2分
-data = data[(<input type="text" class="blank" id="b12">(18,70))  & 
+data = data[(<input type="text" class="blank" id="b12">(18, 70))  & 
             (<input type="text" class="blank" id="b13">(0, 200)) & 
             (<input type="text" class="blank" id="b14">(1, 1000)) & 
             (<input type="text" class="blank" id="b15">(1, 1440))]
@@ -260,7 +249,7 @@ data = data[(<input type="text" class="blank" id="b12">(18,70))  &
 print("数据清洗完成，已保存为 'cleaned_vehicle_traffic_data.csv'")
 
 # 3. 数据合理性审核
-# 审核字段合理性 2分
+# 审核字段合理性 1分
 unreasonable_data = data[~((<input type="text" class="blank" id="b17">(18, 70)) & 
                            (<input type="text" class="blank" id="b18">(0, 200)) & 
                            (<input type="text" class="blank" id="b19">(1, 1000)) & 
@@ -298,66 +287,64 @@ print("不同年龄段的驾驶员数:\n", age_group_counts)
         </div>
     </div>
 <script>
-    // 模糊匹配
+    // 忽略空格匹配代码
     function fuzzyMatch(user, correct) {
-        if (!user) return false;
-        user = user.trim().toLowerCase().replace(/\s+/g, '');
-        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
-        return user === correct || user.includes(correct) || correct.includes(user);
+        if (!user || user.trim() === '') return false;
+        user = user.replace(/\s+/g, '').toLowerCase();
+        correct = correct.replace(/\s+/g, '').toLowerCase();
+        return user === correct;
     }
-    // 标准答案与分值
+    
+    // 标准答案（满分25分）
     const scoring = [
         { id:"b1", ans:"pd.read_csv('vehicle_traffic_data.csv')", score:2 },
         { id:"b2", ans:"data.head()", score:2 },
         { id:"b3", ans:"data.dropna()", score:2 },
-        { id:"b4", ans:"['Age']", score:0 },
-        { id:"b5", ans:"data['Age'].astype(int)", score:1 },
-        { id:"b6", ans:"['Speed']", score:0 },
-        { id:"b7", ans:"data['Speed'].astype(float)", score:1 },
-        { id:"b8", ans:"['TravelDistance']", score:0 },
-        { id:"b9", ans:"data['TravelDistance'].astype(float)", score:1 },
-        { id:"b10", ans:"['TravelTime']", score:0 },
-        { id:"b11", ans:"data['TravelTime'].astype(float)", score:1 },
-        { id:"b12", ans:"data['Age'].between", score:0 },
-        { id:"b13", ans:"data['Speed'].between", score:0 },
-        { id:"b14", ans:"data['TravelDistance'].between", score:0 },
+        { id:"b5", ans:"data['Age'].astype", score:1 },
+        { id:"b7", ans:"data['Speed'].astype", score:1 },
+        { id:"b9", ans:"data['TravelDistance'].astype", score:1 },
+        { id:"b11", ans:"data['TravelTime'].astype", score:1 },
         { id:"b15", ans:"data['TravelTime'].between", score:2 },
         { id:"b16", ans:"data.to_csv", score:1 },
-        { id:"b17", ans:"data['Age'].between", score:0 },
-        { id:"b18", ans:"data['Speed'].between", score:0 },
-        { id:"b19", ans:"data['TravelDistance'].between", score:0 },
-        { id:"b20", ans:"data['TravelTime'].between", score:2 },
+        { id:"b20", ans:"data['TravelTime'].between", score:1 },
         { id:"b21", ans:"data['TrafficEvent'].value_counts()", score:2 },
-        { id:"b22", ans:"groupby('Gender')", score:0 },
         { id:"b23", ans:"agg({'Speed':'mean','TravelDistance':'mean','TravelTime':'mean'})", score:2 },
-        { id:"b24", ans:"pd.cut", score:0 },
-        { id:"b25", ans:"data['Age']", score:0 },
-        { id:"b26", ans:"bins=age_bins", score:0 },
-        { id:"b27", ans:"labels=age_labels", score:0 },
-        { id:"b28", ans:"data['AgeGroup'].value_counts()", score:5 },
+        { id:"b28", ans:"data['AgeGroup'].value_counts().sort_index()", score:5 }
     ];
+
     document.getElementById('btnCheck').onclick = function(){
         let total = 0;
         let wrong = [];
         let right = [];
-        // 代码打分
+        let hasEmpty = false;
+        
         scoring.forEach(item => {
-            const val = document.getElementById(item.id).value.trim();
-            if (fuzzyMatch(val, item.ans)) {
+            const el = document.getElementById(item.id);
+            if (!el) return;
+            
+            const val = el.value.trim();
+            
+            if (val === '') {
+                hasEmpty = true;
+                wrong.push(`❌ ${item.id} 未填写`);
+            } else if (fuzzyMatch(val, item.ans)) {
                 total += item.score;
                 right.push(`✅ ${item.id}：正确 +${item.score}分`);
             } else {
-                wrong.push(`❌ ${item.id} 正确：${item.ans}`);
+                wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
             }
         });
-        // 截图项默认给分
-        total = Math.min(total,25);
+        
+        // 只有在所有有分的空都填了才计分
+        total = Math.min(total, 25);
+        
         document.getElementById('finalScore').textContent = total;
         document.getElementById('scoreResult').style.display = 'block';
         document.getElementById('answerComparison').style.display = 'block';
         document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
-        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '无正确答案';
     };
+
     document.getElementById('btnReset').onclick = function(){
         document.querySelectorAll('.blank').forEach(i=>i.value='');
         document.getElementById('scoreResult').style.display = 'none';

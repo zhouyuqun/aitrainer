@@ -127,7 +127,12 @@
             background: #e53e3e;
             color: #fff;
         }
-        
+
+        .btn-export {
+            background: #38a169;
+            color: #fff;
+        }
+
         .score-result {
             margin-top: 18px;
             padding: 12px;
@@ -302,6 +307,7 @@ cleaned_file_path = '2.1.3_cleaned_data.csv'
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查答案并打分</button>
                 <button class="btn btn-reset" id="btnReset">重置</button>
+                <button class="btn btn-export" id="btnExport">📤 导出成绩</button>
             </div>
 
             <div class="score-result" id="scoreResult">
@@ -380,6 +386,87 @@ cleaned_file_path = '2.1.3_cleaned_data.csv'
             document.getElementById('scoreResult').style.display = 'none';
             document.getElementById('answerComparison').style.display = 'none';
         };
-    </script>
+
+    // ── 答题保存/导出功能 ────────────────────────────────
+    const QID = '2.1.3';
+    const QNAME = '信用评分模型数据清洗和标注流程设计';
+    const QMAX = 15;
+
+    function getStudentInfo() {
+        return {
+            name: localStorage.getItem('exam_student_name') || '',
+            id: localStorage.getItem('exam_logged_in') || ''
+        };
+    }
+
+    function saveAnswers() {
+        const answers = {};
+        scoring.forEach(item => {
+            const el = document.getElementById(item.id);
+            if (el) answers[item.id] = el.value;
+        });
+        answers.washNorm = document.getElementById('washNorm').value;
+        answers.featureNorm = document.getElementById('featureNorm').value;
+        localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
+        const scoreEl = document.getElementById('finalScore');
+        if (scoreEl && scoreEl.textContent !== '0') {
+            localStorage.setItem('exam_score_' + QID, scoreEl.textContent);
+            localStorage.setItem('exam_done_' + QID, '1');
+        }
+    }
+
+    function restoreAnswers() {
+        const saved = localStorage.getItem('exam_answers_' + QID);
+        if (saved) {
+            const answers = JSON.parse(saved);
+            Object.keys(answers).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = answers[id];
+            });
+        }
+        const savedScore = localStorage.getItem('exam_score_' + QID);
+        if (savedScore) {
+            document.getElementById('finalScore').textContent = savedScore;
+            document.getElementById('scoreResult').style.display = 'block';
+        }
+    }
+
+    document.getElementById('btnExport').onclick = function() {
+        const stu = getStudentInfo();
+        const score = document.getElementById('finalScore').textContent;
+        const answers = {};
+        scoring.forEach(item => {
+            const el = document.getElementById(item.id);
+            if (el) answers[item.id] = el.value;
+        });
+        answers.washNorm = document.getElementById('washNorm').value;
+        answers.featureNorm = document.getElementById('featureNorm').value;
+        const record = {
+            name: stu.name,
+            id: stu.id,
+            question: QID,
+            questionName: QNAME,
+            score: score,
+            maxScore: QMAX,
+            time: new Date().toLocaleString('zh-CN'),
+            answers: answers
+        };
+        const blob = new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = stu.name + '_' + QID + '_成绩.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const _origCheck_213 = document.getElementById('btnCheck').onclick;
+    document.getElementById('btnCheck').onclick = function() {
+        _origCheck_213.call(this);
+        saveAnswers();
+    };
+
+    restoreAnswers();
+</script>
 </body>
 </html>

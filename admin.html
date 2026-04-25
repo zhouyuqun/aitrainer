@@ -248,6 +248,74 @@
         .hidden {
             display: none;
         }
+        
+        .score-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .score-item:last-child {
+            border-bottom: none;
+        }
+        
+        .score-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .score-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .score-meta {
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .score-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .score-pass {
+            background: #c6f6d5;
+            color: #276749;
+        }
+        
+        .score-fail {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        
+        .score-id {
+            color: #666;
+            font-size: 12px;
+            font-family: monospace;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -314,6 +382,37 @@
             </div>
             <button class="clear-btn" onclick="clearAll()">🗑 清空所有学员</button>
         </div>
+
+        <div class="section">
+            <h2>📊 成绩管理</h2>
+            <div class="upload-area" onclick="document.getElementById('scoreInput').click()" style="margin-bottom:15px;">
+                <input type="file" id="scoreInput" accept=".json">
+                <div class="upload-icon">📤</div>
+                <p class="upload-text">点击导入学员成绩文件（JSON）<br><span>支持批量选择多个文件</span></p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card" style="background:linear-gradient(135deg,#48bb78,#38a169);">
+                    <h3>📋 导入记录</h3>
+                    <div class="number" id="scoreRecordCount">0</div>
+                </div>
+                <div class="stat-card" style="background:linear-gradient(135deg,#ed8936,#dd6b20);">
+                    <h3>🏆 最高成绩</h3>
+                    <div class="number" id="maxScore">-</div>
+                </div>
+                <div class="stat-card" style="background:linear-gradient(135deg,#4299e1,#3182ce);">
+                    <h3>📝 总做题人次</h3>
+                    <div class="number" id="totalAttempts">0</div>
+                </div>
+                <div class="stat-card" style="background:linear-gradient(135deg,#9f7aea,#805ad5);">
+                    <h3>⭐ 平均成绩</h3>
+                    <div class="number" id="avgScoreCard">-</div>
+                </div>
+            </div>
+            <div class="score-list" id="scoreList">
+                <p style="text-align:center;color:#999;padding:20px;">暂无成绩数据，请先导入学员的成绩文件</p>
+            </div>
+            <button class="clear-btn" style="background:#805ad5;" onclick="exportAllScores()">📥 导出全部成绩</button>
+        </div>
         
         <footer>© 2026 上海立得职业技能培训有限公司</footer>
     </div>
@@ -379,6 +478,17 @@
                     }
                 }
             }
+            
+            // 加上导入的成绩
+            const importedScores = JSON.parse(localStorage.getItem('exam_scores_imported') || '[]');
+            importedScores.forEach(s => {
+                if (s.score !== undefined) {
+                    attemptCount++;
+                    totalScore += s.score;
+                    scoreCount++;
+                }
+            });
+            
             document.getElementById('attemptCount').textContent = attemptCount;
             document.getElementById('avgScore').textContent = scoreCount > 0
                 ? (totalScore / scoreCount).toFixed(1) + '分'
@@ -476,6 +586,150 @@
             reader.readAsText(file, 'UTF-8');
             e.target.value = '';
         };
+        
+        // ========== 成绩管理 ==========
+        const SCORE_STORAGE_KEY = 'exam_scores_imported';
+        
+        function loadScores() {
+            return JSON.parse(localStorage.getItem(SCORE_STORAGE_KEY) || '[]');
+        }
+        
+        function saveScores(scores) {
+            localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(scores));
+        }
+        
+        function showScoreStats() {
+            const scores = loadScores();
+            document.getElementById('scoreRecordCount').textContent = scores.length;
+            document.getElementById('totalAttempts').textContent = scores.length;
+            
+            if (scores.length > 0) {
+                const max = Math.max(...scores.map(s => s.score));
+                document.getElementById('maxScore').textContent = max + '分';
+                
+                const avg = scores.reduce((a, b) => a + b.score, 0) / scores.length;
+                document.getElementById('avgScoreCard').textContent = avg.toFixed(1) + '分';
+            } else {
+                document.getElementById('maxScore').textContent = '-';
+                document.getElementById('avgScoreCard').textContent = '-';
+            }
+        }
+        
+        function renderScoreList() {
+            const scores = loadScores();
+            const listEl = document.getElementById('scoreList');
+            
+            if (scores.length === 0) {
+                listEl.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">暂无成绩数据，请先导入学员的成绩文件</p>';
+                return;
+            }
+            
+            // 按时间倒序排列
+            scores.sort((a, b) => new Date(b.doneTime) - new Date(a.doneTime));
+            
+            listEl.innerHTML = scores.map((s, i) => {
+                const passClass = s.score >= 12 ? 'score-pass' : 'score-fail';
+                const passText = s.score >= 12 ? '合格' : '不合格';
+                const dateStr = s.doneTime ? new Date(s.doneTime).toLocaleString('zh-CN') : '未知时间';
+                return `
+                    <div class="score-item">
+                        <div class="score-info">
+                            <span class="score-name">${s.studentName || '未知姓名'}</span>
+                            <span class="score-id">${s.studentId || '未知身份证'}</span>
+                            <span class="score-meta">题目：${s.questionId} | 完成时间：${dateStr}</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span class="score-badge ${passClass}">${s.score}分 ${passText}</span>
+                            <span class="delete-btn" onclick="deleteScore(${i})">删除</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function deleteScore(index) {
+            if (!confirm('确定要删除这条成绩记录吗？')) return;
+            const scores = loadScores();
+            scores.splice(index, 1);
+            saveScores(scores);
+            showScoreStats();
+            renderScoreList();
+        }
+        
+        function exportAllScores() {
+            const scores = loadScores();
+            if (scores.length === 0) {
+                alert('暂无成绩可导出');
+                return;
+            }
+            
+            const csvContent = '\uFEFF姓名,身份证号,题目,成绩,是否合格,完成时间\n' + 
+                scores.map(s => {
+                    const pass = s.score >= 12 ? '合格' : '不合格';
+                    const date = s.doneTime ? new Date(s.doneTime).toLocaleString('zh-CN') : '未知';
+                    return `${s.studentName || '未知'},${s.studentId || '未知'},${s.questionId},${s.score},${pass},${date}`;
+                }).join('\n');
+            
+            const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `学员成绩汇总_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 成绩文件导入
+        document.getElementById('scoreInput').onchange = function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+            
+            let imported = 0;
+            let processed = 0;
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const record = JSON.parse(event.target.result);
+                        
+                        // 验证格式
+                        if (record.studentName && record.questionId && typeof record.score === 'number') {
+                            const scores = loadScores();
+                            // 去重：同一学员同一题目只保留最新记录
+                            const existingIndex = scores.findIndex(
+                                s => s.studentId === record.studentId && s.questionId === record.questionId
+                            );
+                            
+                            if (existingIndex >= 0) {
+                                scores[existingIndex] = record;
+                            } else {
+                                scores.push(record);
+                            }
+                            
+                            saveScores(scores);
+                            imported++;
+                        }
+                    } catch (err) {
+                        console.warn('解析失败:', file.name, err);
+                    }
+                    
+                    processed++;
+                    if (processed === files.length) {
+                        showScoreStats();
+                        renderScoreList();
+                        alert(`成功导入 ${imported} 条成绩记录！`);
+                    }
+                };
+                reader.readAsText(file, 'UTF-8');
+            });
+            
+            e.target.value = '';
+        };
+        
+        // 初始化时加载成绩
+        showScoreStats();
+        renderScoreList();
     </script>
 </body>
 </html>

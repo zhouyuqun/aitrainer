@@ -196,6 +196,15 @@
             background-color: #e4e7ed;
         }
 
+        .btn-export {
+            background-color: #38a169;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background-color: #2f7d58;
+        }
+
         .score-result {
             margin-top: 24px;
             padding: 16px;
@@ -401,6 +410,7 @@
             <div class="btn-group">
                 <button class="btn btn-reset" onclick="resetAnswer()">重置答题</button>
                 <button class="btn btn-check" onclick="checkAnswer()">检查评分</button>
+                <button class="btn btn-export" onclick="exportScore()">📤 导出成绩</button>
             </div>
 
             <div class="score-result" id="scoreResult">
@@ -539,6 +549,78 @@ C. 采用异步处理架构，允许系统在后台进行卖点生成的同时�
             document.getElementById('scoreResult').style.display = 'none';
             document.getElementById('answerCompare').style.display = 'none';
         }
+
+        // ── 答题保存/导出功能 ────────────────────────────────
+        const QID = '1.2.4';
+        const QNAME = '智能卖点生成系统业务模块问题识别与优化方案设计';
+        const QMAX = 25;
+
+        function getStudentInfo() {
+            return {
+                name: localStorage.getItem('exam_student_name') || '',
+                id: localStorage.getItem('exam_logged_in') || ''
+            };
+        }
+
+        function saveAnswers() {
+            const answers = {
+                answer1: document.getElementById('answer1').value,
+                answer2: document.getElementById('answer2').value
+            };
+            localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
+            const totalEl = document.getElementById('totalScore');
+            if (totalEl && totalEl.textContent !== '0') {
+                localStorage.setItem('exam_score_' + QID, totalEl.textContent);
+                localStorage.setItem('exam_done_' + QID, '1');
+            }
+        }
+
+        function restoreAnswers() {
+            const saved = localStorage.getItem('exam_answers_' + QID);
+            if (saved) {
+                const answers = JSON.parse(saved);
+                if (answers.answer1) document.getElementById('answer1').value = answers.answer1;
+                if (answers.answer2) document.getElementById('answer2').value = answers.answer2;
+            }
+            const savedScore = localStorage.getItem('exam_score_' + QID);
+            if (savedScore) {
+                document.getElementById('totalScore').textContent = savedScore;
+            }
+        }
+
+        function exportScore() {
+            const stu = getStudentInfo();
+            const totalEl = document.getElementById('totalScore');
+            const score = totalEl ? totalEl.textContent : '0';
+            const record = {
+                name: stu.name,
+                id: stu.id,
+                question: QID,
+                questionName: QNAME,
+                score: score,
+                maxScore: QMAX,
+                time: new Date().toLocaleString('zh-CN'),
+                answers: {
+                    answer1: document.getElementById('answer1').value,
+                    answer2: document.getElementById('answer2').value
+                }
+            };
+            const blob = new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = stu.name + '_' + QID + '_成绩.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        const _origCheck4 = window.checkAnswer;
+        window.checkAnswer = function() {
+            _origCheck4.apply(this, arguments);
+            saveAnswers();
+        };
+
+        restoreAnswers();
     </script>
 </body>
 </html>
