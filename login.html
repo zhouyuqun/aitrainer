@@ -171,7 +171,11 @@
             const btn = document.getElementById('loginBtn');
             try {
                 const response = await fetch('students.csv');
-                const text = await response.text();
+                let text = await response.text();
+                // 移除 UTF-8 BOM，防止中文乱码
+                if (text.charCodeAt(0) === 0xFEFF) {
+                    text = text.slice(1);
+                }
                 const lines = text.trim().split('\n');
                 const students = [];
                 for (let i = 1; i < lines.length; i++) { // 跳过表头

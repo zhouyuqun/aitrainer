@@ -541,7 +541,11 @@
             
             const reader = new FileReader();
             reader.onload = function(event) {
-                const text = event.target.result;
+                let text = event.target.result;
+                // 移除 UTF-8 BOM（EF BB BF），防止中文乱码
+                if (text.charCodeAt(0) === 0xFEFF) {
+                    text = text.slice(1);
+                }
                 const lines = text.split('\n').filter(line => line.trim());
                 
                 if (lines.length < 2) {

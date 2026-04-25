@@ -348,7 +348,7 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
     // 导出成绩（JSON格式，方便管理后台导入）
     function exportScore() {
         const studentName = localStorage.getItem('exam_student_name') || '未知';
-        const studentId = localStorage.getItem('exam_logged_in') || '未知';
+        const studentId = localStorage.getItem('exam_student_id') || localStorage.getItem('exam_logged_in') || '未知';
         const score = localStorage.getItem('exam_score_' + QUESTION_ID) || '0';
         const doneTime = localStorage.getItem('exam_done_' + QUESTION_ID) || '';
         const answers = JSON.parse(localStorage.getItem('exam_answers_' + QUESTION_ID) || '{}');

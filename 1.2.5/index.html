@@ -193,7 +193,7 @@
                 <button class="btn-check" onclick="checkScore()">检查打分</button>
                 <button class="btn-reset" onclick="resetAnswer()">重置题目</button>
                 <button class="btn-export" style="padding:10px 20px;background:#38a169;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px;" onclick="exportScore()">📤 导出成绩</button>
-                <button class="btn-back" onclick="location.href='index.html'">返回首页</button>
+                <button class="btn-back" onclick="location.href='../index.html'">返回首页</button>
             </div>
 
             <div id="scoreResult" class="score-area"></div>
@@ -311,7 +311,7 @@ C. 动态调整个性化推荐与界面
         function getStudentInfo() {
             return {
                 name: localStorage.getItem('exam_student_name') || '',
-                id: localStorage.getItem('exam_logged_in') || ''
+                id: localStorage.getItem('exam_student_id') || ''
             };
         }
 

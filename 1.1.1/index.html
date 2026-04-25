@@ -184,7 +184,7 @@
 </head>
 <body>
     <div class="exam-header">
-        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        <button class="back-btn" onclick="location.href='../index.html'">← 返回</button>
         人工智能训练师（三级）操作技能考核 - 智能医疗系统中的业务数据处理流程设计
     </div>
 
@@ -378,7 +378,7 @@ print(age_patient_count)
         function getStudentInfo() {
             return {
                 name: localStorage.getItem('exam_student_name') || '',
-                id: localStorage.getItem('exam_logged_in') || ''
+                id: localStorage.getItem('exam_student_id') || ''
             };
         }
 
@@ -422,9 +422,9 @@ print(age_patient_count)
                 if (el) answers[item.id] = el.value;
             });
             const record = {
-                name: stu.name,
-                id: stu.id,
-                question: QID,
+                studentName: stu.name,
+                studentId: stu.id,
+                questionId: QID,
                 questionName: QNAME,
                 score: score,
                 maxScore: QMAX,

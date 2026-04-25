@@ -183,7 +183,7 @@
 </head>
 <body>
     <div class="exam-header">
-        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        <button class="back-btn" onclick="location.href='../index.html'">← 返回</button>
         人工智能训练师（三级）操作技能考核 - 金融机构信用评估系统中的业务数据审核流程设计
     </div>
     <div class="container">
@@ -359,7 +359,7 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
         function getStudentInfo() {
             return {
                 name: localStorage.getItem('exam_student_name') || '',
-                id: localStorage.getItem('exam_logged_in') || ''
+                id: localStorage.getItem('exam_student_id') || ''
             };
         }
 
