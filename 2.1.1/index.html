@@ -288,6 +288,7 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
                 <button class="btn btn-done" id="btnDone" onclick="markDone()">✓ 标记完成</button>
+                <button class="btn btn-export" id="btnExport" onclick="exportScore()">📤 导出成绩</button>
             </div>
             <div id="doneMsg" style="text-align:center;color:#2e7d32;font-size:13px;margin-top:8px;display:none;">✅ 已标记完成</div>
 
@@ -334,6 +335,33 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
     document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => {
         el.addEventListener('input', saveAnswers);
     });
+
+    // 导出成绩（JSON格式，方便管理后台导入）
+    function exportScore() {
+        const studentName = localStorage.getItem('exam_student_name') || '未知';
+        const studentId = localStorage.getItem('exam_logged_in') || '未知';
+        const score = localStorage.getItem('exam_score_' + QUESTION_ID) || '0';
+        const doneTime = localStorage.getItem('exam_done_' + QUESTION_ID) || '';
+        const answers = JSON.parse(localStorage.getItem('exam_answers_' + QUESTION_ID) || '{}');
+        
+        const record = {
+            studentName: studentName,
+            studentId: studentId,
+            questionId: QUESTION_ID,
+            score: parseFloat(score),
+            doneTime: doneTime,
+            answers: answers,
+            exportedAt: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(record, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `成绩_${QUESTION_ID}_${studentName}_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 
     // 标记完成
     function markDone() {
