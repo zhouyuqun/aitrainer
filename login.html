@@ -108,6 +108,15 @@
             color: #666;
             border-top: 1px solid #e2e8f0;
         }
+
+        .login-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .login-btn .loading-text { display: none; }
+        .login-btn.loading .btn-text { display: none; }
+        .login-btn.loading .loading-text { display: inline; }
         
         /* 响应式 */
         @media (max-width: 480px) {
@@ -141,7 +150,7 @@
                 <input type="password" id="password" placeholder="请输入密码" required>
             </div>
             
-            <button type="submit" class="login-btn">登录考核系统</button>
+            <button type="submit" class="login-btn" id="loginBtn">登录考核系统</button>
             
             <div class="error-msg" id="errorMsg">身份证号或密码错误，请重试！</div>
         </form>
@@ -155,9 +164,11 @@
         // 老师账号
         const ADMIN_ID = '310107198411110933';
         const ADMIN_PWD = 'Shsgm3920';
-        
+
         // 加载学员名单（自动从 students.csv 读取）
+        let studentsLoaded = false;
         async function loadStudents() {
+            const btn = document.getElementById('loginBtn');
             try {
                 const response = await fetch('students.csv');
                 const text = await response.text();
@@ -171,22 +182,38 @@
                 }
                 localStorage.setItem('exam_students', JSON.stringify(students));
                 console.log('已加载学员数据:', students.length, '人');
-                return students;
+                studentsLoaded = true;
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-text">登录考核系统</span><span class="loading-text">加载中...</span>';
             } catch (err) {
                 console.error('加载学员数据失败:', err);
-                return JSON.parse(localStorage.getItem('exam_students') || '[]');
+                // 网络失败时也从本地缓存尝试加载
+                const cached = JSON.parse(localStorage.getItem('exam_students') || '[]');
+                studentsLoaded = cached.length > 0;
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-text">登录考核系统</span><span class="loading-text">加载中...</span>';
             }
         }
-        
-        // 页面加载时获取学员数据
+
+        // 页面加载时获取学员数据，按钮先禁用防止竞态
+        const initBtn = document.getElementById('loginBtn');
+        initBtn.disabled = true;
+        initBtn.innerHTML = '<span class="btn-text">登录考核系统</span><span class="loading-text">加载数据...</span>';
         loadStudents();
-        
+
         document.getElementById('loginForm').onsubmit = async function(e) {
             e.preventDefault();
-            
+
+            // 如果数据还没加载完，不允许提交
+            if (!studentsLoaded) {
+                document.getElementById('errorMsg').textContent = '数据加载中，请稍候...';
+                document.getElementById('errorMsg').style.display = 'block';
+                return;
+            }
+
             const idCard = document.getElementById('username').value.trim();
             const pwd = document.getElementById('password').value.trim();
-            
+
             // 检查是否为老师账号
             if (idCard === ADMIN_ID && pwd === ADMIN_PWD) {
                 // 老师登录成功
@@ -195,17 +222,17 @@
                 window.location.href = 'admin.html';
                 return;
             }
-            
+
             // 检查是否为学员账号
             const students = JSON.parse(localStorage.getItem('exam_students') || '[]');
             console.log('当前学员列表:', students);
             console.log('尝试登录:', idCard, pwd);
-            
+
             const student = students.find(s => {
                 const expectedPwd = s.id.slice(-6);
                 return s.id === idCard && expectedPwd === pwd;
             });
-            
+
             if (student) {
                 // 学员登录成功
                 localStorage.setItem('exam_logged_in', 'true');
@@ -217,6 +244,7 @@
                 window.location.href = 'index.html';
             } else {
                 // 登录失败
+                document.getElementById('errorMsg').textContent = '身份证号或密码错误，请重试！';
                 document.getElementById('errorMsg').style.display = 'block';
                 document.getElementById('password').value = '';
             }

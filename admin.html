@@ -140,6 +140,12 @@
             font-size: 36px;
             font-weight: bold;
         }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 10px;
+        }
         .section {
             margin-bottom: 30px;
         }
@@ -282,8 +288,12 @@
                 <div class="number" id="importedCount">0</div>
             </div>
             <div class="stat-card">
-                <h3>📅 导入日期</h3>
-                <div class="number" id="importDate">-</div>
+                <h3>🎯 做题人次</h3>
+                <div class="number" id="attemptCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>📊 平均成绩</h3>
+                <div class="number" id="avgScore">-</div>
             </div>
         </div>
         
@@ -354,7 +364,26 @@
             const students = JSON.parse(localStorage.getItem('exam_students') || '[]');
             document.getElementById('totalCount').textContent = students.length;
             document.getElementById('importedCount').textContent = students.length;
-            document.getElementById('importDate').textContent = students.length > 0 ? '已导入' : '-';
+
+            // 统计做题人次和平均成绩（从 exam_score_xxx localStorage 读取）
+            let attemptCount = 0;
+            let totalScore = 0;
+            let scoreCount = 0;
+            for (let key in localStorage) {
+                if (key.startsWith('exam_score_')) {
+                    attemptCount++;
+                    const score = parseFloat(localStorage.getItem(key));
+                    if (!isNaN(score)) {
+                        totalScore += score;
+                        scoreCount++;
+                    }
+                }
+            }
+            document.getElementById('attemptCount').textContent = attemptCount;
+            document.getElementById('avgScore').textContent = scoreCount > 0
+                ? (totalScore / scoreCount).toFixed(1) + '分'
+                : '-';
+
             showStudentList();
         }
         

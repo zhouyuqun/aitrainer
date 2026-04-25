@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人工智能训练师（三级）操作技能考核 - 2.1.1</title>
+    <script src="../auth.js"></script>
     <style>
         * {
             margin: 0;
@@ -135,6 +136,11 @@
         
         .btn-reset {
             background: #e53e3e;
+            color: #fff;
+        }
+
+        .btn-done {
+            background: #2e7d32;
             color: #fff;
         }
         
@@ -281,7 +287,9 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+                <button class="btn btn-done" id="btnDone" onclick="markDone()">✓ 标记完成</button>
             </div>
+            <div id="doneMsg" style="text-align:center;color:#2e7d32;font-size:13px;margin-top:8px;display:none;">✅ 已标记完成</div>
 
             <div class="score-result" id="scoreResult">
                 本次得分：<span id="finalScore">0</span> / 15 分
@@ -295,6 +303,45 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
     </div>
 
 <script>
+    // ========== 答题保存与标记完成 ==========
+    const QUESTION_ID = '2.1.1';
+
+    // 页面加载时还原已保存的答案
+    window.addEventListener('DOMContentLoaded', function() {
+        const saved = localStorage.getItem('exam_answers_' + QUESTION_ID);
+        if (saved) {
+            const answers = JSON.parse(saved);
+            Object.keys(answers).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = answers[id];
+            });
+        }
+        // 检查是否已标记完成
+        if (localStorage.getItem('exam_done_' + QUESTION_ID)) {
+            document.getElementById('btnDone').textContent = '✓ 已完成';
+            document.getElementById('doneMsg').style.display = 'block';
+        }
+    });
+
+    // 自动保存答案到 localStorage
+    function saveAnswers() {
+        const answers = {};
+        document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => {
+            answers[el.id] = el.value;
+        });
+        localStorage.setItem('exam_answers_' + QUESTION_ID, JSON.stringify(answers));
+    }
+    document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => {
+        el.addEventListener('input', saveAnswers);
+    });
+
+    // 标记完成
+    function markDone() {
+        localStorage.setItem('exam_done_' + QUESTION_ID, new Date().toISOString());
+        document.getElementById('btnDone').textContent = '✓ 已完成';
+        document.getElementById('doneMsg').style.display = 'block';
+    }
+
     // 模糊匹配：差不多即给分
     function fuzzyMatch(user, correct) {
         if (!user) return false;
@@ -353,6 +400,11 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         document.getElementById('answerComparison').style.display = 'block';
         document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
         document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
+
+        // 保存成绩到 localStorage（方便管理员统计）
+        localStorage.setItem('exam_score_' + QUESTION_ID, total);
+        // 自动标记完成
+        markDone();
     };
 
     document.getElementById('btnReset').onclick = function(){
@@ -360,6 +412,11 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         document.querySelectorAll('.text-answer').forEach(i=>i.value='');
         document.getElementById('scoreResult').style.display = 'none';
         document.getElementById('answerComparison').style.display = 'none';
+        localStorage.removeItem('exam_answers_' + QUESTION_ID);
+        localStorage.removeItem('exam_score_' + QUESTION_ID);
+        localStorage.removeItem('exam_done_' + QUESTION_ID);
+        document.getElementById('btnDone').textContent = '✓ 标记完成';
+        document.getElementById('doneMsg').style.display = 'none';
     };
 </script>
 </body>
