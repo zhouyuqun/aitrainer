@@ -89,18 +89,34 @@
             white-space: pre;
         }
         
-        .blank {
+                .blank {
             display: inline-block;
-            min-width: 80px;
+            min-width: 300px;
             border: none;
-            border-bottom: 1px solid #666;
-            background: transparent;
-            font-family: inherit;
-            font-size: inherit;
+            border-bottom: 2px solid #4a5568;
+            background: #f7fafc;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 14px;
+            color: #1a202c;
             outline: none;
-            padding: 0 4px;
+            padding: 2px 8px;
             margin: 0 2px;
-            text-align: center;
+            text-align: left;
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            border-radius: 3px 3px 0 0;
+        }
+        .blank:focus {
+            border-bottom-color: #3182ce;
+            background: #ebf8ff;
+        }
+        .blank::-webkit-scrollbar {
+            height: 4px;
+        }
+        .blank::-webkit-scrollbar-thumb {
+            background: #a0aec0;
+            border-radius: 2px;
         }
         
         .text-answer {

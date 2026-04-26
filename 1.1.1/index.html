@@ -91,18 +91,34 @@
             white-space: pre;
         }
         
-        .blank {
+                .blank {
             display: inline-block;
-            min-width: 80px;
+            min-width: 300px;
             border: none;
-            border-bottom: 1px solid #666;
-            background: transparent;
-            font-family: inherit;
-            font-size: inherit;
+            border-bottom: 2px solid #4a5568;
+            background: #f7fafc;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 14px;
+            color: #1a202c;
             outline: none;
-            padding: 0 4px;
+            padding: 2px 8px;
             margin: 0 2px;
-            text-align: center;
+            text-align: left;
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            border-radius: 3px 3px 0 0;
+        }
+        .blank:focus {
+            border-bottom-color: #3182ce;
+            background: #ebf8ff;
+        }
+        .blank::-webkit-scrollbar {
+            height: 4px;
+        }
+        .blank::-webkit-scrollbar-thumb {
+            background: #a0aec0;
+            border-radius: 2px;
         }
         
         .btn-group {
@@ -313,10 +329,10 @@ bmi_labels = ['偏瘦', '正常', '超重', '肥胖']
 data['BMIRange'] = <input type="text" class="blank" id="b9">(<input type="text" class="blank" id="b10">, <input type="text" class="blank" id="b11">, <input type="text" class="blank" id="b12">, right=False)
 
 # 计算每个BMI区间中高风险患者的比例 2分
-bmi_risk_rate = <input type="text" class="blank" id="b13">(<input type="text" class="blank" id="b14">)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
+bmi_risk_rate = <input type="text" class="blank" id="b13">['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
 
 # 统计每个BMI区间的患者数量 1分
-bmi_patient_count = data['BMIRange']<input type="text" class="blank" id="b15">
+bmi_patient_count = data['BMIRange'].<input type="text" class="blank" id="b15">
 
 # 输出结果
 print("BMI区间中高风险患者的比例和患者数:")
@@ -332,10 +348,10 @@ age_labels = ['≤25岁', '26-35岁', '36-45岁', '46-55岁', '56-65岁', '＞65
 data['AgeRange'] = <input type="text" class="blank" id="b16">(<input type="text" class="blank" id="b17">, <input type="text" class="blank" id="b18">, <input type="text" class="blank" id="b19">, right=False)
 
 # 计算每个年龄区间中高风险患者的比例 2分
-age_risk_rate = <input type="text" class="blank" id="b20">(<input type="text" class="blank" id="b21">)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
+age_risk_rate = <input type="text" class="blank" id="b20">['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
 
 # 统计每个年龄区间的患者数量 1分
-age_patient_count = data['AgeRange']<input type="text" class="blank" id="b22">
+age_patient_count = data['AgeRange'].<input type="text" class="blank" id="b22">
 
 # 输出结果
 print("年龄区间中高风险患者的比例和患者数:")
@@ -369,7 +385,18 @@ print(age_patient_count)
     </div>
 
     <script>
-        // 【严格匹配评分表】标准答案与分值（含解析）
+        // 模糊匹配：去除所有空格后比对，容忍格式差异（如 X,y 与 X, y）
+        function fuzzyMatch(user, correct) {
+            if (!user) return false;
+            const u = user.trim().toLowerCase();
+            const c = correct.trim().toLowerCase();
+            // 去除所有空格后严格相等，或互为子串
+            return u.replace(/\s+/g, '') === c.replace(/\s+/g, '')
+                || u.replace(/\s+/g, '').includes(c.replace(/\s+/g, ''))
+                || c.replace(/\s+/g, '').includes(u.replace(/\s+/g, ''));
+        }
+
+        // 【评分表】标准答案与分值（含解析）
         const scoring = [
             { id:"b1",  ans:"pd.read_csv('patient_data.csv')",           score:1, hint:"用 pandas 的 read_csv 方法加载数据集，文件名要用引号包裹" },
             { id:"b2",  ans:"data['RiskLevel']",                         score:3, hint:"用 np.where 创建新列 'RiskLevel'，格式：data['RiskLevel'] = np.where(条件, '高风险患者', '低风险患者')" },
@@ -383,15 +410,15 @@ print(age_patient_count)
             { id:"b10", ans:"data['BMI']",                                 score:0 },
             { id:"b11", ans:"bins=bmi_bins",                               score:0 },
             { id:"b12", ans:"labels=bmi_labels",                          score:4, hint:"用 pd.cut 对 BMI 划分区间，注意参数 bins=bmi_bins，labels=bmi_labels，right=False 表示左闭右开" },
-            { id:"b13", ans:"data.groupby",                                score:0 },
-            { id:"b14", ans:"'BMIRange'",                                  score:2, hint:"用 groupby('BMIRange') 按区间分组，然后对 RiskLevel 列用 apply 计算高风险比例" },
-            { id:"b15", ans:"value_counts().sort_index()",                score:1, hint:"统计各区间患者数量，用 value_counts().sort_index() 按区间顺序排列" },
+            { id:"b13", ans:"data.groupby('BMIRange')",                   score:2, hint:"用 groupby('BMIRange') 按区间分组，然后对 RiskLevel 列用 apply 计算高风险比例" },
+            { id:"b14", ans:"'BMIRange'",                                   score:0 },
+            { id:"b15", ans:"value_counts().sort_index()",                 score:1, hint:"统计各区间患者数量，用 value_counts().sort_index() 按区间顺序排列" },
             { id:"b16", ans:"pd.cut",                                       score:0 },
-            { id:"b17", ans:"data['Age']",                                   score:0 },
+            { id:"b17", ans:"data['Age']",                                  score:0 },
             { id:"b18", ans:"bins=age_bins",                                score:0 },
             { id:"b19", ans:"labels=age_labels",                           score:4, hint:"用 pd.cut 对年龄划分6个区间，参数格式与 BMI 相同，right=False 左闭右开" },
-            { id:"b20", ans:"data.groupby",                                 score:0 },
-            { id:"b21", ans:"'AgeRange'",                                   score:2, hint:"按 'AgeRange' 分组后，用 apply(lambda x: (x=='高风险患者').mean()) 计算各年龄段高风险比例" },
+            { id:"b20", ans:"data.groupby('AgeRange')",                    score:2, hint:"按 'AgeRange' 分组后，用 apply(lambda x: (x=='高风险患者').mean()) 计算各年龄段高风险比例" },
+            { id:"b21", ans:"'AgeRange'",                                   score:0 },
             { id:"b22", ans:"value_counts().sort_index()",                 score:1 },
         ];
 
@@ -431,9 +458,9 @@ print(age_patient_count)
 
             scoring.forEach(item => {
                 const val = document.getElementById(item.id).value.trim();
-                if(val === item.ans){
+                if(fuzzyMatch(val, item.ans)){
                     total += item.score;
-                    right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
+                    right.push(`✅ ${item.id}：${val}（+${item.score}分）`);
                 }else{
                     let entry = `❌ ${item.id} 正确答案：${item.ans}`;
                     if (item.hint) entry += `<div class="hint-box">${item.hint}</div>`;
