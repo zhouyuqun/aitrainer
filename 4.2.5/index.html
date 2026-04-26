@@ -139,6 +139,19 @@ body {
 }
 .right { color: #38a169; font-weight: bold; }
 .wrong { color: #e53e3e; font-weight: bold; }
+.hint-box {
+    margin-top: 6px;
+    padding: 8px 10px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    border-radius: 0 4px 4px 0;
+    font-size: 13px;
+    color: #92400e;
+}
+.hint-box::before {
+    content: "💡 提示：";
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -253,12 +266,19 @@ function checkScore() {
             // Q5 VR/AR技术
             ['VR', 'AR', '虚拟现实', '增强现实', '沉浸', '元宇宙']
         ];
+        const hints = [
+            '请列举至少3种图像标注工具名称，如LabelImg、VGG Image Annotator (VIA)、CVAT、RectLabel、ScaLabel、Labelme等',
+            '深度学习模型通常基于卷积神经网络（CNN）架构，如Mask R-CNN、U-Net等，用于自动识别图像特征',
+            '跨学科团队应包含考古学家、艺术史家、计算机视觉专家、AI工程师等多领域专业人员',
+            '数据安全与隐私保护需使用加密技术，如AES、RSA等加密算法，或区块链技术确保数据不被非法获取',
+            '用户体验与公众教育可使用VR/AR技术（虚拟现实/增强现实），为用户提供沉浸式体验'
+        ];
         let ok = keywords[i].some(kw => val.includes(kw)) && val.length >= 4;
         if (ok) {
             score += per;
             detail += `<p class="right">第${i+1}空：正确</p>`;
         } else {
-            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
+            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p><div class="hint-box">${hints[i]}</div>`;
         }
     });
 
