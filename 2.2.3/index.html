@@ -177,6 +177,20 @@
             border-left: 4px solid #e53e3e;
         }
 
+        .hint-box {
+            margin-top: 6px;
+            padding: 8px 10px;
+            background: #fffbeb;
+            border-left: 3px solid #f59e0b;
+            border-radius: 0 4px 4px 0;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box::before {
+            content: "💡 提示：";
+            font-weight: bold;
+        }
+
         /* --- 修正答题纸：严格匹配图1样式 --- */
         .answer-sheet {
             margin: 15px 0;
@@ -571,7 +585,13 @@ with open('2.2.3_report_xgb.txt', 'w') as xgb_report_file:
                     totalScore += item.score;
                     rightList.push(`✅ ${item.desc} +${item.score}分`);
                 } else {
-                    wrongList.push(`❌ ${item.desc}：字数不足20字或未包含相关关键词`);
+                    let entry = `❌ ${item.desc}：字数不足20字或未包含相关关键词`;
+                    if (item.id === 'error_analysis') {
+                        entry += `<div class="hint-box">请分析随机森林模型的预测错误原因，如：训练集过拟合、特征选择不当、超参数不合适等，并说明这些因素如何影响预测准确率</div>`;
+                    } else {
+                        entry += `<div class="hint-box">请提出针对性的改进建议，如：调优超参数（n_estimators、max_depth）、增加特征工程、尝试XGBoost等集成算法，并说明预期效果</div>`;
+                    }
+                    wrongList.push(entry);
                 }
                 return;
             }
@@ -581,7 +601,9 @@ with open('2.2.3_report_xgb.txt', 'w') as xgb_report_file:
                 totalScore += item.score;
                 rightList.push(`✅ ${item.desc} +${item.score}分`);
             } else {
-                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}`);
+                let entry = `❌ ${item.desc} 正确答案：${item.ans}`;
+                if (item.hint) entry += `<div class="hint-box">${item.hint}</div>`;
+                wrongList.push(entry);
             }
         });
 

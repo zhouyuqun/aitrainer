@@ -198,6 +198,20 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
+
+        .hint-box {
+            margin-top: 6px;
+            padding: 8px 10px;
+            background: #fffbeb;
+            border-left: 3px solid #f59e0b;
+            border-radius: 0 4px 4px 0;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box::before {
+            content: "💡 提示：";
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -389,22 +403,22 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
 
     // 标准答案
     const scoring = [
-        { id:"b1", ans:"pd.read_csv('auto-mpg.csv')", score:1 },
-        { id:"b2", ans:"data.head()", score:0 },
-        { id:"b3", ans:"data", score:1 },
-        { id:"b4", ans:"isnull()", score:0 },
-        { id:"b5", ans:"sum()", score:0 },
-        { id:"b6", ans:"data.dropna()", score:1 },
-        { id:"b7", ans:"pd.to_numeric", score:1 },
-        { id:"b8", ans:"data.dropna(subset=['horsepower'])", score:0 },
-        { id:"b9", ans:"scaler.fit_transform(data[numerical_features])", score:1 },
-        { id:"b10", ans:"['cylinders','displacement','horsepower','weight','acceleration','model year','origin']", score:1 },
-        { id:"b11", ans:"data[selected_features]", score:1 },
-        { id:"b12", ans:"data['mpg']", score:1 },
-        { id:"b13", ans:"train_test_split", score:1 },
-        { id:"b14", ans:"X,y,test_size=0.2", score:0 },
-        { id:"b15", ans:"cleaned_data.to_csv", score:1 },
-        { id:"b16", ans:"index=False", score:0 },
+        { id:"b1",  ans:"pd.read_csv('auto-mpg.csv')",                     score:1, hint:"用 pandas 的 read_csv 方法加载 CSV 文件，注意文件名要用引号包裹" },
+        { id:"b2",  ans:"data.head()",                                      score:0 },
+        { id:"b3",  ans:"data",                                              score:1, hint:"用 data.isnull().sum() 检查缺失值，先写 data 再点 isull()" },
+        { id:"b4",  ans:"isnull()",                                          score:0 },
+        { id:"b5",  ans:"sum()",                                             score:0 },
+        { id:"b6",  ans:"data.dropna()",                                    score:1, hint:"删除缺失值所在行，用 dropna() 方法，不带参数默认删除任何含有空值的行" },
+        { id:"b7",  ans:"pd.to_numeric",                                    score:1, hint:"将字符串转为数值类型用 pd.to_numeric，参数 errors='coerce' 把无效字符转成 NaN" },
+        { id:"b8",  ans:"data.dropna(subset=['horsepower'])",               score:0 },
+        { id:"b9",  ans:"scaler.fit_transform(data[numerical_features])",   score:1, hint:"用 sklearn 的 StandardScaler 对数值特征做标准化，调用 fit_transform 方法" },
+        { id:"b10", ans:"['cylinders','displacement','horsepower','weight','acceleration','model year','origin']", score:1, hint:"特征列表要包含全部7个指定字段，名称和顺序必须与题目要求一致" },
+        { id:"b11", ans:"data[selected_features]",                         score:1, hint:"用选中的特征列构建自变量 X，格式为 data[特征列表]" },
+        { id:"b12", ans:"data['mpg']",                                       score:1, hint:"目标变量是 'mpg' 列，直接用 data['mpg'] 提取" },
+        { id:"b13", ans:"train_test_split",                                  score:1, hint:"从 sklearn.model_selection 导入 train_test_split，用于划分训练集和测试集" },
+        { id:"b14", ans:"X,y,test_size=0.2",                                 score:0 },
+        { id:"b15", ans:"cleaned_data.to_csv",                               score:1, hint:"用 to_csv 方法保存 CSV 文件，参数 index=False 不保存行索引" },
+        { id:"b16", ans:"index=False",                                       score:0 },
     ];
 
     document.getElementById('btnCheck').onclick = function(){
@@ -419,7 +433,9 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
                 total += item.score;
                 right.push(`✅ ${item.id}：正确 +${item.score}分`);
             } else {
-                wrong.push(`❌ ${item.id} 正确：${item.ans}`);
+                let entry = `❌ ${item.id} 正确：${item.ans}`;
+                if (item.hint) entry += `<div class="hint-box">${item.hint}</div>`;
+                wrong.push(entry);
             }
         });
 
@@ -434,12 +450,12 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         if (wash && wash.length >= 20 && hasWashKw) {
             total += 3; right.push(`✅ 清洗规范 +3分`);
         } else {
-            wrong.push(`❌ 清洗规范：字数不足20字或未包含数据清洗相关关键词`);
+            wrong.push(`❌ 清洗规范：字数不足20字或未包含数据清洗相关关键词<div class="hint-box">请写出数据清洗的具体步骤，如：用dropna()删除缺失值行，注明数据类型转换方法（如pd.to_numeric），描述清洗后的数据质量</div>`);
         }
         if (label && label.length >= 20 && hasLabelKw) {
             total += 2; right.push(`✅ 标注规范 +2分`);
         } else {
-            wrong.push(`❌ 标注规范：字数不足20字或未包含数据标注相关关键词`);
+            wrong.push(`❌ 标注规范：字数不足20字或未包含数据标注相关关键词<div class="hint-box">请写出数据标注的具体方法，如：明确目标变量mpg，描述特征字段的用途，说明训练集/测试集划分比例</div>`);
         }
 
         total = Math.min(total,15);
