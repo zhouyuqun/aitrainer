@@ -154,6 +154,17 @@
             border-color: #e74c3c !important;
             background-color: #fff0f0;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -302,7 +313,26 @@ function calculateScore() {
     });
     
     document.getElementById('scoreValue').textContent = totalScore;
-    document.getElementById('totalScore').style.display = 'block';
+
+    // 显示解题提示
+    var hintData = {'了解数据标注的概念、类型及其作用和重要性': '提示：从定义入手，说明数据标注是给原始数据添加标签的过程，类型包括图像/文本/音频标注', '掌握Label Studio的安装与配置方法和基本功能/操作': '提示：说明Label Studio是一款开源标注平台，基本操作包括创建项目、导入数据、配置标签模板', '掌握文本标注方法和实践操作技巧': '提示：文本标注包括分词、词性标注、命名实体识别、情感分析等任务', '掌握图像标注方法和实践操作技巧': '提示：图像标注包括分类框标注、语义分割、关键点标注等技术', '掌握视频标注方法和实践操作技巧': '提示：视频标注包括逐帧标注、时序标注、动作识别标注等'};
+    var hintDiv = document.createElement('div');
+    hintDiv.className = 'hint-box';
+    hintDiv.style.marginTop = '16px';
+    var hintHTML = '<strong>💡 解题提示：</strong><br>';
+    document.querySelectorAll('.question-item').forEach(function(item) {
+        var input = item.querySelector('.answer-input');
+        var qtext = item.querySelector('.correct-answer');
+        if (input && input.classList.contains('incorrect') && qtext) {
+            var q = qtext.textContent.replace('正确答案：', '').trim();
+            if (hintData[q]) {
+                hintHTML += '<strong>' + q + '：</strong>' + hintData[q] + '<br>';
+            }
+        }
+    });
+    if (hintHTML.indexOf('💡') === -1) return;
+    hintDiv.innerHTML = hintHTML;
+    document.querySelector('.score-section').appendChild(hintDiv);
 }
 
 function showAnswers() {

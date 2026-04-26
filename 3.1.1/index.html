@@ -73,6 +73,23 @@
                 @apply mb-2 ml-4 list-decimal;
             }
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
+        .hint-box code {
+            background: #fde68a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-dark">
@@ -348,7 +365,20 @@
             } else {
                 compareBox.classList.add('hidden');
             }
+
+
+        // 显示解题提示
+        const allHints = {\'q1\': \'查看 xlsx 中各功能使用次数统计，调整音量功能使用最多（最常使用）\', \'q2\': \'使用次数最多的功能 = 最受欢迎的功能\', \'q3\': \'使用次数最少的功能\', \'q4\': \'响应时间最长的功能\', \'q5\': \'响应时间居中的3个功能\', \'q6\': \'响应时间最短的功能\', \'q7\': \'从响应时间或识别准确率角度提出优化方向\', \'q8\': \'针对优化方向一，给出具体可实施的技术方案（如边缘计算/预加载）\', \'q9\': \'从用户体验或功能丰富度角度提出第二个优化方向\', \'q10\': \'针对优化方向二，给出具体可实施的技术方案\'};
+        const hintDiv = document.createElement('div');
+        hintDiv.className = 'hint-box';
+        hintDiv.style.marginTop = '12px';
+        let hintHtml = '<strong>💡 解题提示：</strong><br>';
+        errorList.forEach(item => {
+            const qkey = Object.keys(questionNames).find(k => questionNames[k] === item.name);
+            if (qkey && allHints[qkey]) hintHtml += '<strong>' + item.name + '：</strong>' + allHints[qkey] + '<br>';
         });
+        hintDiv.innerHTML = hintHtml;
+        compareList.appendChild(hintDiv);
 
         // 重置
         resetBtn.addEventListener('click', () => {

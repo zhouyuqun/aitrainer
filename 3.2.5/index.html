@@ -184,6 +184,17 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -353,7 +364,22 @@ print("sum:{}".format(sum))
     }
 
     // 严格对应评分表M1-M9的标准答案与分值
-    const scoring = [
+            const HINTS = {
+        "b1":"使用 <code>pd.read_csv('feedback_data.csv')</code> 读取用户反馈数据",
+        "b2":"使用 <code>value_counts()</code> 统计情感标签分布",
+        "b3":"使用 <code>map({'Positive':1,'Negative':-1,'Neutral':0})</code> 映射为数值",
+        "b4":"使用 <code>groupby('Category')['SentimentScore'].mean()</code> 按类别统计平均情感得分",
+        "b5":"使用布尔索引筛选 <code>data[data['Score'] < 0]</code> 负面评价",
+        "b6":"使用 <code>WordCloud</code> 或 <code>matplotlib</code> 生成词云或图表",
+        "b7":"使用 <code>sort_values(ascending=False).head(N)</code> 排序后取TopN",
+    };
+
+
+
+
+
+
+        const scoring = [
         // M1 2分
         { id:"b1", ans:"name.strip()", score:2 },
         // M2 2分

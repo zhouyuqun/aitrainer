@@ -139,6 +139,16 @@ body {
 }
 .right { color: #38a169; font-weight: bold; }
 .wrong { color: #e53e3e; font-weight: bold; }
+.hint-box {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #92400e;
+}
+.hint-box strong { color: #b45309; }
 </style>
 </head>
 <body>
@@ -239,6 +249,15 @@ function checkScore() {
         }
     });
 
+    // 添加解题提示
+    var hintMap = {0: '数据标注分类：图像标注（分类/检测/分割）、文本标注（分词/实体/情感）、音频标注（语音识别/说话人识别）', 1: '标注流程：数据收集→标注设计→人员培训→质量控制→数据导出', 2: '质量控制：交叉验证、专家审核、标注一致性检验', 3: '工具选择：根据数据类型选工具，Label Studio支持多类型', 4: '伦理规范：数据隐私、知情同意、标注人员权益保障'};
+    var hintHtml = '<div class=\'hint-box\' style=\'margin-top:12px\'><strong>💡 解题提示：</strong><br>';
+    for (var i = 0; i < user.length; i++) {
+        var ok = user[i].length > 10 && (answers[i].includes(user[i]) || user[i].includes(answers[i].substring(0,12)));
+        if (!ok && hintMap[i]) hintHtml += '<strong>第' + (i+1) + '空：</strong>' + hintMap[i] + '<br>';
+    }
+    hintHtml += '</div>';
+    detail += hintHtml;
     document.getElementById('resultBox').style.display = 'block';
     document.getElementById('scoreText').innerText = `得分：${score} / 100`;
     document.getElementById('answerDetail').innerHTML = detail;

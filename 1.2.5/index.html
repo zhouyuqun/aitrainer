@@ -146,6 +146,17 @@
             background: #e3f2fd;
             border: 1px solid #bbdefb;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -290,6 +301,12 @@ C. 动态调整个性化推荐与界面
                     </div>
                     <div class="standard-answer">
                         <strong>标准答案2：</strong><br>${standardAnswer.answer2}
+                    </div>
+                    
+                    <div class="hint-box">
+                        <strong>💡 解题思路提示：</strong><br>
+                        <strong>问题1</strong>：从"响应不准确""个性化交互缺失""界面不友好"等关键词入手，挑选最影响业务的2个问题并解释其影响。<br>
+                        <strong>问题2</strong>：方案重点从算法升级（提高识别准确率）、个性化引擎（提升交互体验）、界面简化（降低使用门槛）三方面展开。
                     </div>
                 `;
             }

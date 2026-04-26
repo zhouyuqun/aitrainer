@@ -187,6 +187,24 @@
             background: #38a169;
             color: #fff;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
+        .hint-box code {
+            background: #fde68a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -295,7 +313,21 @@ cleaned_data = <input type="text" class="blank" id="b12">(<input type="text" cla
         return user === correct || user.includes(correct) || correct.includes(user);
     }
 
-    const scoring = [
+        const HINTS = {
+            "b1":"使用 pd.read_excel 读取Excel数据",
+            "b2":"使用 data.shape[0] 获取数据行数",
+            "b3":"使用 data.dropna() 删除缺失值",
+            "b5":"使用 drop_duplicates() 删除重复行",
+            "b6":"使用 scaler.fit_transform 标准化",
+            "b9":"使用 data['低碳行为积极性'] 引用目标变量",
+            "b10":"使用 train_test_split 划分数据",
+            "b11":"填写 X, y, test_size=0.2 参数",
+            "b14":"使用 cleaned_data.to_csv 保存数据",
+            "b15":"填写 index=False 不保存索引",
+        };
+
+
+        const scoring = [
         { id:"b1", ans:"pd.read_excel('大学生低碳生活行为的影响因素数据集.xlsx')", score:1 },
         { id:"b2", ans:"data.shape[0]", score:1 },
         { id:"b3", ans:"data.dropna()", score:1 },
@@ -325,7 +357,7 @@ cleaned_data = <input type="text" class="blank" id="b12">(<input type="text" cla
                 total += item.score;
                 right.push(`✅ ${item.id}：正确 (+${item.score}分)`);
             }else{
-                wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + (HINTS[item.id] ? `<div class='hint-box'><strong>💡 提示：</strong>${HINTS[item.id]}</div>` : ``));
             }
         });
 

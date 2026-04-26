@@ -265,6 +265,23 @@
                 min-height: 50vh;
             }
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
+        .hint-box code {
+            background: #fde68a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -511,6 +528,21 @@ print("优化方案报告3.1.2-2.docx已生成！")`
             }
         };
 
+        // 智能推荐系统 - 解题提示
+        const hints2 = {
+            // 任务1 keyPoint 名称 -> 提示
+            "数据读取与缺失值统计":"提示：用 pd.read_csv 读取数据，用 isnull().sum() 统计各列缺失值",
+            "数据去重与排序":"提示：用 drop_duplicates() 去重，用 sort_values 按时间排序",
+            "用户活跃度统计":"提示：用 groupby('user_id').size() 统计每个用户行为记录数",
+            "活跃用户识别":"提示：活跃用户定义：行为记录数>5次（或>中位数）",
+            "物品评分统计":"提示：用 groupby('item_id').agg({'rating':['count','mean']}) 统计物品评分",
+            "高评分物品识别":"提示：高评分：平均分>4.0 且评价数>10",
+            "协同过滤相似度计算":"提示：用 sklearn.metrics.pairwise.cosine_similarity 计算相似度矩阵",
+            "Top-K推荐生成":"提示：对目标用户，找相似用户，取其高评分且目标用户未看过的前K个物品",
+            "推荐列表评估":"提示：用准确率(Precision)和召回率(Recall)评估推荐效果",
+            "模型优化思路":"提示：可从矩阵分解、深度学习或引入时间衰减因子方向优化",
+        };
+
         // 检查答案并打分
         function checkAnswer() {
             const userAnswer1 = document.getElementById('codeInput1').value.trim();
@@ -530,7 +562,9 @@ print("优化方案报告3.1.2-2.docx已生成！")`
                     task1Score += point.score;
                     task1Detail.push(`✅ ${point.name}：+${point.score}分`);
                 } else {
-                    task1Detail.push(`❌ ${point.name}：0分`);
+                    const h = hints2[point.name] || '';
+                    const hbox = h ? `<div class='hint-box' style='margin-top:4px;margin-bottom:6px;'><strong>💡 提示：</strong>${h}</div>` : '';
+                    task1Detail.push(`❌ ${point.name}：0分` + hbox);
                 }
             }
 
@@ -540,7 +574,9 @@ print("优化方案报告3.1.2-2.docx已生成！")`
                     task2Score += point.score;
                     task2Detail.push(`✅ ${point.name}：+${point.score}分`);
                 } else {
-                    task2Detail.push(`❌ ${point.name}：0分`);
+                    const h = hints2[point.name] || '';
+                    const hbox = h ? `<div class='hint-box' style='margin-top:4px;margin-bottom:6px;'><strong>💡 提示：</strong>${h}</div>` : '';
+                    task2Detail.push(`❌ ${point.name}：0分` + hbox);
                 }
             }
 

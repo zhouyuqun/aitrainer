@@ -211,6 +211,33 @@
         .right-text {
             color: #38a169;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
+        .hint-box code {
+            background: #fde68a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -399,6 +426,25 @@
             ans15: "•优化网络同步协议：检查并优化现有的数据传输协议，确保即使在网络条件不佳的情况下也能保持较快的同步速度。\n•自动调整同步策略：根据用户的使用习惯，动态调整同步频率。\n•设计有效的电源管理方案：确保数据同步时有足够的电源。"
         };
 
+        // 智能手环数据分析 - 解题提示
+        const hints3 = {
+            1:"提示：用 groupby + mean 按时段分组求步数均值，早晨时段约为6-12点",
+            2:"提示：傍晚时段约为18-24点，按同样方法计算",
+            3:"提示：其余时段（深夜凌晨0-6点）使用量最少",
+            4:"提示：查看各功能使用频率统计，最多使用的即最受关注",
+            5:"提示：使用频率最低的功能指标（除步数外）",
+            6:"提示：另一个较少使用的功能指标",
+            7:"提示：用 describe() 查看各功能响应时间列的均值",
+            8:"提示：从相关性分析中找与健康风险正相关的因素",
+            9:"提示：从相关性分析中找与安全性正相关的因素",
+            10:"提示：从功能丰富度或智能化方向提出，如加入AI健康预测",
+            11:"提示：结合方向一给出具体实施步骤，如引入健康AI模型",
+            12:"提示：从交互体验或数据可视化角度提出方向",
+            13:"提示：给出可量化的解决方案",
+            14:"提示：从社交功能或个性化推荐角度提出第三个方向",
+            15:"提示：说明如何提升用户粘性和健康改善效果",
+        };
+
         // 检查评分（完全保留你之前的逻辑）
         function checkScore() {
             let totalScore = 0;
@@ -427,11 +473,14 @@
             let wrongHtml = "";
             if (wrongList.length > 0) {
                 wrongList.forEach(item => {
+                    const hint = hints3[item.index] || '';
+                    const hintHtml = hint ? `<div class='hint-box'><strong>💡 提示：</strong>${hint}</div>` : '';
                     wrongHtml += `
                         <div class='compare-item'>
                             <div>第 ${item.index} 题：</div>
                             <div>你的答案：<span class='wrong-text'>${item.user}</span></div>
                             <div>正确答案：<span class='right-text'>${item.standard}</span></div>
+                            ${hintHtml}
                         </div>
                     `;
                 });

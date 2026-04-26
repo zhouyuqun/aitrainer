@@ -139,6 +139,16 @@ body {
 }
 .right { color: #38a169; font-weight: bold; }
 .wrong { color: #e53e3e; font-weight: bold; }
+.hint-box {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #92400e;
+}
+.hint-box strong { color: #b45309; }
 </style>
 </head>
 <body>
@@ -239,6 +249,15 @@ function checkScore() {
         }
     });
 
+    // 添加解题提示
+    var hintMap = {0: '模型训练：数据划分（训练集/验证集/测试集）、超参数调优、过拟合处理', 1: '评估指标：准确率、精确率、召回率、F1值、AUC', 2: '参数优化：网格搜索、随机搜索、贝叶斯优化、学习率调度', 3: '防止过拟合：正则化、Dropout、早停、数据增强', 4: '模型部署：保存模型文件（pickle/onnx）、构建API服务、容器化'};
+    var hintHtml = '<div class=\'hint-box\' style=\'margin-top:12px\'><strong>💡 解题提示：</strong><br>';
+    for (var i = 0; i < user.length; i++) {
+        var ok = user[i].length > 10 && (answers[i].includes(user[i]) || user[i].includes(answers[i].substring(0,12)));
+        if (!ok && hintMap[i]) hintHtml += '<strong>第' + (i+1) + '空：</strong>' + hintMap[i] + '<br>';
+    }
+    hintHtml += '</div>';
+    detail += hintHtml;
     document.getElementById('resultBox').style.display = 'block';
     document.getElementById('scoreText').innerText = `得分：${score} / 100`;
     document.getElementById('answerDetail').innerHTML = detail;

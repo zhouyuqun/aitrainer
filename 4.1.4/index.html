@@ -152,6 +152,17 @@
             border-color: #e74c3c !important;
             background-color: #fff0f0;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -278,7 +289,26 @@ function calculateScore() {
     });
     
     document.getElementById('scoreValue').textContent = totalScore;
-    document.getElementById('totalScore').style.display = 'block';
+
+    // 显示解题提示
+    var hintData = {};
+    var hintDiv = document.createElement('div');
+    hintDiv.className = 'hint-box';
+    hintDiv.style.marginTop = '16px';
+    var hintHTML = '<strong>💡 解题提示：</strong><br>';
+    document.querySelectorAll('.question-item').forEach(function(item) {
+        var input = item.querySelector('.answer-input');
+        var qtext = item.querySelector('.correct-answer');
+        if (input && input.classList.contains('incorrect') && qtext) {
+            var q = qtext.textContent.replace('正确答案：', '').trim();
+            if (hintData[q]) {
+                hintHTML += '<strong>' + q + '：</strong>' + hintData[q] + '<br>';
+            }
+        }
+    });
+    if (hintHTML.indexOf('💡') === -1) return;
+    hintDiv.innerHTML = hintHTML;
+    document.querySelector('.score-section').appendChild(hintDiv);
 }
 
 function showAnswers() {

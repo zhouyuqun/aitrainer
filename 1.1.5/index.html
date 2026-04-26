@@ -174,6 +174,17 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -296,7 +307,20 @@ print("不同年龄段的驾驶员数:\n", age_group_counts)
     }
     
     // 标准答案（满分25分）
-    const scoring = [
+            const HINTS = {
+            "b1":"使用 <code>pd.read_csv('medical_data.csv')</code> 读取医疗数据",
+            "b2":"使用 <code>describe()</code> 查看数据基本统计",
+            "b3":"使用 <code>info()</code> 查看数据类型和缺失值",
+            "b4":"使用 <code>isnull().sum()</code> 统计各列缺失值",
+            "b5":"使用 <code>fillna(中位数或均值)</code> 填补缺失值",
+            "b6":"使用 <code>drop_duplicates()</code> 删除重复记录",
+            "b7":"使用布尔条件筛选异常值",
+            "b8":"使用 <code>describe()</code> 查看统计分布找异常",
+            "b9":"使用 <code>drop()</code> 删除异常行",
+        };
+
+
+        const scoring = [
         { id:"b1", ans:"pd.read_csv('vehicle_traffic_data.csv')", score:2 },
         { id:"b2", ans:"data.head()", score:2 },
         { id:"b3", ans:"data.dropna()", score:2 },
@@ -331,7 +355,9 @@ print("不同年龄段的驾驶员数:\n", age_group_counts)
                 total += item.score;
                 right.push(`✅ ${item.id}：正确 +${item.score}分`);
             } else {
-                wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                    const hint = HINTS[item.id] || '';
+                    const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + hintHtml);
             }
         });
         

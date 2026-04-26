@@ -382,6 +382,31 @@ with open(report_filename, 'w') as f:
         </div>
     </div>
 <script>
+    // 注入 hint-box 样式
+    document.head.insertAdjacentHTML('beforeend', `<style>
+        .hint-box { background:#fffbeb; border-left:4px solid #f59e0b; border-radius:0 6px 6px 0; padding:8px 12px; margin-top:4px; margin-bottom:8px; font-size:13px; color:#92400e; }
+        .hint-box strong { color:#b45309; }
+    </style>`);
+
+    const HINTS_225 = {
+        "M1_1":"使用 pd.read_csv 读取数据",
+        "M1_2":"使用 df.head() 显示前5行",
+        "M2_1":"使用 pd.get_dummies 将分类变量转为数值",
+        "M2_2":"使用 df['daily_steps'] 定义目标变量",
+        "M3":"使用 train_test_split 划分数据",
+        "M3_param":"填写 X, y, test_size=0.2",
+        "M4":"使用 DecisionTreeRegressor 初始化决策树模型",
+        "M5":"使用 dt_model.fit(X_train, y_train) 训练模型",
+        "M6":"使用 dump(dt_model, filename) 保存模型",
+        "M7":"使用 dt_model.predict(X_test) 测试集预测",
+        "M8_1":"使用 results.to_csv 保存结果",
+        "M10":"使用 mean_squared_error 计算均方误差",
+        "M11":"使用 mean_absolute_error 计算平均绝对误差",
+        "M12":"使用 r2_score 计算决定系数",
+        "error_analysis":"从模型复杂度、深度限制、数据量不足等角度分析错误原因",
+        "improve_suggest":"建议：限制max_depth、增加数据量、尝试RandomForest或GradientBoosting",
+    };
+
     // 模糊匹配函数：代码精确匹配，答题纸模糊匹配
     function fuzzyMatch(user, correct) {
         if (!user) return false;
@@ -455,7 +480,9 @@ with open(report_filename, 'w') as f:
                 totalScore += item.score;
                 rightList.push(`✅ ${item.desc} +${item.score}分`);
             } else {
-                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}`);
+                const hint = (HINTS_225[item.id] || '') + (item.isText ? (item.id === 'error_analysis' ? ' 从模型深度限制、过拟合或数据量角度分析。' : ' 从调参、集成学习或特征工程角度提出建议。') : '');
+                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}` + hintHtml);
             }
         });
 

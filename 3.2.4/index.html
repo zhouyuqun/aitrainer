@@ -184,6 +184,17 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -322,7 +333,22 @@ print(f"Predicted class: {predicted_label}, Accuracy: {prob_percentage:.2f}%")
     }
 
     // 标准答案 + 评分
-    const scoring = [
+            const HINTS = {
+        "b1":"使用 <code>pd.read_csv('user_behavior.csv')</code> 读取用户行为数据",
+        "b2":"使用 <code>value_counts()</code> 统计各功能使用次数/频率",
+        "b3":"使用 <code>mean()</code> 计算平均响应时间",
+        "b4":"使用布尔索引筛选 <code>data[data['duration'] > 阈值]</code> 高延迟记录",
+        "b5":"使用 <code>groupby('hour')['action'].count()</code> 按小时统计行为次数",
+        "b6":"使用 <code>matplotlib.pyplot.plot</code> 绑制折线图",
+        "b7":"使用 <code>plt.xlabel/ylabel/title</code> 设置坐标轴标签和标题",
+    };
+
+
+
+
+
+
+        const scoring = [
         { id:"b1", ans:"ort.InferenceSession('flower-detection.onnx')", score:2 },
         { id:"b2", ans:"open('labels.txt', 'r')", score:2 },
         { id:"b3", ans:"Image.open('flower_test.png').convert('RGB')", score:2 },
@@ -347,7 +373,7 @@ print(f"Predicted class: {predicted_label}, Accuracy: {prob_percentage:.2f}%")
                 total += item.score;
                 right.push(`✅ ${item.id} 正确 +${item.score}分`);
             } else {
-                wrong.push(`❌ ${item.id} 正确：${item.ans}`);
+                wrong.push(`❌ ${item.id} 正确：${item.ans}` + (HINTS[item.id] ? `<div class='hint-box'><strong>💡 提示：</strong>${HINTS[item.id]}</div>` : ''));
             }
         });
 

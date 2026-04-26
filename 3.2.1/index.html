@@ -202,6 +202,17 @@
             background-color: #f0f0f0;
             font-weight: bold;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -338,7 +349,18 @@ for i in range(5):
         return user === correct || user.includes(correct) || correct.includes(user);
     }
     // 标准答案（按提供的代码答案配置，总分18分）
-    const scoring = [
+            const HINTS = {
+            "b1":"使用 <code>ort.InferenceSession('resnet.onnx')</code> 加载ONNX模型",
+            "b2":"使用 <code>Image.open('img_test.jpg').convert('RGB')</code> 加载并转RGB",
+            "b3":"调用已定义的 <code>preprocess_image(image)</code> 函数预处理",
+            "b4":"使用 <code>session.run([out_name], {in_name: img_data})</code> 执行推理",
+            "b5":"使用 <code>scipy.special.softmax</code> 将logits转为概率分布",
+            "b6":"使用 <code>np.argsort(probabilities[0])</code> 获取排序后的类别索引",
+            "b7":"使用 <code>probabilities[0][top5_idx]</code> 取出对应概率值",
+        };
+
+
+        const scoring = [
         { id:"b1", ans:"ort.InferenceSession('resnet.onnx')", score:2, desc:"模型加载" },
         { id:"b2", ans:"Image.open('img_test.jpg').convert", score:2, desc:"加载图片并转换为RGB" },
         { id:"b3", ans:"preprocess_image(image)", score:2, desc:"预处理图片" },
@@ -358,7 +380,9 @@ for i in range(5):
                 total += item.score;
                 right.push(`✅ ${item.desc} +${item.score}分`);
             } else {
-                wrong.push(`❌ ${item.desc} 正确答案：${item.ans}`);
+                const hint = HINTS[item.id] || '';
+                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                wrong.push(`❌ ${item.desc} 正确答案：${item.ans}` + hintHtml);
             }
         });
         // 答题纸打分（2分）

@@ -178,6 +178,17 @@
             background: #38a169;
             color: #fff;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -294,6 +305,31 @@ print("数据清洗完成，已保存为 'cleaned_sensor_data.csv'")
         </div>
     </div>
     <script>
+        // 1.1.2 智能农业传感器 - 解题提示
+        const HINTS = {
+            "b1":"使用 <code>pd.read_csv('sensor_data.csv')</code> 读取CSV文件",
+            "b2":"使用 <code>groupby('SensorType')</code> 按传感器类型分组",
+            "b3":"填写 <code>'SensorType'</code>（字符串形式）",
+            "b4":"使用 <code>agg(['count','mean'])</code> 聚合数量和平均值",
+            "b7":"使用 <code>isin(['Temperature','Humidity'])</code> 筛选温度和湿度数据",
+            "b8":"使用 <code>groupby(['Location','SensorType'])</code> 按位置和类型分组",
+            "a4":"使用 <code>np.where()</code> 条件判断函数标记异常值",
+            "a5":"填写 <code>data['SensorType']=='Temperature'</code> 条件表达式",
+            "a6":"填写 <code>data['SensorType']=='Humidity'</code> 条件表达式",
+            "a7":"使用 <code>sum()</code> 统计True的数量（即异常值数量）",
+            "a8":"使用 <code>fillna</code> 前向填补缺失值",
+            "a9":"填写 <code>method='ffill'</code> 参数",
+            "a10":"再用一次 <code>fillna</code> 后向填补",
+            "a11":"填写 <code>method='bfill'</code> 参数",
+            "a12":"使用 <code>data.drop</code> 删除指定列",
+            "a13":"填写 <code>columns</code> 参数指定要删除的列名",
+            "a14":"使用 <code>cleaned_data.to_csv</code> 保存文件",
+            "a15":"填写 <code>index=False</code> 不保存行索引",
+        };
+
+
+
+
         const scoring = [
             // M4 读取数据集（2分）
             { id:"b1", ans:"pd.read_csv('sensor_data.csv')", score:2 },
@@ -340,7 +376,9 @@ print("数据清洗完成，已保存为 'cleaned_sensor_data.csv'")
                         total += item.score;
                         right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
                     }else{
-                        wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                        const hint = HINTS[item.id] || '';
+                        const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                        wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + hintHtml);
                     }
                 }
             });

@@ -169,6 +169,24 @@
         
         .correct-item { color: #27ae60; margin:4px 0; font-size:13px; }
         .wrong-item { color: #e53e3e; margin:4px 0; font-size:13px; }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
+        .hint-box code {
+            background: #fde68a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -334,6 +352,18 @@ cleaned_file_path = '2.1.3_cleaned_data.csv'
 
     <script>
         // 标准答案 + 10分分配
+            const HINTS = {
+            "b1":"使用 pd.read_csv 读取车辆数据",
+            "b2":"使用布尔索引筛选高mpg车辆",
+            "b3":"使用 groupby 分组统计",
+            "b4":"使用 plt.scatter 绑制散点图",
+            "b5":"使用 data.corr() 计算相关性",
+            "b6":"使用 plt.hist 绑制直方图",
+            "b7":"添加 weight 列",
+            "b8":"使用 plt.savefig 保存图表",
+        };
+
+
         const scoring = [
             { id:"b1", ans:"pd.read_csv('finance数据集.csv')", score:1 },
             { id:"b2", ans:"print(data.head())", score:1 },

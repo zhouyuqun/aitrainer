@@ -178,6 +178,17 @@
             background: #38a169;
             color: #fff;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -296,6 +307,19 @@ print("年龄段用户数：\n", age_counts)
     </div>
 
     <script>
+                const HINTS = {
+            "b1":"使用 <code>pd.read_csv('shopping_data.csv')</code> 读取数据",
+            "b2":"使用 <code>data.head()</code> 查看前5行",
+            "b3":"使用 <code>dropna()</code> 删除含缺失值的行",
+            "b4":"填写 <code>['Age']</code> 指定Age列",
+            "b5":"使用 <code>astype(int)</code> 转换为整数类型",
+            "b6":"填写 <code>['PurchaseAmount']</code> 指定列",
+            "b7":"使用 <code>astype(float)</code> 转换为浮点类型",
+            "b8":"填写 <code>['ReviewScore']</code> 指定列",
+            "b9":"使用 <code>astype(int)</code> 转换为整数类型",
+        };
+
+
         const scoring = [
             { id:"b1", ans:"pd.read_csv('user_behavior_data.csv')", score:2 },
             { id:"b2", ans:"data.head()", score:2 },
@@ -337,7 +361,9 @@ print("年龄段用户数：\n", age_counts)
                     total += item.score;
                     right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
                 }else{
-                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                    const hint = HINTS[item.id] || '';
+                    const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + hintHtml);
                 }
             });
             

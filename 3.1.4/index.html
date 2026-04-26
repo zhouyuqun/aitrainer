@@ -259,6 +259,17 @@
             color: #0E6245;
         }
         
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
         .wrong-answer {
             background: var(--danger-light);
             border-left: 4px solid var(--danger-color);
@@ -294,6 +305,23 @@
                 padding: 10px 20px;
                 width: 100%;
             }
+        }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
+        .hint-box code {
+            background: #fde68a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
         }
     </style>
 </head>
@@ -444,6 +472,24 @@
             {id:"q13",ans:standard.q13,score:1},{id:"q14",ans:standard.q14,score:1}
         ];
 
+        // 医疗数据分析 - 解题提示
+        const hints4 = {
+            q1:"提示：查看各健康指标（血压/血糖/心率）随时间变化的趋势，从数据描述中找规律",
+            q2:"提示：查看各时段异常事件记录，高风险时段通常为深夜或凌晨",
+            q3:"提示：正常活动时段（如上午9-11点）风险最低",
+            q4:"提示：使用功能最多的用户行为数据，最常被使用的是哪个功能",
+            q5:"提示：使用频率最低的功能，如药品管理或健康报告",
+            q6:"提示：响应时间最长的功能，通常与复杂计算相关",
+            q7:"提示：响应时间居中的功能群",
+            q8:"提示：响应时间最短的功能，通常是简单查询",
+            q9:"提示：针对数据准确性和实时监测提出优化方向",
+            q10:"提示：给出具体实施方案，如引入可穿戴设备实时同步",
+            q11:"提示：针对个性化医疗或AI辅助诊断方向提出",
+            q12:"提示：说明如何利用患者历史数据做精准医疗方案",
+            q13:"提示：针对医患沟通效率或远程医疗方向提出",
+            q14:"提示：说明如何提升用户体验和医疗服务可及性",
+        };
+
         const qNames = {
             q1:"健康指标变化趋势",q2:"高风险时间段",q3:"安全时间段",
             q4:"受用户青睐的功能",q5:"较少使用的功能",
@@ -462,7 +508,11 @@
                     const v=document.getElementById(item.id).value.trim();
                     const name=qNames[item.id];
                     if(v===item.ans){total+=item.score;right.push(`✅ ${name}：${item.ans}（+${item.score}分）`);}
-                    else{wrong.push(`❌ ${name} 正确答案：${item.ans}`);}
+                    else{
+                        const hint = hints4[item.id] || '';
+                        const hintHtml = hint ? `<div class='hint-box' style='margin-top:4px;margin-bottom:8px;'><strong>💡 提示：</strong>${hint}</div>` : '';
+                        wrong.push(`❌ ${name} 正确答案：${item.ans}` + hintHtml);
+                    }
                 });
 
                 document.getElementById('finalScore').textContent=total;

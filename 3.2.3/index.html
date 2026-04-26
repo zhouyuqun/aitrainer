@@ -184,6 +184,17 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -305,7 +316,22 @@ print(f"Predicted emotion: {predicted_emotion}")
     }
 
     // 标准答案 + 评分
-    const scoring = [
+            const HINTS = {
+        "b1":"使用 <code>pd.read_excel('sales_data.xlsx')</code> 读取Excel数据",
+        "b2":"使用 <code>describe(include='all')</code> 查看数据概览和基本统计",
+        "b3":"使用布尔索引筛选 <code>data[data['Month'].isin(['January','February'])]</code>",
+        "b4":"使用 <code>groupby('Product')['Sales'].sum()</code> 按产品分组统计销售额",
+        "b5":"使用 <code>matplotlib.pyplot.bar</code> 绑制柱状图",
+        "b6":"使用 <code>sort_values(ascending=False)</code> 降序排列",
+        "b7":"使用布尔索引筛选 <code>data[(data['Sales'] > 下限) & (data['Sales'] < 上限)]</code>",
+    };
+
+
+
+
+
+
+        const scoring = [
         { id:"b1", ans:"{'neutral':0, 'happiness':1, 'surprise':2, 'sadness':3, 'anger':4, 'disgust':5, 'fear':6, 'contempt':7}", score:3 },
         { id:"b2", ans:"ort.InferenceSession('emotion-ferplus.onnx')", score:3 },
         { id:"b3", ans:"preprocess('img_test.png')", score:3 },
@@ -327,7 +353,7 @@ print(f"Predicted emotion: {predicted_emotion}")
                 total += item.score;
                 right.push(`✅ ${item.id} 正确 +${item.score}分`);
             } else {
-                wrong.push(`❌ ${item.id} 正确：${item.ans}`);
+                wrong.push(`❌ ${item.id} 正确：${item.ans}` + (HINTS[item.id] ? `<div class='hint-box'><strong>💡 提示：</strong>${HINTS[item.id]}</div>` : ''));
             }
         });
 

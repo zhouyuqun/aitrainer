@@ -179,6 +179,17 @@
             background: #38a169;
             color: #fff;
         }
+
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
@@ -307,6 +318,23 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
     </div>
     <script>
         // 【严格匹配评分表】标准答案与分值
+                const HINTS = {
+            "b1":"使用 <code>isnull().sum()</code> 统计每列缺失值数量",
+            "b2":"使用 <code>duplicated().sum()</code> 统计重复行数量",
+            "b3":"引用 <code>data['Age']</code> 列",
+            "b4":"使用 <code>between(18, 70)</code> 判断年龄是否在合理区间",
+            "b5":"引用 <code>data['Income']</code> 列",
+            "b6":"填写合理阈值 <code>0</code>（收入应>0）",
+            "b7":"引用 <code>data['LoanAmount']</code> 列",
+            "b8":"引用 <code>data['Income']</code>（贷款不超过收入5倍）",
+            "b9":"引用 <code>data['CreditScore']</code> 列",
+            "b10":"使用 <code>between(300, 850)</code> 判断信用分范围",
+            "b11":"引用清洗后数据 <code>cleaned_data</code>",
+            "b12":"使用 <code>to_csv</code> 方法保存",
+            "b13":"填写文件名 <code>'cleaned_credit_data.csv'</code>",
+        };
+
+
         const scoring = [
             { id:"b1", ans:"isnull().sum()", score:2 },
             { id:"b2", ans:"duplicated().sum()", score:2 },
@@ -334,7 +362,9 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
                     total += item.score;
                     right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
                 }else{
-                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+                    const hint = HINTS[item.id] || '';
+                    const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + hintHtml);
                 }
             });
             

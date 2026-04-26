@@ -212,6 +212,23 @@
             resize: vertical;
             font-size: 13px;
         }
+        .hint-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box strong { color: #b45309; }
+        .hint-box code {
+            background: #fde68a;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -415,6 +432,30 @@ with open('2.2.2_report_rf.txt', 'w') as results_rf_file:
     }
 
     // 严格对应评分表的20分标准（M1-M14）
+    // 2.2.2 汽车MPG预测 - 解题提示
+    const HINTS_222 = {
+        "M1_1":"使用 pd.read_csv('auto-mpg.csv') 读取数据",
+        "M1_2":"使用 df.head() 显示前5行",
+        "M2_1":"使用 pd.to_numeric(df['horsepower']) 转换马力列为数值",
+        "M2_3":"使用 df.dropna() 删除缺失值行",
+        "M3_1":"定义特征列：cylinders, displacement, horsepower, weight, acceleration, model year, origin",
+        "M3_2":"定义目标变量：df['mpg']",
+        "M4_1":"使用 train_test_split 函数划分数据",
+        "M4_2":"填写 X, y, test_size=0.2 参数",
+        "M5_1":"使用 Pipeline 创建管道",
+        "M5_2":"使用 StandardScaler() 标准化数值特征",
+        "M5_3":"使用 LinearRegression() 线性回归模型",
+        "M6":"使用 pipeline.fit(X_train, y_train) 训练管道模型",
+        "M7":"使用 dump(pipeline, 'model.pkl') 保存模型",
+        "M8":"使用 pipeline.predict(X_test) 对测试集预测",
+        "M10_1":"使用 RandomForestRegressor 创建随机森林",
+        "M10_2":"填写 n_estimators=100 参数",
+        "M11":"使用 rf_model.fit(X_train, y_train) 训练模型",
+        "M12":"使用 rf_model.predict(X_test) 随机森林预测",
+        "errorAnalysis":"从线性回归欠拟合、特征选择、数据量角度分析",
+        "improveSuggest":"建议：调高森林树量、特征工程、增加训练数据",
+    };
+
     const scoringRules = [
         // M1：2分（加载数据1分 + 显示前5行1分）
         { id: "M1_1", ans: "pd.read_csv('auto-mpg.csv')", score: 1, desc: "M1-加载数据集" },
@@ -492,7 +533,9 @@ with open('2.2.2_report_rf.txt', 'w') as results_rf_file:
                 totalScore += item.score;
                 rightList.push(`✅ ${item.desc} +${item.score}分`);
             } else {
-                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}`);
+                const hint = (HINTS_222[item.id] || '') + (item.isText ? (item.id === 'errorAnalysis' ? ' 从准确率和模型选择角度分析问题。' : ' 从超参数调整或集成方法角度提出建议。') : '');
+                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}` + hintHtml);
             }
         });
 

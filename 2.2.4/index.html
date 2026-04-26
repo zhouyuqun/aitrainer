@@ -405,6 +405,37 @@ with open(report_filename_xgb, 'w') as f:
             </div>
         </div>
     </div>
+    // 注入 hint-box 样式
+    document.head.insertAdjacentHTML('beforeend', `<style>
+        .hint-box { background:#fffbeb; border-left:4px solid #f59e0b; border-radius:0 6px 6px 0; padding:8px 12px; margin-top:4px; margin-bottom:8px; font-size:13px; color:#92400e; }
+        .hint-box strong { color:#b45309; }
+    </style>`);
+
+    const HINTS_224 = {
+        "M1_1":"使用 pd.read_excel 读取Excel数据",
+        "M1_2":"使用 data.head() 显示前5行",
+        "M2_1":"使用 data.drop 删除指定列",
+        "M3_1":"使用 data_cleaned.drop 删除特征列",
+        "M3_4":"使用 data_cleaned[target] 定义目标变量",
+        "M4_1":"使用 train_test_split 函数",
+        "M4_2":"填写 X, y, test_size=0.2",
+        "M5":"使用 LinearRegression() 初始化线性回归",
+        "M6":"使用 model.fit(X_train, y_train) 训练模型",
+        "M7":"使用 dump(model, filename) 保存模型",
+        "M8":"使用 model.predict(X_test) 测试集预测",
+        "M9_1":"使用 results.to_csv 保存结果",
+        "M10_1":"使用 mean_squared_error 计算MSE",
+        "M10_2":"使用 r2_score 计算R方",
+        "M11_1":"使用 XGBRegressor 创建XGBoost模型",
+        "M11_2":"填写 n_estimators=1000, learning_rate=0.05, max_depth=5",
+        "M12":"使用 xgb_model.fit(X_train, y_train) 训练",
+        "M13":"使用 xgb_model.predict(X_test) 预测",
+        "M14_1":"使用 mean_squared_error 计算XGBoost的MSE",
+        "M14_2":"使用 r2_score 计算XGBoost的R方",
+        "error_analysis":"从线性回归欠拟合、特征选择、数据分布角度分析错误原因",
+        "improve_suggest":"建议：调参（max_depth/n_estimators）、特征工程、XGBoost或集成方法",
+    };
+
 <script>
     // 模糊匹配函数：代码精确匹配，答题纸模糊匹配
     function fuzzyMatch(user, correct) {
@@ -492,7 +523,9 @@ with open(report_filename_xgb, 'w') as f:
                 totalScore += item.score;
                 rightList.push(`✅ ${item.desc} +${item.score}分`);
             } else {
-                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}`);
+                const hint = (HINTS_224[item.id] || '') + (item.isText ? (item.id === 'error_analysis' ? ' 从模型欠拟合、特征工程或超参数角度分析。' : ' 从调参策略、集成学习或数据增强角度提出建议。') : '');
+                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
+                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}` + hintHtml);
             }
         });
 
