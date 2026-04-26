@@ -472,16 +472,6 @@ print(age_patient_count)
             document.getElementById('analysisBox').style.display = 'none';
         };
 
-        // 重做本题（清除所有记录）
-        function resetThisQuestion() {
-            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
-            localStorage.removeItem('exam_score_' + QID);
-            localStorage.removeItem('exam_done_' + QID);
-            localStorage.removeItem('exam_wrong_' + QID);
-            localStorage.removeItem('exam_answers_' + QID);
-            document.getElementById('btnReset').click();
-        }
-
         // ── 答题保存/导出功能 ────────────────────────────────
         const QID = '1.1.1';
         const QNAME = '智能医疗系统中的业务数据处理流程设计';
@@ -492,6 +482,21 @@ print(age_patient_count)
                 name: localStorage.getItem('exam_student_name') || '',
                 id: localStorage.getItem('exam_student_id') || ''
             };
+        }
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(i => i.value = '');
+            document.getElementById('scoreResult').style.display = 'none';
+            document.getElementById('answerComparison').style.display = 'none';
+            document.getElementById('analysisBox').style.display = 'none';
+            document.getElementById('finalScore').textContent = '?';
+            alert('已重置，可重新作答！');
         }
 
         function saveAnswers() {

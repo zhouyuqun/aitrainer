@@ -369,13 +369,13 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         </div>
     </div>
 
-<script>
+<script>>
     // ========== 答题保存与标记完成 ==========
-    const QUESTION_ID = '2.1.1';
+    const QID = '2.1.1';
 
     // 页面加载时还原已保存的答案
     window.addEventListener('DOMContentLoaded', function() {
-        const saved = localStorage.getItem('exam_answers_' + QUESTION_ID);
+        const saved = localStorage.getItem('exam_answers_' + QID);
         if (saved) {
             const answers = JSON.parse(saved);
             Object.keys(answers).forEach(id => {
@@ -384,7 +384,7 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
             });
         }
         // 检查是否已标记完成
-        if (localStorage.getItem('exam_done_' + QUESTION_ID)) {
+        if (localStorage.getItem('exam_done_' + QID)) {
             document.getElementById('btnDone').textContent = '✓ 已完成';
             document.getElementById('doneMsg').style.display = 'block';
         }
@@ -396,7 +396,7 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => {
             answers[el.id] = el.value;
         });
-        localStorage.setItem('exam_answers_' + QUESTION_ID, JSON.stringify(answers));
+        localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
     }
     document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => {
         el.addEventListener('input', saveAnswers);
@@ -406,14 +406,14 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
     function exportScore() {
         const studentName = localStorage.getItem('exam_student_name') || '未知';
         const studentId = localStorage.getItem('exam_student_id') || localStorage.getItem('exam_logged_in') || '未知';
-        const score = localStorage.getItem('exam_score_' + QUESTION_ID) || '0';
-        const doneTime = localStorage.getItem('exam_done_' + QUESTION_ID) || '';
-        const answers = JSON.parse(localStorage.getItem('exam_answers_' + QUESTION_ID) || '{}');
+        const score = localStorage.getItem('exam_score_' + QID) || '0';
+        const doneTime = localStorage.getItem('exam_done_' + QID) || '';
+        const answers = JSON.parse(localStorage.getItem('exam_answers_' + QID) || '{}');
         
         const record = {
             studentName: studentName,
             studentId: studentId,
-            questionId: QUESTION_ID,
+            questionId: QID,
             score: parseFloat(score),
             doneTime: doneTime,
             answers: answers,
@@ -424,14 +424,14 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `成绩_${QUESTION_ID}_${studentName}_${new Date().toISOString().slice(0,10)}.json`;
+        a.download = `成绩_${QID}_${studentName}_${new Date().toISOString().slice(0,10)}.json`;
         a.click();
         URL.revokeObjectURL(url);
     }
 
     // 标记完成
     function markDone() {
-        localStorage.setItem('exam_done_' + QUESTION_ID, new Date().toISOString());
+        localStorage.setItem('exam_done_' + QID, new Date().toISOString());
         document.getElementById('btnDone').textContent = '✓ 已完成';
         document.getElementById('doneMsg').style.display = 'block';
     }
@@ -509,15 +509,15 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
 
         // 保存成绩到 localStorage（方便管理员统计）
-        localStorage.setItem('exam_score_' + QUESTION_ID, total);
+        localStorage.setItem('exam_score_' + QID, total);
         // 自动标记完成
         markDone();
 
         // 记录错题
         if (wrong.length > 0) {
-            localStorage.setItem('exam_wrong_' + QUESTION_ID, '1');
+            localStorage.setItem('exam_wrong_' + QID, '1');
         } else {
-            localStorage.removeItem('exam_wrong_' + QUESTION_ID);
+            localStorage.removeItem('exam_wrong_' + QID);
         }
         // 显示解析
         var analysisEl = document.getElementById('analysisContent');
@@ -534,12 +534,28 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         document.querySelectorAll('.text-answer').forEach(i=>i.value='');
         document.getElementById('scoreResult').style.display = 'none';
         document.getElementById('answerComparison').style.display = 'none';
-        localStorage.removeItem('exam_answers_' + QUESTION_ID);
-        localStorage.removeItem('exam_score_' + QUESTION_ID);
-        localStorage.removeItem('exam_done_' + QUESTION_ID);
+        localStorage.removeItem('exam_answers_' + QID);
+        localStorage.removeItem('exam_score_' + QID);
+        localStorage.removeItem('exam_done_' + QID);
         document.getElementById('btnDone').textContent = '✓ 标记完成';
         document.getElementById('doneMsg').style.display = 'none';
     };
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
 </script>
 </body>
 </html>

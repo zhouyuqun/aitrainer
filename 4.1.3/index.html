@@ -4,19 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4.1.3 数据清洗 - 原题+答题</title>
-    <script src="../auth.js">
-    function resetThisQuestion() {
-        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
-        localStorage.removeItem('exam_score_4.1.3');
-        localStorage.removeItem('exam_done_4.1.3');
-        localStorage.removeItem('exam_wrong_4.1.3');
-        localStorage.removeItem('exam_answers_4.1.3');
+    <script src="../auth.js"></script>
+<script>>
+        const QID = '4.1.3';
+        const QNAME = '';
+        const QMAX = 0;
+
+        function getStudentInfo() {
+            return {
+                name: localStorage.getItem('exam_student_name') || '',
+                id: localStorage.getItem('exam_student_id') || ''
+            };
+        }
+.3');
+        localStorage.removeItem('exam_wrong_' + QID + ');
+        localStorage.removeItem('exam_answers_' + QID + ');
         document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
         var el;
         el = document.getElementById('scoreResult'); if(el) el.style.display='none';
         el = document.getElementById('answerComparison'); if(el) el.style.display='none';
         el = document.getElementById('analysisBox'); if(el) el.style.display='none';
     }
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
+</script>
 </script>
     <style>
         * {

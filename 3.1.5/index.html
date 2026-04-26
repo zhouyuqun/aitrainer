@@ -4,19 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能家居环境控制模拟考试</title>
-    <script src="../auth.js">
-    function resetThisQuestion() {
-        if (!confirm('确定要重做本题吗？成纞记录将被清除。')) return;
-        localStorage.removeItem('exam_score_3.1.5');
-        localStorage.removeItem('exam_done_3.1.5');
-        localStorage.removeItem('exam_wrong_3.1.5');
-        localStorage.removeItem('exam_answers_3.1.5');
+    <script src="../auth.js"></script>
+<script>>
+        const QID = '3.1.5';
+        const QNAME = '';
+        const QMAX = 0;
+
+        function getStudentInfo() {
+            return {
+                name: localStorage.getItem('exam_student_name') || '',
+                id: localStorage.getItem('exam_student_id') || ''
+            };
+        }
+ne_3.1.5');
+        localStorage.removeItem('exam_wrong_' + QID + ');
+        localStorage.removeItem('exam_answers_' + QID + ');
         document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(function(i){i.value='';});
         var el;
         el = document.getElementById('scoreResult'); if(el) el.style.display='none';
         el = document.getElementById('answerComparison'); if(el) el.style.display='none';
         el = document.getElementById('analysisBox'); if(el) el.style.display='none';
     }
+
+        // 重做本题（清除所有记录<script>        const QID = '3.1.5';
+        const QNAME = '';
+        const QMAX = 0;
+   function resetThisQuestion() {
+ </script>  if (!confirm('确定要重做本题吗？成绩记录将被清除<script>        const QID = '3.1.5';
+        const QNAME = '';
+        const QMAX = 0;
+turn;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = docu
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
+</script>lementById('analysisBox'); if(el) el.style.display='none';
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
+</script>
 </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -310,7 +357,10 @@
 
                         <!-- 代码编辑器3 -->
                         <div class="code-editor-item" data-editor-id="3">
-                            <label class="block font-semibold mb-2 text-gray-700">题目3代码：</label>
+                            <label class="block <script>        const QID = '3.1.5';
+        const QNAME = '';
+        const QMAX = 0;
+mibold mb-2 text-gray-700">题目3代码：</label>
                             <div class="relative">
                                 <textarea class="w-full h-64 p-3 border border-gray-300 rounded-md code-editor text-sm bg-gray-50 resize-none" placeholder="请在此编写代码..."></textarea>
                                 <div class="absolute top-2 right-2">
@@ -550,7 +600,24 @@ console.log(responseTimeStats);`
                 const userResult = eval.call(sandbox, userCodeWithReturn);
 
                 // 计算正确结果
-                const correctFiltered = envData.filter(item => item.energy > 1.5);
+                const correctFiltered = envData.filter(item => ite
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
+</script>> 1.5);
                 const correctResult = [...correctFiltered].sort((a, b) => b.energy - a.energy);
 
                 // 验证结果

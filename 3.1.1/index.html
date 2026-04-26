@@ -4,19 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能音箱产品数据分析与优化</title>
-    <script src="../auth.js">
-    function resetThisQuestion() {
-        if (!confirm('确定要重做本题吗？成纞记录将被清除。')) return;
-        localStorage.removeItem('exam_score_3.1.1');
-        localStorage.removeItem('exam_done_3.1.1');
-        localStorage.removeItem('exam_wrong_3.1.1');
-        localStorage.removeItem('exam_answers_3.1.1');
+    <script src="../auth.js"></script>
+<script>>
+        const QID = '3.1.1';
+        const QNAME = '';
+        const QMAX = 0;
+
+        function getStudentInfo() {
+            return {
+                name: localStorage.getItem('exam_student_name') || '',
+                id: localStorage.getItem('exam_student_id') || ''
+            };
+        }
+e_3.1.1');
+        localStorage.removeItem('exam_wrong_' + QID + ');
+        localStorage.removeItem('exam_answers_' + QID + ');
         document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(function(i){i.value='';});
         var el;
         el = document.getElementById('scoreResult'); if(el) el.style.display='none';
         el = document.getElementById('answerComparison'); if(el) el.style.display='none';
         el = document.getElementById('analysisBox'); if(el) el.style.display='none';
     }
+
+        // 重做本题（清除所有记录<script>        const QID = '3.1.1';
+        const QNAME = '';
+        const QMAX = 0;
+   function resetThisQuestion() {
+ </script>  if (!confirm('确定要重做本题吗？成绩记录将被清除。<script>        const QID = '3.1.1';
+        const QNAME = '';
+        const QMAX = 0;
+urn;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.displ
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
+</script>;
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
+</script>
 </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -267,7 +314,10 @@
 
                     <!-- 5. 响应时间适中 -->
                     <div>
-                        <label class="block font-medium mb-1">5. 响应时间适中的功能（3个）：</label>
+                        <label class="block <script>        const QID = '3.1.1';
+        const QNAME = '';
+        const QMAX = 0;
+dium mb-1">5. 响应时间适中的功能（3个）：</label>
                         <input type="text" name="q5" class="answer-input" placeholder="请输入答案">
                     </div>
 
@@ -385,8 +435,24 @@
             errorCount.textContent = error;
             scoreBox.classList.remove('hidden');
 
-            // 显示错误对比
-            if (error > 0) {
+            //
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+            alert('已重置，可重新作答！');
+        }
+</script>           if (error > 0) {
                 compareBox.classList.remove('hidden');
                 compareList.innerHTML = '';
                 
