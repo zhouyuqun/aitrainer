@@ -179,8 +179,13 @@
                     // UTF-8 with BOM：跳过3字节BOM后解码
                     text = new TextDecoder('utf-8').decode(buffer.slice(3));
                 } else {
-                    // 无BOM：按 GBK 解码（Windows Excel 默认编码）
-                    text = new TextDecoder('gbk').decode(buffer);
+                    // 无BOM：先尝试 UTF-8 严格解码，失败才用 GBK
+                    try {
+                        text = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+                    } catch (e) {
+                        // UTF-8 无效，说明是 GBK 编码（Windows Excel 默认）
+                        text = new TextDecoder('gbk').decode(buffer);
+                    }
                 }
                 const lines = text.trim().split('\n');
                 const students = [];
