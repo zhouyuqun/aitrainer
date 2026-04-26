@@ -148,6 +148,42 @@
             background: #805ad5;
             color: #fff;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+        .analysis-content h4 {
+            margin-top: 12px;
+            color: #2c5282;
+            font-size: 14px;
+        }
+        .analysis-content code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+
         
         .btn-export:hover {
             background: #6b46c1;
@@ -312,7 +348,14 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
                 <button class="btn btn-done" id="btnDone" onclick="markDone()">✓ 标记完成</button>
                 <button class="btn btn-export" id="btnExport" onclick="exportScore()">📤 导出成绩</button>
+            </div><button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">🔄 重做本题</button>
+
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">📖 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
+
             <div id="doneMsg" style="text-align:center;color:#2e7d32;font-size:13px;margin-top:8px;display:none;">✅ 已标记完成</div>
 
             <div class="score-result" id="scoreResult">
@@ -469,6 +512,21 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
         localStorage.setItem('exam_score_' + QUESTION_ID, total);
         // 自动标记完成
         markDone();
+
+        // 记录错题
+        if (wrong.length > 0) {
+            localStorage.setItem('exam_wrong_' + QUESTION_ID, '1');
+        } else {
+            localStorage.removeItem('exam_wrong_' + QUESTION_ID);
+        }
+        // 显示解析
+        var analysisEl = document.getElementById('analysisContent');
+        var analysisBox = document.getElementById('analysisBox');
+        if (analysisEl && typeof questionAnalysis !== 'undefined') {
+            analysisEl.innerHTML = questionAnalysis;
+            if (analysisBox) analysisBox.style.display = 'block';
+        }
+
     };
 
     document.getElementById('btnReset').onclick = function(){

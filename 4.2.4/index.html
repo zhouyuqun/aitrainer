@@ -4,7 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>人工智能训练师考核 - 4.2.4</title>
-<script src="../auth.js"></script>
+<script src="../auth.js">
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        localStorage.removeItem('exam_score_4.2.4');
+        localStorage.removeItem('exam_done_4.2.4');
+        localStorage.removeItem('exam_wrong_4.2.4');
+        localStorage.removeItem('exam_answers_4.2.4');
+        document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
+        var el;
+        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+    }
+</script>
 <style>
 * {
     margin: 0;
@@ -45,6 +58,31 @@ body {
     background: #f8fafc;
     border-right: 1px solid #e2e8f0;
 }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
 .question-side h2 {
     font-size: 19px;
     color: #2c5282;
@@ -206,65 +244,9 @@ body {
         <div class="btn-group">
             <button class="btn btn-submit" onclick="checkScore()">提交评分</button>
             <button class="btn btn-reset" onclick="resetAll()">清空重置</button>
-        </div>
-        <div class="result-box" id="resultBox" style="background:#f0fff4;border:1px solid #9ae6b4;">
-            <div class="score" id="scoreText">得分：0 / 100</div>
-            <div class="answer-list" id="answerDetail"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-// 标准答案
-const answers = [
-    "综合运用摄像头、雷达、激光雷达等多种传感器，实现环境信息的多维度、互补性采集，提高数据丰富度和准确性",
-    "设计涵盖各种天气条件（晴、雨、雪、雾等）、不同时间段（白天、夜晚、黄昏、黎明）、不同地域（城市、乡村、高速、山区等）以及各种驾驶场景（拥堵、畅通、施工、事故等）的数据采集计划，确保数据的全面性和多样性",
-    "建立严格的数据质量评估体系，对采集到的数据进行初步筛选和清洗，去除模糊、失真、重复等无效数据，确保数据的高质量",
-    "培训标注员",
-    "结构化的高质量"
-];
-
-function checkScore() {
-    let user = [
-        document.getElementById('q1').value.trim(),
-        document.getElementById('q2').value.trim(),
-        document.getElementById('q3').value.trim(),
-        document.getElementById('q4').value.trim(),
-        document.getElementById('q5').value.trim()
-    ];
-    let score = 0;
-    let detail = "";
-    let per = 20;
-
-    user.forEach((val, i) => {
-        let ok = val.length > 4 && (answers[i].includes(val) || val.includes(answers[i].substring(0,10)));
-        if (ok) {
-            score += per;
-            detail += `<p class="right">第${i+1}空：正确</p>`;
-        } else {
-            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
-        }
-    });
-
-    // 添加解题提示
-    var hintMap = {0: '需求分析：明确业务目标、数据来源、评估指标', 1: '数据采集：传感器/API/爬虫/数据库导出，注意合法合规', 2: '数据清洗：缺失值处理、异常值检测、数据标准化', 3: '特征工程：特征选择、特征构造、特征编码、降维（PCA）', 4: '结果验证：A/B测试、在线评估、用户反馈闭环'};
-    var hintHtml = '<div class=\'hint-box\' style=\'margin-top:12px\'><strong>💡 解题提示：</strong><br>';
-    for (var i = 0; i < user.length; i++) {
-        var ok = user[i].length > 10 && (answers[i].includes(user[i]) || user[i].includes(answers[i].substring(0,12)));
-        if (!ok && hintMap[i]) hintHtml += '<strong>第' + (i+1) + '空：</strong>' + hintMap[i] + '<br>';
-    }
-    hintHtml += '</div>';
-    detail += hintHtml;
-    document.getElementById('resultBox').style.display = 'block';
-    document.getElementById('scoreText').innerText = `得分：${score} / 100`;
-    document.getElementById('answerDetail').innerHTML = detail;
-}
-
-function resetAll() {
-    document.querySelectorAll('.blank-input').forEach(i => i.value = '');
-    document.getElementById('resultBox').style.display = 'none';
-}
-</script>
-
-</body>
-</html>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
+            </div>

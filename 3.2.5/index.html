@@ -58,6 +58,31 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         
         .column:last-child {
             border-right: none;
@@ -343,130 +368,9 @@ print("sum:{}".format(sum))
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-            <div class="score-result" id="scoreResult">
-                本次得分：<span id="finalScore">0</span> / 20 分
-            </div>
-            <div class="answer-comparison" id="answerComparison">
-                <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer">无错误</div>
-                <div class="correct-answer" id="correctAnswer">无正确答案</div>
-            </div>
-        </div>
-    </div>
-<script>
-    // 模糊匹配函数
-    function fuzzyMatch(user, correct) {
-        if (!user) return false;
-        user = user.trim().toLowerCase().replace(/\s+/g, '');
-        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
-        return user.includes(correct) || correct.includes(user);
-    }
-
-    // 严格对应评分表M1-M9的标准答案与分值
-            const HINTS = {
-        "b1":"使用 <code>pd.read_csv('feedback_data.csv')</code> 读取用户反馈数据",
-        "b2":"使用 <code>value_counts()</code> 统计情感标签分布",
-        "b3":"使用 <code>map({'Positive':1,'Negative':-1,'Neutral':0})</code> 映射为数值",
-        "b4":"使用 <code>groupby('Category')['SentimentScore'].mean()</code> 按类别统计平均情感得分",
-        "b5":"使用布尔索引筛选 <code>data[data['Score'] < 0]</code> 负面评价",
-        "b6":"使用 <code>WordCloud</code> 或 <code>matplotlib</code> 生成词云或图表",
-        "b7":"使用 <code>sort_values(ascending=False).head(N)</code> 排序后取TopN",
-    };
-
-
-
-
-
-
-        const scoring = [
-        // M1 2分
-        { id:"b1", ans:"name.strip()", score:2 },
-        // M2 2分
-        { id:"b2", ans:"ort.InferenceSession", score:2 },
-        // M3 2分
-        { id:"b3", ans:"ort_session.get_inputs", score:2 },
-        // M4 2分
-        { id:"b4", ans:"makedirs(result_path)", score:2 },
-        // M5 2分
-        { id:"b5", ans:"cv2.imread(img_path)", score:2 },
-        // M6 2分（两个空合并判分）
-        { id:["b6","b6_1"], ans:"cv2.resize(image", score:2 },
-        // M7 2分
-        { id:"b7", ans:"np.array", score:2 },
-        // M8 1分
-        { id:"b8", ans:"np.expand_dims", score:1 },
-        // M9 2分
-        { id:"b9", ans:"ort_session.run", score:2 }
-    ];
-
-    // 打分逻辑
-    document.getElementById('btnCheck').onclick = function(){
-        let total = 0;
-        let wrong = [];
-        let right = [];
-
-        // 代码填空M1-M9 共17分
-        scoring.forEach(item => {
-            // 处理M6的双空
-            if (Array.isArray(item.id)) {
-                const val1 = document.getElementById(item.id[0]).value.trim();
-                const val2 = document.getElementById(item.id[1]).value.trim();
-                const userVal = val1 + val2;
-                if (fuzzyMatch(userVal, item.ans)) {
-                    total += item.score;
-                    right.push(`✅ M${right.length+1} 正确 +${item.score}分`);
-                } else {
-                    wrong.push(`❌ M${wrong.length+1} 正确：${item.ans}`);
-                }
-            } else {
-                const val = document.getElementById(item.id).value.trim();
-                if (fuzzyMatch(val, item.ans)) {
-                    total += item.score;
-                    right.push(`✅ M${right.length+1} 正确 +${item.score}分`);
-                } else {
-                    wrong.push(`❌ M${wrong.length+1} 正确：${item.ans}`);
-                }
-            }
-        });
-
-        // M10 1分（截图人脸数正确，代码页不判分，预留）
-        // M11 1分（标注框正确，代码页不判分，预留）
-        // M12 人机交互最多1分，模糊匹配
-        const flow = document.getElementById('flowNorm').value.trim();
-        // 模糊匹配：不少于3条，包含交互流程关键词即给1分
-        const flowKeywords = ["加载模型","加载图像","预处理","识别图像","返回结果","反馈","帮助"];
-        let matchCount = 0;
-        flowKeywords.forEach(k => {
-            if (flow.includes(k)) matchCount++;
-        });
-        // 满足不少于3条关键词，给1分，最多1分
-        if (matchCount >= 3) {
-            total += 1;
-            right.push(`✅ M12 人机交互流程 正确 +1分`);
-        } else if (flow.length > 0) {
-            // 有填写但不达标，给0分
-            wrong.push(`❌ M12 人机交互流程 不足3条有效优化方式，得0分`);
-        } else {
-            wrong.push(`❌ M12 人机交互流程 未填写，得0分`);
-        }
-
-        // 总分上限20分
-        total = Math.min(total, 20);
-        document.getElementById('finalScore').textContent = total;
-        document.getElementById('scoreResult').style.display = 'block';
-        document.getElementById('answerComparison').style.display = 'block';
-        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
-        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确！';
-    };
-
-    // 重置功能
-    document.getElementById('btnReset').onclick = function(){
-        document.querySelectorAll('.blank').forEach(i => i.value = '');
-        document.querySelectorAll('.text-answer').forEach(i => i.value = '');
-        document.getElementById('scoreResult').style.display = 'none';
-        document.getElementById('answerComparison').style.display = 'none';
-    };
-</script>
-</body>
-</html>

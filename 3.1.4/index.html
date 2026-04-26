@@ -92,6 +92,31 @@
             border-right: 1px solid var(--border-color);
             min-width: 320px;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         
         .column:last-child {
             border-right: none;
@@ -430,7 +455,13 @@
                 <button class="btn btn-reset" id="btnReset">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>重置答题
                 </button>
+            </div><button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
+
 
             <div class="score-result" id="scoreResult">
                 本次得分：<span id="finalScore">0</span> / 15 分

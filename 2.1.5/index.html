@@ -58,6 +58,31 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         
         .column:last-child {
             border-right: none;
@@ -330,114 +355,9 @@ cleaned_file_path = <input type="text" class="blank" id="b14">
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-
-            <div class="score-result" id="scoreResult">
-                本次得分：<span id="finalScore">0</span> / 15 分
-            </div>
-            <div class="answer-comparison" id="answerComparison">
-                <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer">无错误</div>
-                <div class="correct-answer" id="correctAnswer">无正确答案</div>
-            </div>
-        </div>
-    </div>
-
-<script>
-    // 模糊匹配：答案差不多即给分
-    function fuzzyMatch(user, correct) {
-        if (!user) return false;
-        user = user.trim().toLowerCase().replace(/\s+/g, '');
-        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
-        return user === correct || user.includes(correct) || correct.includes(user);
-    }
-
-    // 标准答案（图3）
-    // 2.1.5 MPG数据处理 - 解题提示
-    const HINTS_215 = {
-        "b1":"使用 pd.read_csv('auto-mpg.csv') 读取车辆数据",
-        "b2":"使用 data.info() 查看数据类型和缺失值信息",
-        "b3":"使用 data.isnull().sum() 统计每列缺失值数量",
-        "b4":"使用 data.dropna() 删除含缺失值的行",
-        "b5":"使用 pd.to_numeric 转换列为数值类型",
-        "b7":"使用 astype(int) 转换为整数",
-        "b8":"使用 data_cleaned.drop_duplicates() 删除重复行",
-        "b10":"使用 label_encoder.fit_transform 标签编码",
-        "b11":"使用 exercise_frequency_counts.plot.pie 绑制饼图",
-        "b13":"填写 data_filled, test_size=0.2 参数",
-        "b16":"使用 cleaned_file_path 保存文件路径",
-    };
-
-    const scoring = [
-        { id:"b1", ans:"pd.read_csv('auto-mpg.csv')", score:1 },
-        { id:"b2", ans:"data.info()", score:1 },
-        { id:"b3", ans:"data.isnull().sum()", score:1 },
-        { id:"b4", ans:"data.dropna()", score:1 },
-        { id:"b5", ans:"pd.to_numeric", score:1 },
-        { id:"b6", ans:"data_cleaned['Your age']", score:0 },
-        { id:"b7", ans:"astype(int)", score:1 },
-        { id:"b8", ans:"data_cleaned.drop_duplicates()", score:1 },
-        { id:"b9", ans:"'How do you describe your current level of fitness ?'", score:0 },
-        { id:"b10", ans:"label_encoder.fit_transform(data_cleaned['How do you describe your current level of fitness ?'])", score:1 },
-        { id:"b11", ans:"exercise_frequency_counts.plot.pie", score:1 },
-        { id:"b12", ans:"train_test_split", score:0 },
-        { id:"b13", ans:"data_filled, test_size=0.2", score:1 },
-        { id:"b14", ans:"'2.1.5_cleaned_data.csv'", score:0 },
-        { id:"b15", ans:"data_filled.to_csv", score:0 },
-        { id:"b16", ans:"cleaned_file_path", score:1 },
-    ];
-
-    document.getElementById('btnCheck').onclick = function(){
-        let total = 0;
-        let wrong = [];
-        let right = [];
-
-        // 代码题（10分）
-        scoring.forEach(item => {
-            const val = document.getElementById(item.id).value.trim();
-            if (fuzzyMatch(val, item.ans)) {
-                total += item.score;
-                right.push(`✅ ${item.id}：正确 +${item.score}分`);
-            } else {
-                const hint = HINTS_215[item.id] || '';
-                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
-                wrong.push(`❌ ${item.id} 正确：${item.ans}` + hintHtml);
-            }
-        });
-
-        // 清洗规范（3分）+ 标注规范（2分）：必须字数≥20字+含关键词才给分
-        const wash = document.getElementById('washNorm').value.trim();
-        const label = document.getElementById('labelNorm').value.trim();
-        const washKw = ['缺失', '删除', 'dropna', 'isnull', '数据类型', '转换', '数值', '质量', '异常', '处理'];
-        const labelKw = ['标注', '标签', '特征', '目标', '变量', 'label', '分类'];
-        const hasWashKw = washKw.some(k => wash.includes(k));
-        const hasLabelKw = labelKw.some(k => label.includes(k));
-        if (wash && wash.length >= 20 && hasWashKw) {
-            total += 3; right.push(`✅ 清洗规范 +3分`);
-        } else {
-            wrong.push(`❌ 清洗规范：字数不足20字或未包含数据清洗相关关键词`);
-        }
-        if (label && label.length >= 20 && hasLabelKw) {
-            total += 2; right.push(`✅ 标注规范 +2分`);
-        } else {
-            wrong.push(`❌ 标注规范：字数不足20字或未包含数据标注相关关键词`);
-        }
-
-        total = Math.min(total, 15);
-
-        document.getElementById('finalScore').textContent = total;
-        document.getElementById('scoreResult').style.display = 'block';
-        document.getElementById('answerComparison').style.display = 'block';
-        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
-        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
-    };
-
-    document.getElementById('btnReset').onclick = function(){
-        document.querySelectorAll('.blank').forEach(i => i.value = '');
-        document.querySelectorAll('.text-answer').forEach(i => i.value = '');
-        document.getElementById('scoreResult').style.display = 'none';
-        document.getElementById('answerComparison').style.display = 'none';
-    };
-</script>
-</body>
-</html>

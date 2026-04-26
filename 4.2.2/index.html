@@ -4,7 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>人工智能训练师考核 - 4.2.2</title>
-<script src="../auth.js"></script>
+<script src="../auth.js">
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        localStorage.removeItem('exam_score_4.2.2');
+        localStorage.removeItem('exam_done_4.2.2');
+        localStorage.removeItem('exam_wrong_4.2.2');
+        localStorage.removeItem('exam_answers_4.2.2');
+        document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
+        var el;
+        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+    }
+</script>
 <style>
 * {
     margin: 0;
@@ -45,6 +58,31 @@ body {
     background: #f8fafc;
     border-right: 1px solid #e2e8f0;
 }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
 .question-side h2 {
     font-size: 19px;
     color: #2c5282;
@@ -209,65 +247,9 @@ body {
         <div class="btn-group">
             <button class="btn btn-submit" onclick="checkScore()">提交评分</button>
             <button class="btn btn-reset" onclick="resetAll()">清空重置</button>
-        </div>
-        <div class="result-box" id="resultBox" style="background:#f0fff4;border:1px solid #9ae6b4;">
-            <div class="score" id="scoreText">得分：0 / 100</div>
-            <div class="answer-list" id="answerDetail"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-// 标准答案
-const answers = [
-    "人工智能训练师标注影像数据",
-    "删除低质量影像、去除噪声、修正格式错误、标准化影像数据格式，调整影像",
-    "使用深度学习框架构建模型，使用标注的数据集训练AI模型，通过交叉验证评估模型性能，确保模型的准确性和泛化能力",
-    "在独立的测试集上评估模型性能，根据测试结果调整模型参数，优化模型结构，提高诊断准确率",
-    "模型的诊断准确率和范围"
-];
-
-function checkScore() {
-    let user = [
-        document.getElementById('q1').value.trim(),
-        document.getElementById('q2').value.trim(),
-        document.getElementById('q3').value.trim(),
-        document.getElementById('q4').value.trim(),
-        document.getElementById('q5').value.trim()
-    ];
-    let score = 0;
-    let detail = "";
-    let per = 20;
-
-    user.forEach((val, i) => {
-        let ok = val.length > 8 && (answers[i].includes(val) || val.includes(answers[i].substring(0,10)));
-        if (ok) {
-            score += per;
-            detail += `<p class="right">第${i+1}空：正确</p>`;
-        } else {
-            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
-        }
-    });
-
-    // 添加解题提示
-    var hintMap = {0: '数据标注分类：图像标注（分类/检测/分割）、文本标注（分词/实体/情感）、音频标注（语音识别/说话人识别）', 1: '标注流程：数据收集→标注设计→人员培训→质量控制→数据导出', 2: '质量控制：交叉验证、专家审核、标注一致性检验', 3: '工具选择：根据数据类型选工具，Label Studio支持多类型', 4: '伦理规范：数据隐私、知情同意、标注人员权益保障'};
-    var hintHtml = '<div class=\'hint-box\' style=\'margin-top:12px\'><strong>💡 解题提示：</strong><br>';
-    for (var i = 0; i < user.length; i++) {
-        var ok = user[i].length > 10 && (answers[i].includes(user[i]) || user[i].includes(answers[i].substring(0,12)));
-        if (!ok && hintMap[i]) hintHtml += '<strong>第' + (i+1) + '空：</strong>' + hintMap[i] + '<br>';
-    }
-    hintHtml += '</div>';
-    detail += hintHtml;
-    document.getElementById('resultBox').style.display = 'block';
-    document.getElementById('scoreText').innerText = `得分：${score} / 100`;
-    document.getElementById('answerDetail').innerHTML = detail;
-}
-
-function resetAll() {
-    document.querySelectorAll('.blank-input').forEach(i => i.value = '');
-    document.getElementById('resultBox').style.display = 'none';
-}
-</script>
-
-</body>
-</html>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
+            </div>

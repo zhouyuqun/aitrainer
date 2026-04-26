@@ -58,6 +58,31 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         
         .column:last-child {
             border-right: none;
@@ -327,89 +352,9 @@ for i in range(5):
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-            <div class="score-result" id="scoreResult">
-                本次得分：<span id="finalScore">0</span> / 20 分
-            </div>
-            <div class="answer-comparison" id="answerComparison">
-                <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer">无错误</div>
-                <div class="correct-answer" id="correctAnswer">无正确答案</div>
-            </div>
-        </div>
-    </div>
-<script>
-    // 模糊匹配：代码精确匹配，答题纸模糊匹配
-    function fuzzyMatch(user, correct) {
-        if (!user) return false;
-        // 统一格式：去空格、转小写
-        user = user.trim().toLowerCase().replace(/\s+/g, '');
-        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
-        // 代码题：精确匹配核心关键词；答题纸：包含合理优化方式即得分
-        return user === correct || user.includes(correct) || correct.includes(user);
-    }
-    // 标准答案（按提供的代码答案配置，总分18分）
-            const HINTS = {
-            "b1":"使用 <code>ort.InferenceSession('resnet.onnx')</code> 加载ONNX模型",
-            "b2":"使用 <code>Image.open('img_test.jpg').convert('RGB')</code> 加载并转RGB",
-            "b3":"调用已定义的 <code>preprocess_image(image)</code> 函数预处理",
-            "b4":"使用 <code>session.run([out_name], {in_name: img_data})</code> 执行推理",
-            "b5":"使用 <code>scipy.special.softmax</code> 将logits转为概率分布",
-            "b6":"使用 <code>np.argsort(probabilities[0])</code> 获取排序后的类别索引",
-            "b7":"使用 <code>probabilities[0][top5_idx]</code> 取出对应概率值",
-        };
-
-
-        const scoring = [
-        { id:"b1", ans:"ort.InferenceSession('resnet.onnx')", score:2, desc:"模型加载" },
-        { id:"b2", ans:"Image.open('img_test.jpg').convert", score:2, desc:"加载图片并转换为RGB" },
-        { id:"b3", ans:"preprocess_image(image)", score:2, desc:"预处理图片" },
-        { id:"b4", ans:"session.run", score:2, desc:"进行图片识别推理" },
-        { id:"b5", ans:"scipy.special.softmax", score:2, desc:"应用softmax函数获取概率" },
-        { id:"b6", ans:"np.argsort(probabilities[0])", score:2, desc:"获取Top5类别索引（排序部分）" },
-        { id:"b7", ans:"probabilities[0][top5_idx]", score:1, desc:"获取Top5对应概率" },
-    ];
-    document.getElementById('btnCheck').onclick = function(){
-        let total = 0;
-        let wrong = [];
-        let right = [];
-        // 代码题打分（18分）
-        scoring.forEach(item => {
-            const val = document.getElementById(item.id).value.trim();
-            if (fuzzyMatch(val, item.ans)) {
-                total += item.score;
-                right.push(`✅ ${item.desc} +${item.score}分`);
-            } else {
-                const hint = HINTS[item.id] || '';
-                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
-                wrong.push(`❌ ${item.desc} 正确答案：${item.ans}` + hintHtml);
-            }
-        });
-        // 答题纸打分（2分）
-        const interaction = document.getElementById('interactionOpt').value.trim();
-        if (interaction) {
-            // 按优化方式数量计分，1个得1分，2个及以上得2分
-            const optCount = interaction.split(/\d+[.、)]/).filter(Boolean).length;
-            const interactionScore = Math.min(optCount, 2);
-            total += interactionScore;
-            right.push(`✅ 人机交互优化方式 +${interactionScore}分`);
-        } else {
-            wrong.push(`❌ 人机交互最优方式未填写，不得分`);
-        }
-        // 分数上限20分
-        total = Math.min(Math.round(total * 100) / 100, 20);
-        document.getElementById('finalScore').textContent = total;
-        document.getElementById('scoreResult').style.display = 'block';
-        document.getElementById('answerComparison').style.display = 'block';
-        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
-        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
-    };
-    document.getElementById('btnReset').onclick = function(){
-        document.querySelectorAll('.blank').forEach(i=>i.value='');
-        document.querySelectorAll('.text-answer').forEach(i=>i.value='');
-        document.getElementById('scoreResult').style.display = 'none';
-        document.getElementById('answerComparison').style.display = 'none';
-    };
-</script>
-</body>
-</html>

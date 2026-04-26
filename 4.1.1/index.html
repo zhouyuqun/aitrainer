@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4.1.1 数据标注 - 原题+答题</title>
-    <script src="../auth.js"></script>
+    <script src="../auth.js">
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        localStorage.removeItem('exam_score_4.1.1');
+        localStorage.removeItem('exam_done_4.1.1');
+        localStorage.removeItem('exam_wrong_4.1.1');
+        localStorage.removeItem('exam_answers_4.1.1');
+        document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
+        var el;
+        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+    }
+</script>
     <style>
         * {
             margin: 0;
@@ -24,6 +37,31 @@
             display: flex;
             gap: 25px;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         
         /* 左侧：原题完整内容 */
         .left-original {
@@ -284,73 +322,9 @@ Label Studio音频标注功能演示。
                 <button class="btn btn-score" onclick="calculateScore()">自动评分</button>
                 <button class="btn btn-show-answers" onclick="showAnswers()">显示答案</button>
                 <button class="btn btn-reset" onclick="resetForm()">重置</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-
-            <div class="total-score" id="totalScore">本题得分：<span id="scoreValue">0</span>/25分</div>
-        </div>
-    </div>
-
-<script>
-function calculateScore() {
-    let totalScore = 0;
-    const questions = document.querySelectorAll('.question-item');
-    
-    questions.forEach(item => {
-        const userAnswer = item.querySelector('.answer-input').value.trim();
-        const correctAnswer = item.dataset.correct;
-        const score = parseInt(item.dataset.score);
-        
-        item.querySelector('.answer-input').classList.remove('correct', 'incorrect');
-        
-        if (userAnswer === '') {
-            item.querySelector('.answer-input').classList.add('incorrect');
-        } else if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
-            totalScore += score;
-            item.querySelector('.answer-input').classList.add('correct');
-        } else {
-            item.querySelector('.answer-input').classList.add('incorrect');
-        }
-    });
-    
-    document.getElementById('scoreValue').textContent = totalScore;
-
-    // 显示解题提示
-    var hintData = {'了解数据标注的概念、类型及其作用和重要性': '提示：从定义入手，说明数据标注是给原始数据添加标签的过程，类型包括图像/文本/音频标注', '掌握Label Studio的安装与配置方法和基本功能/操作': '提示：说明Label Studio是一款开源标注平台，基本操作包括创建项目、导入数据、配置标签模板', '掌握文本标注方法和实践操作技巧': '提示：文本标注包括分词、词性标注、命名实体识别、情感分析等任务', '掌握图像标注方法和实践操作技巧': '提示：图像标注包括分类框标注、语义分割、关键点标注等技术', '掌握视频标注方法和实践操作技巧': '提示：视频标注包括逐帧标注、时序标注、动作识别标注等'};
-    var hintDiv = document.createElement('div');
-    hintDiv.className = 'hint-box';
-    hintDiv.style.marginTop = '16px';
-    var hintHTML = '<strong>💡 解题提示：</strong><br>';
-    document.querySelectorAll('.question-item').forEach(function(item) {
-        var input = item.querySelector('.answer-input');
-        var qtext = item.querySelector('.correct-answer');
-        if (input && input.classList.contains('incorrect') && qtext) {
-            var q = qtext.textContent.replace('正确答案：', '').trim();
-            if (hintData[q]) {
-                hintHTML += '<strong>' + q + '：</strong>' + hintData[q] + '<br>';
-            }
-        }
-    });
-    if (hintHTML.indexOf('💡') === -1) return;
-    hintDiv.innerHTML = hintHTML;
-    document.querySelector('.score-section').appendChild(hintDiv);
-}
-
-function showAnswers() {
-    document.querySelectorAll('.correct-answer').forEach(ans => {
-        ans.style.display = 'block';
-    });
-}
-
-function resetForm() {
-    document.querySelectorAll('.answer-input').forEach(input => {
-        input.value = '';
-        input.classList.remove('correct', 'incorrect');
-    });
-    document.querySelectorAll('.correct-answer').forEach(ans => {
-        ans.style.display = 'none';
-    });
-    document.getElementById('totalScore').style.display = 'none';
-}
-</script>
-</body>
-</html>

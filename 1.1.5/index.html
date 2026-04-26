@@ -57,6 +57,31 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         
         .column:last-child {
             border-right: none;
@@ -286,96 +311,9 @@ print("不同年龄段的驾驶员数:\n", age_group_counts)
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-            <div class="score-result" id="scoreResult">
-                本次得分：<span id="finalScore">0</span> / 25 分
-            </div>
-            <div class="answer-comparison" id="answerComparison">
-                <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer">无错误</div>
-                <div class="correct-answer" id="correctAnswer">无正确答案</div>
-            </div>
-        </div>
-    </div>
-<script>
-    // 忽略空格匹配代码
-    function fuzzyMatch(user, correct) {
-        if (!user || user.trim() === '') return false;
-        user = user.replace(/\s+/g, '').toLowerCase();
-        correct = correct.replace(/\s+/g, '').toLowerCase();
-        return user === correct;
-    }
-    
-    // 标准答案（满分25分）
-            const HINTS = {
-            "b1":"使用 <code>pd.read_csv('medical_data.csv')</code> 读取医疗数据",
-            "b2":"使用 <code>describe()</code> 查看数据基本统计",
-            "b3":"使用 <code>info()</code> 查看数据类型和缺失值",
-            "b4":"使用 <code>isnull().sum()</code> 统计各列缺失值",
-            "b5":"使用 <code>fillna(中位数或均值)</code> 填补缺失值",
-            "b6":"使用 <code>drop_duplicates()</code> 删除重复记录",
-            "b7":"使用布尔条件筛选异常值",
-            "b8":"使用 <code>describe()</code> 查看统计分布找异常",
-            "b9":"使用 <code>drop()</code> 删除异常行",
-        };
-
-
-        const scoring = [
-        { id:"b1", ans:"pd.read_csv('vehicle_traffic_data.csv')", score:2 },
-        { id:"b2", ans:"data.head()", score:2 },
-        { id:"b3", ans:"data.dropna()", score:2 },
-        { id:"b5", ans:"data['Age'].astype", score:1 },
-        { id:"b7", ans:"data['Speed'].astype", score:1 },
-        { id:"b9", ans:"data['TravelDistance'].astype", score:1 },
-        { id:"b11", ans:"data['TravelTime'].astype", score:1 },
-        { id:"b15", ans:"data['TravelTime'].between", score:2 },
-        { id:"b16", ans:"data.to_csv", score:1 },
-        { id:"b20", ans:"data['TravelTime'].between", score:1 },
-        { id:"b21", ans:"data['TrafficEvent'].value_counts()", score:2 },
-        { id:"b23", ans:"agg({'Speed':'mean','TravelDistance':'mean','TravelTime':'mean'})", score:2 },
-        { id:"b28", ans:"data['AgeGroup'].value_counts().sort_index()", score:5 }
-    ];
-
-    document.getElementById('btnCheck').onclick = function(){
-        let total = 0;
-        let wrong = [];
-        let right = [];
-        let hasEmpty = false;
-        
-        scoring.forEach(item => {
-            const el = document.getElementById(item.id);
-            if (!el) return;
-            
-            const val = el.value.trim();
-            
-            if (val === '') {
-                hasEmpty = true;
-                wrong.push(`❌ ${item.id} 未填写`);
-            } else if (fuzzyMatch(val, item.ans)) {
-                total += item.score;
-                right.push(`✅ ${item.id}：正确 +${item.score}分`);
-            } else {
-                    const hint = HINTS[item.id] || '';
-                    const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
-                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + hintHtml);
-            }
-        });
-        
-        // 只有在所有有分的空都填了才计分
-        total = Math.min(total, 25);
-        
-        document.getElementById('finalScore').textContent = total;
-        document.getElementById('scoreResult').style.display = 'block';
-        document.getElementById('answerComparison').style.display = 'block';
-        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
-        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '无正确答案';
-    };
-
-    document.getElementById('btnReset').onclick = function(){
-        document.querySelectorAll('.blank').forEach(i=>i.value='');
-        document.getElementById('scoreResult').style.display = 'none';
-        document.getElementById('answerComparison').style.display = 'none';
-    };
-</script>
-</body>
-</html>

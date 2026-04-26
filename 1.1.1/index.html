@@ -194,6 +194,40 @@
             background: #38a169;
             color: #fff;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+        .analysis-content h4 {
+            margin-top: 10px;
+            color: #2c5282;
+        }
+        .analysis-content code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
     </style>
 </head>
 <body>
@@ -311,8 +345,15 @@ print(age_patient_count)
 
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查答案</button>
-                <button class="btn btn-reset" id="btnReset">重置代码</button>
+                <button class="btn btn-reset" id="btnReset">重置本题</button>
                 <button class="btn btn-export" id="btnExport">📤 导出成绩</button>
+                <button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">🔄 重做本题</button>
+            </div>
+
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none; margin-top:20px;">
+                <div class="analysis-title">📖 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
 
             <div class="score-result" id="scoreResult">
@@ -328,7 +369,7 @@ print(age_patient_count)
     </div>
 
     <script>
-        // 【严格匹配评分表】标准答案与分值
+        // 【严格匹配评分表】标准答案与分值（含解析）
         const scoring = [
             { id:"b1",  ans:"pd.read_csv('patient_data.csv')",           score:1, hint:"用 pandas 的 read_csv 方法加载数据集，文件名要用引号包裹" },
             { id:"b2",  ans:"data['RiskLevel']",                         score:3, hint:"用 np.where 创建新列 'RiskLevel'，格式：data['RiskLevel'] = np.where(条件, '高风险患者', '低风险患者')" },
@@ -354,12 +395,40 @@ print(age_patient_count)
             { id:"b22", ans:"value_counts().sort_index()",                 score:1 },
         ];
 
+        // 题目完整解析
+        const questionAnalysis = `
+<h4>考点一：数据读取</h4>
+<p>使用 <code>pd.read_csv()</code> 读取 CSV 文件是 pandas 最基础的操作。文件名必须用引号包裹。</p>
+
+<h4>考点二：条件赋值 np.where()</h4>
+<p><code>np.where(条件, 值1, 值2)</code> 是向量化条件赋值：<br>
+条件为 True 时返回 值1，为 False 时返回 值2。<br>
+本题中：<code>data['DaysInHospital'] > 7</code> 为条件，超过7天返回"高风险患者"，否则返回"低风险患者"。</p>
+
+<h4>考点三：分组统计 value_counts()</h4>
+<p><code>series.value_counts()</code> 统计各分类的数量，直接在 Series 上调用。</p>
+
+<h4>考点四：占比计算</h4>
+<p>占比 = 某类数量 / 总数量。<br>
+用 <code>len(data)</code> 获取数据总行数，不要硬编码数字。</p>
+
+<h4>考点五：区间划分 pd.cut()</h4>
+<p><code>pd.cut(数据, bins=区间边界, labels=区间标签, right=False)</code><br>
+- <code>bins</code>：划分点，如 <code>[0, 18.5, 24, 28, np.inf]</code><br>
+- <code>labels</code>：区间名称<br>
+- <code>right=False</code>：左闭右开，即 [0, 18.5)</p>
+
+<h4>考点六：分组聚合 groupby()</h4>
+<p><code>data.groupby('列名')['统计列'].操作()</code><br>
+本题用 <code>apply(lambda x: (x=='高风险患者').mean())</code> 计算各区间高风险患者比例。</p>
+        `;
+
         // 检查答案
         document.getElementById('btnCheck').onclick = function(){
             let total = 0;
             let wrong = [];
             let right = [];
-            
+
             scoring.forEach(item => {
                 const val = document.getElementById(item.id).value.trim();
                 if(val === item.ans){
@@ -371,20 +440,47 @@ print(age_patient_count)
                     wrong.push(entry);
                 }
             });
-            
+
             document.getElementById('finalScore').textContent = total;
             document.getElementById('scoreResult').style.display = 'block';
             document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
             document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
             document.getElementById('answerComparison').style.display = 'block';
+
+            // 显示解析
+            document.getElementById('analysisContent').innerHTML = questionAnalysis;
+            document.getElementById('analysisBox').style.display = 'block';
+
+            // 记录错题（只要有错题就记）
+            if (wrong.length > 0) {
+                localStorage.setItem('exam_wrong_' + QID, '1');
+                localStorage.setItem('exam_score_' + QID, total);
+                localStorage.setItem('exam_done_' + QID, '1');
+            } else {
+                // 全对则清除错题记录
+                localStorage.removeItem('exam_wrong_' + QID);
+                localStorage.setItem('exam_score_' + QID, total);
+                localStorage.setItem('exam_done_' + QID, '1');
+            }
         };
 
-        // 重置
+        // 重置本题答案
         document.getElementById('btnReset').onclick = function(){
             document.querySelectorAll('.blank').forEach(i => i.value = '');
             document.getElementById('scoreResult').style.display = 'none';
             document.getElementById('answerComparison').style.display = 'none';
+            document.getElementById('analysisBox').style.display = 'none';
         };
+
+        // 重做本题（清除所有记录）
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.getElementById('btnReset').click();
+        }
 
         // ── 答题保存/导出功能 ────────────────────────────────
         const QID = '1.1.1';

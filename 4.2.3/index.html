@@ -4,7 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>人工智能训练师考核 - 4.2.3</title>
-<script src="../auth.js"></script>
+<script src="../auth.js">
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        localStorage.removeItem('exam_score_4.2.3');
+        localStorage.removeItem('exam_done_4.2.3');
+        localStorage.removeItem('exam_wrong_4.2.3');
+        localStorage.removeItem('exam_answers_4.2.3');
+        document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
+        var el;
+        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+    }
+</script>
 <style>
 * {
     margin: 0;
@@ -45,6 +58,31 @@ body {
     background: #f8fafc;
     border-right: 1px solid #e2e8f0;
 }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
 .question-side h2 {
     font-size: 19px;
     color: #2c5282;
@@ -209,65 +247,9 @@ body {
         <div class="btn-group">
             <button class="btn btn-submit" onclick="checkScore()">提交评分</button>
             <button class="btn btn-reset" onclick="resetAll()">清空重置</button>
-        </div>
-        <div class="result-box" id="resultBox" style="background:#f0fff4;border:1px solid #9ae6b4;">
-            <div class="score" id="scoreText">得分：0 / 100</div>
-            <div class="answer-list" id="answerDetail"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-// 标准答案
-const answers = [
-    "关键区域",
-    "数据存储系统",
-    "对视频流进行降噪、压缩、格式转换、增强对比度等预处理操作，提高视频质量，便于后续分析",
-    "用深度学习算法对视频流进行实时分析，识别异常行为，如闯入禁区、夜间徘徊、暴力冲突等",
-    "异常行为识别的准确性和响应速度"
-];
-
-function checkScore() {
-    let user = [
-        document.getElementById('q1').value.trim(),
-        document.getElementById('q2').value.trim(),
-        document.getElementById('q3').value.trim(),
-        document.getElementById('q4').value.trim(),
-        document.getElementById('q5').value.trim()
-    ];
-    let score = 0;
-    let detail = "";
-    let per = 20;
-
-    user.forEach((val, i) => {
-        let ok = val.length > 4 && (answers[i].includes(val) || val.includes(answers[i].substring(0,10)));
-        if (ok) {
-            score += per;
-            detail += `<p class="right">第${i+1}空：正确</p>`;
-        } else {
-            detail += `<p class="wrong">第${i+1}空：错误 → 正确答案：${answers[i]}</p>`;
-        }
-    });
-
-    // 添加解题提示
-    var hintMap = {0: '模型训练：数据划分（训练集/验证集/测试集）、超参数调优、过拟合处理', 1: '评估指标：准确率、精确率、召回率、F1值、AUC', 2: '参数优化：网格搜索、随机搜索、贝叶斯优化、学习率调度', 3: '防止过拟合：正则化、Dropout、早停、数据增强', 4: '模型部署：保存模型文件（pickle/onnx）、构建API服务、容器化'};
-    var hintHtml = '<div class=\'hint-box\' style=\'margin-top:12px\'><strong>💡 解题提示：</strong><br>';
-    for (var i = 0; i < user.length; i++) {
-        var ok = user[i].length > 10 && (answers[i].includes(user[i]) || user[i].includes(answers[i].substring(0,12)));
-        if (!ok && hintMap[i]) hintHtml += '<strong>第' + (i+1) + '空：</strong>' + hintMap[i] + '<br>';
-    }
-    hintHtml += '</div>';
-    detail += hintHtml;
-    document.getElementById('resultBox').style.display = 'block';
-    document.getElementById('scoreText').innerText = `得分：${score} / 100`;
-    document.getElementById('answerDetail').innerHTML = detail;
-}
-
-function resetAll() {
-    document.querySelectorAll('.blank-input').forEach(i => i.value = '');
-    document.getElementById('resultBox').style.display = 'none';
-}
-</script>
-
-</body>
-</html>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
+            </div>

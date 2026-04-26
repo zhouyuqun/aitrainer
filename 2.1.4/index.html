@@ -58,6 +58,31 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         
         .column:last-child {
             border-right: none;
@@ -331,108 +356,9 @@ output_path = '2.1.4_cleaned_data.csv'
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查答案</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-
-            <div class="score-result" id="scoreResult">
-                本次答对：<span id="finalScore">0</span> 题
-            </div>
-            <div class="answer-comparison" id="answerComparison">
-                <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer"></div>
-                <div class="correct-answer" id="correctAnswer"></div>
-            </div>
-        </div>
-    </div>
-
-<script>
-    // 模糊匹配：答案差不多即给分
-    function fuzzyMatch(user, correct) {
-        if (!user) return false;
-        user = user.trim().toLowerCase().replace(/\s+/g, '');
-        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
-        return user === correct || user.includes(correct) || correct.includes(user);
-    }
-
-        const HINTS = {
-            "b1":"使用 pd.read_csv 读取空气质量数据",
-            "b2":"使用布尔索引筛选优良空气",
-            "b3":"使用布尔索引筛选污染天",
-            "b4":"使用 groupby 按区域统计",
-            "b5":"使用 plt.bar 绑制柱状图",
-            "b6":"筛选特定月份数据",
-            "b7":"找最大值和最小值",
-            "b8":"使用 to_csv 导出结果",
-        };
-
-
-        const scoring = [
-        { id:"b1",  ans:"pd.read_csv('medical_data.csv', encoding='gbk')" },
-        { id:"b2",  ans:"data.info()" },
-        { id:"b3",  ans:"data.rename" },
-        { id:"b4",  ans:"columns={'病人ID':'患者ID'}" },
-        { id:"b5",  ans:"data['诊断日期'] - data['就诊日期']" },
-        { id:"b6",  ans:"data" },
-        { id:"b7",  ans:"data['诊断延迟']" },
-        { id:"b8",  ans:"data['年龄']" },
-        { id:"b9",  ans:"data['年龄']" },
-        { id:"b10", ans:"data.drop_duplicates" },
-        { id:"b11", ans:"'年龄','体重','身高'" },
-        { id:"b12", ans:"scaler.fit_transform(data[columns_to_normalize])" },
-        { id:"b13", ans:"treatment_outcome_distribution.plot" },
-        { id:"b14", ans:"kind='bar'" },
-        { id:"b15", ans:"plt.scatter" },
-        { id:"b16", ans:"data['年龄']" },
-        { id:"b17", ans:"data['疾病严重程度']" },
-        { id:"b18", ans:"data.to_csv" },
-        { id:"b19", ans:"output_path" }
-    ];
-
-    document.getElementById('btnCheck').onclick = function(){
-        let correctCount = 0;
-        let wrong = [];
-        let right = [];
-        
-        scoring.forEach(item => {
-            const val = document.getElementById(item.id).value.trim();
-            if(fuzzyMatch(val, item.ans)){
-                correctCount++;
-                right.push(`✅ ${item.id}：${item.ans}`);
-            }else{
-                wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + (HINTS[item.id] ? `<div class='hint-box'><strong>💡 提示：</strong>${HINTS[item.id]}</div>` : ``));
-            }
-        });
-
-        // 规范题加分
-        const wash = document.getElementById('washNorm').value.trim();
-        const label = document.getElementById('labelNorm').value.trim();
-        const washKw = ['缺失', '删除', 'dropna', 'isnull', '数据类型', '转换', '数值', '质量', '异常', '处理'];
-        const labelKw = ['标注', '标签', '特征', '目标', '变量', 'label', '分类'];
-        const hasWashKw = washKw.some(k => wash.includes(k));
-        const hasLabelKw = labelKw.some(k => label.includes(k));
-        if (wash && wash.length >= 20 && hasWashKw) {
-            correctCount += 3; right.push(`✅ 清洗规范 +3分`);
-        } else {
-            wrong.push(`❌ 清洗规范：字数不足20字或未包含数据清洗相关关键词`);
-        }
-        if (label && label.length >= 20 && hasLabelKw) {
-            correctCount += 2; right.push(`✅ 标注规范 +2分`);
-        } else {
-            wrong.push(`❌ 标注规范：字数不足20字或未包含数据标注相关关键词`);
-        }
-        
-        document.getElementById('finalScore').textContent = correctCount;
-        document.getElementById('scoreResult').style.display = 'block';
-        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
-        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "无正确答案";
-        document.getElementById('answerComparison').style.display = 'block';
-    };
-
-    document.getElementById('btnReset').onclick = function(){
-        document.querySelectorAll('.blank').forEach(i => i.value = '');
-        document.querySelectorAll('.text-answer').forEach(i => i.value = '');
-        document.getElementById('scoreResult').style.display = 'none';
-        document.getElementById('answerComparison').style.display = 'none';
-    };
-</script>
-</body>
-</html>

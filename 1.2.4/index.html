@@ -200,6 +200,42 @@
             background-color: #38a169;
             color: white;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+        .analysis-content h4 {
+            margin-top: 12px;
+            color: #2c5282;
+            font-size: 14px;
+        }
+        .analysis-content code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+
 
         .btn-export:hover {
             background-color: #2f7d58;
@@ -411,7 +447,14 @@
                 <button class="btn btn-reset" onclick="resetAnswer()">重置答题</button>
                 <button class="btn btn-check" onclick="checkAnswer()">检查评分</button>
                 <button class="btn btn-export" onclick="exportScore()">📤 导出成绩</button>
+            </div><button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">🔄 重做本题</button>
+
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">📖 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
+
 
             <div class="score-result" id="scoreResult">
                 <h3>评分结果</h3>

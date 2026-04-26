@@ -58,6 +58,31 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         .column-right {
             flex: 1;
             padding: 20px;
@@ -392,142 +417,9 @@ print(f"重新采样后的模型准确率: {accuracy_resampled:.2f}")
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-            <div class="score-result" id="scoreResult">
-                本次得分：<span id="finalScore">0</span> / 20 分
-            </div>
-            <div class="answer-comparison" id="answerComparison">
-                <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer">无错误</div>
-                <div class="correct-answer" id="correctAnswer">无正确答案</div>
-            </div>
-        </div>
-    </div>
-<script>
-    // 模糊匹配函数：忽略空格、大小写，包含核心关键词即得分
-    function fuzzyMatch(user, correct) {
-        if (!user) return false;
-        // 统一格式：去空格、转小写
-        user = user.trim().toLowerCase().replace(/\s+/g, '');
-        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
-        // 完全匹配 或 互相包含 即得分
-        return user === correct || user.includes(correct) || correct.includes(user);
-    }
-
-    // 严格对应评分表的20分标准
-    // 2.2.1 金融风控预测 - 解题提示
-    const HINTS_221 = {
-        "M1_1":"使用 pd.read_csv('finance.csv') 读取金融数据",
-        "M1_2":"使用 data.head() 显示前5行",
-        "M2":"使用 train_test_split(X, y, test_size=0.2, random_state=42) 划分数据",
-        "M3":"使用 LogisticRegression(max_iter=1000) 初始化逻辑回归模型",
-        "M4":"使用 model.fit(X_train, y_train) 训练模型",
-        "M5":"使用 dump(model, '文件名.pkl') 保存模型",
-        "M6":"使用 model.predict(X_test) 对测试集预测",
-        "M7":"使用 model.score(X_test, y_test) 计算准确率",
-        "M8":"使用 SMOTE 的 fit_resample 方法处理数据不平衡",
-        "M9":"用 smote 后的数据重新训练 model.fit(X_resampled, y_resampled)",
-        "M10":"使用 model.predict(X_test) 生成新预测",
-        "M11":"使用 model.score(X_test, y_test) 评估新模型效果",
-        "errorAnalysis":"从准确率下降、数据分布不均、特征选择角度分析",
-        "improveSuggest":"建议：调整阈值、特征工程、集成学习或更多样本采集",
-    };
-
-    const scoringRules = [
-        // M1：2分（加载数据1分 + 显示前5行1分）
-        { id: "M1_1", ans: "pd.read_csv('finance.csv')", score: 1, desc: "M1-加载数据集" },
-        { id: "M1_2", ans: "data.head()", score: 1, desc: "M1-显示前五行" },
-        // M2：1分（划分训练测试集）
-        { id: "M2", ans: "train_test_split(X,y,test_size=0.2,random_state=42)", score: 1, desc: "M2-划分训练集测试集" },
-        // M3：2分（初始化模型）
-        { id: "M3", ans: "LogisticRegression(max_iter=1000)", score: 2, desc: "M3-初始化Logistic回归模型" },
-        // M4：2分（训练模型）
-        { id: "M4", ans: "model.fit(X_train,y_train)", score: 2, desc: "M4-训练Logistic回归模型" },
-        // M5：1分（保存模型）
-        { id: "M5", ans: "dump(model,file)", score: 1, desc: "M5-保存模型文件" },
-        // M6：1分（测试集预测）
-        { id: "M6", ans: "model.predict(X_test)", score: 1, desc: "M6-测试集预测" },
-        // M7：2分（计算准确率）
-        { id: "M7", ans: "model.score(X_test,y_test)", score: 2, desc: "M7-计算模型准确率" },
-        // M8：2分（处理数据不平衡）
-        { id: "M8", ans: "smote.fit_resample(X_train,y_train)", score: 2, desc: "M8-处理数据不平衡" },
-        // M9：2分（重新训练模型）
-        { id: "M9", ans: "model.fit(X_resampled,y_resampled)", score: 2, desc: "M9-模型重新训练" },
-        // M10：1分（生成新预测结果）
-        { id: "M10", ans: "model.predict(X_test)", score: 1, desc: "M10-生成新预测结果" },
-        // M11：1分（分析新测试结果）
-        { id: "M11", ans: "model.score(X_test,y_test)", score: 1, desc: "M11-分析新测试结果" },
-        // M12：3分（模型性能评估1分 + 错误分析1分 + 改进建议1分）
-        { id: "p0", ans: "0.95", score: 0.125, desc: "M12-表格0类precision" },
-        { id: "r0", ans: "0.99", score: 0.125, desc: "M12-表格0类recall" },
-        { id: "f1_0", ans: "0.97", score: 0.125, desc: "M12-表格0类f1-score" },
-        { id: "s0", ans: "26779", score: 0.125, desc: "M12-表格0类support" },
-        { id: "p1", ans: "0.58", score: 0.125, desc: "M12-表格1类precision" },
-        { id: "r1", ans: "0.13", score: 0.125, desc: "M12-表格1类recall" },
-        { id: "f1_1", ans: "0.21", score: 0.125, desc: "M12-表格1类f1-score" },
-        { id: "s1", ans: "1737", score: 0.125, desc: "M12-表格1类support" },
-        { id: "errorAnalysis", ans: "", score: 1, desc: "M12-错误分析（填写即得分）", isText: true },
-        { id: "improveSuggest", ans: "", score: 1, desc: "M12-改进建议（填写即得分）", isText: true }
-    ];
-
-    document.getElementById('btnCheck').onclick = function(){
-        let totalScore = 0;
-        let wrongList = [];
-        let rightList = [];
-
-        // 遍历所有评分项，严格按评分表打分
-        scoringRules.forEach(item => {
-            const userInput = document.getElementById(item.id).value.trim();
-            
-            // 文本类（错误分析/改进建议）：字数≥20字+含关键词才给分
-            if (item.isText) {
-                const keywords = item.id === 'errorAnalysis'
-                    ? ['错误', '问题', '原因', '缺陷', '影响', '分析']
-                    : ['改进', '优化', '建议', '提升', '方案', '措施'];
-                const hasKw = keywords.some(kw => userInput.includes(kw));
-                if (userInput.length >= 20 && hasKw) {
-                    totalScore += item.score;
-                    rightList.push(`✅ ${item.desc} +${item.score}分`);
-                } else {
-                    wrongList.push(`❌ ${item.desc}：字数不足20字或未包含相关关键词`);
-                }
-                return;
-            }
-
-            // 代码/表格数字：模糊匹配校验
-            if (fuzzyMatch(userInput, item.ans)) {
-                totalScore += item.score;
-                rightList.push(`✅ ${item.desc} +${item.score}分`);
-            } else {
-                const hint = (HINTS_221[item.id] || '') + (item.isText ? (item.id === 'errorAnalysis' ? ' 结合准确率下降和数据分布分析原因。' : ' 从算法改进或数据增强角度给出建议。') : '');
-                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
-                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}` + hintHtml);
-            }
-        });
-
-        // 分数四舍五入，上限20分
-        totalScore = Math.min(Math.round(totalScore * 100) / 100, 20);
-
-        // 渲染打分结果
-        document.getElementById('finalScore').textContent = totalScore;
-        document.getElementById('scoreResult').style.display = 'block';
-        document.getElementById('answerComparison').style.display = 'block';
-        document.getElementById('wrongAnswer').innerHTML = wrongList.join('<br>') || '无错误';
-        document.getElementById('correctAnswer').innerHTML = rightList.join('<br>') || '全部正确！';
-    };
-
-    // 重置功能：清空所有填空+文本框，隐藏打分结果
-    document.getElementById('btnReset').onclick = function(){
-        // 清空代码填空框
-        document.querySelectorAll('.blank').forEach(i => i.value = '');
-        // 清空表格填空框
-        document.querySelectorAll('.table-blank').forEach(i => i.value = '');
-        // 清空答题纸文本框
-        document.querySelectorAll('.answer-textarea').forEach(i => i.value = '');
-        // 隐藏打分结果
-        document.getElementById('scoreResult').style.display = 'none';
-        document.getElementById('answerComparison').style.display = 'none';
-    };
-</script>
-</body>
-</html>

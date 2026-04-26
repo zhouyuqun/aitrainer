@@ -354,6 +354,143 @@
             0% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(-60px); }
         }
+        /* 进度仪表盘样式 */
+        .progress-dashboard {
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+        .progress-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c5282;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #e6e6e6;
+            padding-bottom: 8px;
+        }
+        .progress-overall {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+        .progress-label {
+            font-size: 14px;
+            color: #333;
+            min-width: 120px;
+        }
+        .progress-bar-container {
+            flex: 1;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #38a169, #48bb78);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .progress-percent {
+            font-size: 14px;
+            font-weight: bold;
+            color: #38a169;
+            min-width: 45px;
+            text-align: right;
+        }
+        .module-progress {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .module-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            padding: 4px 10px;
+            background: #f7fafc;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        .module-item .mod-name {
+            color: #4a5568;
+        }
+        .module-item .mod-count {
+            color: #2c5282;
+            font-weight: bold;
+        }
+
+        /* 错题本样式 */
+        .wrong-book {
+            background: #fff;
+            border: 1px solid #fc8181;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .wrong-book.show { display: block; }
+        .wrong-book-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #c53030;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #fed7d7;
+            padding-bottom: 8px;
+        }
+        .wrong-book-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .wrong-item {
+            padding: 8px 14px;
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #c53030;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .wrong-item:hover {
+            background: #fc8181;
+            color: #fff;
+        }
+        .wrong-item .wrong-score {
+            font-size: 12px;
+            color: #9b2c2c;
+        }
+        .wrong-item:hover .wrong-score {
+            color: #fff;
+        }
+        .wrong-book-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+        .wrong-btn {
+            font-size: 13px;
+            padding: 6px 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .wrong-btn-retry {
+            background: #c53030;
+            color: #fff;
+        }
+        .wrong-btn-clear {
+            background: #e2e8f0;
+            color: #666;
+        }
+
         /* 底部版权 */
         .footer {
             text-align: center;
@@ -399,6 +536,23 @@
         <div class="right-nav">
             <span class="user-info" id="userInfo">👤 学员</span>
             <button class="logout-btn" id="logoutBtn">退出登录</button>
+        </div>
+    </div>
+
+    <!-- 进度仪表盘 -->
+    <div class="container">
+        <div class="progress-dashboard">
+            <div class="progress-title">📊 学习进度</div>
+            <div class="progress-overall">
+                <div class="progress-label">
+                    总进度：<span id="overallProgress">0</span>/40 题
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="overallBar" style="width:0%"></div>
+                </div>
+                <div class="progress-percent" id="overallPercent">0%</div>
+            </div>
+            <div class="module-progress" id="moduleProgress"></div>
         </div>
     </div>
 
@@ -483,6 +637,18 @@
         <div class="result-list" id="resultList"></div>
     </div>
 
+    <!-- 错题本 -->
+    <div class="container">
+        <div class="wrong-book" id="wrongBook">
+            <div class="wrong-book-title">📝 错题本（点击题目重做）</div>
+            <div class="wrong-book-list" id="wrongBookList"></div>
+            <div class="wrong-book-actions">
+                <button class="wrong-btn wrong-btn-retry" id="btnRetryWrong">🔄 重做全部错题</button>
+                <button class="wrong-btn wrong-btn-clear" id="btnClearWrong">🗑 清空错题记录</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 底部版权 -->
     <div class="footer">
         人工智能训练师考核学习系统 © 2026 
@@ -500,7 +666,7 @@
 
 <script>
 // 检查登录状态
-if (!localStorage.getItem('exam_student_name') && !localStorage.getItem('adminUser')) {
+if (!localStorage.getItem('exam_logged_in') && !localStorage.getItem('adminUser')) {
     window.location.href = 'login.html';
 }
 
@@ -511,7 +677,82 @@ window.onload = function() {
     if (saved) renderQuestions(JSON.parse(saved));
     initUserInfo();
     markDoneQuestions();
+    renderProgressDashboard();
+    renderWrongBook();
 };
+
+// ── 学习进度仪表盘 ────────────────────────────────
+const moduleList = [
+    { name: '1.x 基础理论', keys: ['exam_done_1.1','exam_done_1.2'], pattern: /^exam_done_1\.\d/ },
+    { name: '2.x 专业技能', keys: ['exam_done_2.1','exam_done_2.2'], pattern: /^exam_done_2\.\d/ },
+    { name: '3.x 场景应用', keys: ['exam_done_3.1','exam_done_3.2'], pattern: /^exam_done_3\.\d/ },
+    { name: '4.x 数据分析', keys: ['exam_done_4.1','exam_done_4.2'], pattern: /^exam_done_4\.\d/ },
+];
+
+function renderProgressDashboard() {
+    const total = 40;
+    let done = 0;
+    const modCounts = {};
+
+    // 遍历所有 localStorage key，统计已完成题目
+    Object.keys(localStorage).forEach(k => {
+        if (/^exam_done_\d+\.\d+\.\d+$/.test(k)) {
+            done++;
+        }
+    });
+
+    // 渲染总进度
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('overallProgress').textContent = done;
+    document.getElementById('overallBar').style.width = pct + '%';
+    document.getElementById('overallPercent').textContent = pct + '%';
+
+    // 渲染各模块进度
+    const container = document.getElementById('moduleProgress');
+    container.innerHTML = '';
+    moduleList.forEach(mod => {
+        let modDone = 0;
+        Object.keys(localStorage).forEach(k => {
+            if (mod.pattern.test(k)) modDone++;
+        });
+        const modTotal = mod.name.startsWith('1') || mod.name.startsWith('4') ? 10 : 10;
+        const item = document.createElement('div');
+        item.className = 'module-item';
+        item.innerHTML = `<span class="mod-name">${mod.name}</span><span class="mod-count">${modDone}/10</span>`;
+        container.appendChild(item);
+    });
+}
+
+// ── 错题本 ──────────────────────────────────────
+function renderWrongBook() {
+    const container = document.getElementById('wrongBook');
+    const list = document.getElementById('wrongBookList');
+    const wrongList = [];
+
+    Object.keys(localStorage).forEach(k => {
+        const m = k.match(/^exam_wrong_(\d+\.\d+\.\d+)$/);
+        if (m) {
+            const qid = m[1];
+            const score = localStorage.getItem('exam_score_' + qid) || '0';
+            wrongList.push({ qid, score });
+        }
+    });
+
+    if (wrongList.length === 0) {
+        container.classList.remove('show');
+        return;
+    }
+
+    container.classList.add('show');
+    list.innerHTML = '';
+    wrongList.forEach(item => {
+        const a = document.createElement('a');
+        a.className = 'wrong-item';
+        a.href = item.qid + '/';
+        a.innerHTML = `${item.qid} <span class="wrong-score">${item.score}分</span>`;
+        list.appendChild(a);
+    });
+}
 
 // 初始化用户信息显示 + 退出登录
 function initUserInfo() {
@@ -524,11 +765,38 @@ function initUserInfo() {
         userInfoEl.textContent = '👤 ' + studentName;
     }
     document.getElementById('logoutBtn').onclick = function() {
+        if (!confirm('确定退出登录？退出后所有做题记录（成绩、错题）将被清空。')) return;
+        // 只清学员自己的 session，不踢掉老师（adminUser）
         localStorage.removeItem('exam_logged_in');
         localStorage.removeItem('exam_student_name');
         localStorage.removeItem('exam_student_id');
-        localStorage.removeItem('adminUser');
+        // 清空所有学员答题数据（exam_ 前缀，但保留 exam_students 名单）
+        Object.keys(localStorage).forEach(k => {
+            if (/^exam_/.test(k) && k !== 'exam_students') localStorage.removeItem(k);
+        });
         window.location.href = 'login.html';
+    };
+
+    // 错题本按钮
+    document.getElementById('btnRetryWrong').onclick = function() {
+        const wrongIds = [];
+        Object.keys(localStorage).forEach(k => {
+            const m = k.match(/^exam_wrong_(\d+\.\d+\.\d+)$/);
+            if (m) wrongIds.push(m[1]);
+        });
+        if (wrongIds.length === 0) return;
+        const questions = wrongIds.map(id => id + '/');
+        localStorage.setItem('randomQuestions', JSON.stringify(questions));
+        renderQuestions(questions);
+    };
+
+    document.getElementById('btnClearWrong').onclick = function() {
+        if (!confirm('确定清空所有错题记录？')) return;
+        Object.keys(localStorage).forEach(k => {
+            if (/^exam_wrong_/.test(k)) localStorage.removeItem(k);
+        });
+        renderWrongBook();
+        markDoneQuestions();
     };
 }
 
@@ -542,35 +810,39 @@ function markDoneQuestions() {
     });
 }
 
-// 所有题目列表
+// 所有题目列表（使用目录路径，末尾带斜杠）
 const allQuestions = [
-    "v2-1.1.1.html","v2-1.1.2.html","v2-1.1.3.html","v2-1.1.4.html","v2-1.1.5.html",
-    "v2-1.2.1.html","v2-1.2.2.html","v2-1.2.3.html","v2-1.2.4.html","v2-1.2.5.html",
-    "v2-2.1.1.html","v2-2.1.2.html","v2-2.1.3.html","v2-2.1.4.html","v2-2.1.5.html",
-    "v2-2.2.1.html","v2-2.2.2.html","v2-2.2.3.html","v2-2.2.4.html","v2-2.2.5.html",
-    "v2-3.1.1.html","v2-3.1.2.html","v2-3.1.3.html","v2-3.1.4.html","v2-3.1.5.html",
-    "v2-3.2.1.html","v2-3.2.2.html","v2-3.2.3.html","v2-3.2.4.html","v2-3.2.5.html",
-    "v2-4.1.1.html","v2-4.1.2.html","v2-4.1.3.html","v2-4.1.4.html","v2-4.1.5.html",
-    "v2-4.2.1.html","v2-4.2.2.html","v2-4.2.3.html","v2-4.2.4.html","v2-4.2.5.html"
+    "1.1.1/","1.1.2/","1.1.3/","1.1.4/","1.1.5/",
+    "1.2.1/","1.2.2/","1.2.3/","1.2.4/","1.2.5/",
+    "2.1.1/","2.1.2/","2.1.3/","2.1.4/","2.1.5/",
+    "2.2.1/","2.2.2/","2.2.3/","2.2.4/","2.2.5/",
+    "3.1.1/","3.1.2/","3.1.3/","3.1.4/","3.1.5/",
+    "3.2.1/","3.2.2/","3.2.3/","3.2.4/","3.2.5/",
+    "4.1.1/","4.1.2/","4.1.3/","4.1.4/","4.1.5/",
+    "4.2.1/","4.2.2/","4.2.3/","4.2.4/","4.2.5/"
 ];
 // 生成勾选框
 function renderCheckbox() {
     const box = document.getElementById('checkboxArea');
+    box.innerHTML = '';
     allQuestions.forEach(q => {
         const item = document.createElement('label');
         item.className = 'checkbox-item';
-        item.innerHTML = `<input type="checkbox" value="${q}"> ${q.replace('.html', '')}`;
+        const qid = q.replace(/\/$/, ''); // 去掉末尾斜杠
+        const qBtn = document.querySelector('a.q-btn[href="' + q + '"]');
+        const title = qBtn ? qBtn.getAttribute('title') : qid;
+        item.innerHTML = '<input type="checkbox" value="' + q + '"> ' + qid + ' ' + title;
         box.appendChild(item);
     });
 }
-// 随机抽题（原有规则完整保留）
+// 随机抽题（原有规则完整保留，使用目录路径格式）
 function generateRandomQuestions() {
-    const module1 = ["v2-1.1.1.html","v2-1.1.2.html","v2-1.1.3.html","v2-1.1.4.html","v2-1.1.5.html","v2-1.2.1.html","v2-1.2.2.html","v2-1.2.3.html","v2-1.2.4.html","v2-1.2.5.html"];
-    const module21 = ["v2-2.1.1.html","v2-2.1.2.html","v2-2.1.3.html","v2-2.1.4.html","v2-2.1.5.html"];
-    const module22 = ["v2-2.2.1.html","v2-2.2.2.html","v2-2.2.3.html","v2-2.2.4.html","v2-2.2.5.html"];
-    const module31 = ["v2-3.1.1.html","v2-3.1.2.html","v2-3.1.3.html","v2-3.1.4.html","v2-3.1.5.html"];
-    const module32 = ["v2-3.2.1.html","v2-3.2.2.html","v2-3.2.3.html","v2-3.2.4.html","v2-3.2.5.html"];
-    const module4 = ["v2-4.1.1.html","v2-4.1.2.html","v2-4.1.3.html","v2-4.1.4.html","v2-4.1.5.html","v2-4.2.1.html","v2-4.2.2.html","v2-4.2.3.html","v2-4.2.4.html","v2-4.2.5.html"];
+    const module1 = ["1.1.1/","1.1.2/","1.1.3/","1.1.4/","1.1.5/","1.2.1/","1.2.2/","1.2.3/","1.2.4/","1.2.5/"];
+    const module21 = ["2.1.1/","2.1.2/","2.1.3/","2.1.4/","2.1.5/"];
+    const module22 = ["2.2.1/","2.2.2/","2.2.3/","2.2.4/","2.2.5/"];
+    const module31 = ["3.1.1/","3.1.2/","3.1.3/","3.1.4/","3.1.5/"];
+    const module32 = ["3.2.1/","3.2.2/","3.2.3/","3.2.4/","3.2.5/"];
+    const module4 = ["4.1.1/","4.1.2/","4.1.3/","4.1.4/","4.1.5/","4.2.1/","4.2.2/","4.2.3/","4.2.4/","4.2.5/"];
     const get = arr => arr[Math.floor(Math.random()*arr.length)];
     const questions = [get(module1),get(module21),get(module22),get(module31),get(module32),get(module4)];
     localStorage.setItem('randomQuestions', JSON.stringify(questions));
@@ -591,23 +863,15 @@ function generateCustomQuestions() {
 function clearCustomQuestions() {
     document.querySelectorAll('#checkboxArea input').forEach(i => i.checked = false);
 }
-// 渲染题目到展示区
+// 渲染题目到展示区（兼容旧 v2-xxx.html 和新 x.x.x/ 两种路径格式）
 function renderQuestions(questions) {
     const list = document.getElementById("resultList");
     list.innerHTML = "";
     questions.forEach(q => {
         const a = document.createElement("a");
         a.className = "result-item";
-        // 提取题目编号 (如 v2-1.1.4.html -> 1.1.4)
-        const match = q.match(/v2-(\d+\.\d+\.\d+)\.html/);
-        if (match) {
-            const questionId = match[1]; // 如 "1.1.4"
-            a.href = questionId + "/";  // 链接到对应文件夹
-            a.textContent = questionId;
-        } else {
-            a.href = q;
-            a.textContent = q.replace(".html", "");
-        }
+        a.href = q; // q 已是目录路径如 "1.1.1/"
+        a.textContent = q.replace(/\/$/, ''); // 去掉末尾斜杠显示
         a.onclick = playWoodenFish;
         list.appendChild(a);
     });

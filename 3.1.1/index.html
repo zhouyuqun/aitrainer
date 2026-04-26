@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能音箱产品数据分析与优化</title>
-    <script src="../auth.js"></script>
+    <script src="../auth.js">
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成纞记录将被清除。')) return;
+        localStorage.removeItem('exam_score_3.1.1');
+        localStorage.removeItem('exam_done_3.1.1');
+        localStorage.removeItem('exam_wrong_3.1.1');
+        localStorage.removeItem('exam_answers_3.1.1');
+        document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(function(i){i.value='';});
+        var el;
+        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+    }
+</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -32,6 +45,31 @@
             .content-auto {
                 content-visibility: auto;
             }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
             .exam-container {
                 @apply max-w-7xl mx-auto px-4 py-6;
             }

@@ -58,6 +58,31 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         .column-right {
             flex: 1;
             padding: 20px;
@@ -409,159 +434,9 @@ with open('2.2.2_report_rf.txt', 'w') as results_rf_file:
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-            <div class="score-result" id="scoreResult">
-                本次得分：<span id="finalScore">0</span> / 20 分
-            </div>
-            <div class="answer-comparison" id="answerComparison">
-                <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer">无错误</div>
-                <div class="correct-answer" id="correctAnswer">无正确答案</div>
-            </div>
-        </div>
-    </div>
-<script>
-    // 模糊匹配函数：忽略空格、大小写，包含核心关键词即得分
-    function fuzzyMatch(user, correct) {
-        if (!user) return false;
-        // 统一格式：去空格、转小写
-        user = user.trim().toLowerCase().replace(/\s+/g, '');
-        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
-        // 完全匹配 或 互相包含 即得分
-        return user === correct || user.includes(correct) || correct.includes(user);
-    }
-
-    // 严格对应评分表的20分标准（M1-M14）
-    // 2.2.2 汽车MPG预测 - 解题提示
-    const HINTS_222 = {
-        "M1_1":"使用 pd.read_csv('auto-mpg.csv') 读取数据",
-        "M1_2":"使用 df.head() 显示前5行",
-        "M2_1":"使用 pd.to_numeric(df['horsepower']) 转换马力列为数值",
-        "M2_3":"使用 df.dropna() 删除缺失值行",
-        "M3_1":"定义特征列：cylinders, displacement, horsepower, weight, acceleration, model year, origin",
-        "M3_2":"定义目标变量：df['mpg']",
-        "M4_1":"使用 train_test_split 函数划分数据",
-        "M4_2":"填写 X, y, test_size=0.2 参数",
-        "M5_1":"使用 Pipeline 创建管道",
-        "M5_2":"使用 StandardScaler() 标准化数值特征",
-        "M5_3":"使用 LinearRegression() 线性回归模型",
-        "M6":"使用 pipeline.fit(X_train, y_train) 训练管道模型",
-        "M7":"使用 dump(pipeline, 'model.pkl') 保存模型",
-        "M8":"使用 pipeline.predict(X_test) 对测试集预测",
-        "M10_1":"使用 RandomForestRegressor 创建随机森林",
-        "M10_2":"填写 n_estimators=100 参数",
-        "M11":"使用 rf_model.fit(X_train, y_train) 训练模型",
-        "M12":"使用 rf_model.predict(X_test) 随机森林预测",
-        "errorAnalysis":"从线性回归欠拟合、特征选择、数据量角度分析",
-        "improveSuggest":"建议：调高森林树量、特征工程、增加训练数据",
-    };
-
-    const scoringRules = [
-        // M1：2分（加载数据1分 + 显示前5行1分）
-        { id: "M1_1", ans: "pd.read_csv('auto-mpg.csv')", score: 1, desc: "M1-加载数据集" },
-        { id: "M1_2", ans: "df.head()", score: 1, desc: "M1-显示前五行" },
-        // M2：2分（处理缺失值：转换类型1分 + 删除缺失行1分，中间参数不计分）
-        { id: "M2_1", ans: "pd.to_numeric", score: 1, desc: "M2-转换horsepower为数值类型" },
-        { id: "M2_2", ans: "df['horsepower']", score: 0, desc: "M2-转换列参数（不计分）" },
-        { id: "M2_3", ans: "df.dropna()", score: 1, desc: "M2-删除缺失值行" },
-        // M3：2分（定义自变量1分 + 因变量1分）
-        { id: "M3_1", ans: "df[['cylinders', 'displacement', 'horsepower', 'weight', 'acceleration', 'model year', 'origin']]", score: 1, desc: "M3-定义自变量" },
-        { id: "M3_2", ans: "df['mpg']", score: 1, desc: "M3-定义因变量" },
-        // M4：1分（划分训练测试集）
-        { id: "M4_1", ans: "train_test_split", score: 0.5, desc: "M4-划分函数" },
-        { id: "M4_2", ans: "X, y, test_size=0.2", score: 0.5, desc: "M4-划分参数" },
-        // M5：2分（管道1分 + 标准化1分 + 线性回归1分，总分2分封顶）
-        { id: "M5_1", ans: "Pipeline", score: 0.7, desc: "M5-创建管道" },
-        { id: "M5_2", ans: "StandardScaler()", score: 0.7, desc: "M5-标准化处理" },
-        { id: "M5_3", ans: "LinearRegression()", score: 0.6, desc: "M5-线性回归模型" },
-        // M6：1分（训练线性回归模型）
-        { id: "M6", ans: "pipeline.fit(X_train, y_train)", score: 1, desc: "M6-训练线性回归模型" },
-        // M7：1分（保存模型）
-        { id: "M7", ans: "dump(pipeline, model_file)", score: 1, desc: "M7-保存线性回归模型" },
-        // M8：1分（线性回归预测）
-        { id: "M8", ans: "pipeline.predict(X_test)", score: 1, desc: "M8-线性回归测试集预测" },
-        // M9：1分（保存线性回归结果）
-        { id: "M9", ans: "results_df.to_csv", score: 1, desc: "M9-保存线性回归预测结果" },
-        // M10：1分（创建随机森林模型）
-        { id: "M10_1", ans: "RandomForestRegressor", score: 0.5, desc: "M10-随机森林类" },
-        { id: "M10_2", ans: "n_estimators=100", score: 0.5, desc: "M10-决策树数量参数" },
-        // M11：1分（训练随机森林模型）
-        { id: "M11", ans: "rf_model.fit(X_train, y_train)", score: 1, desc: "M11-训练随机森林模型" },
-        // M12：1分（随机森林预测）
-        { id: "M12", ans: "rf_model.predict(X_test)", score: 1, desc: "M12-随机森林测试集预测" },
-        // M13：1分（保存随机森林结果）
-        { id: "M13", ans: "results_rf_df.to_csv", score: 1, desc: "M13-保存随机森林预测结果" },
-        // M14：3分（模型性能评估1分 + 错误分析1分 + 改进建议1分）
-        { id: "lr_train", ans: "0.81-0.85", score: 0.1, desc: "M14-线性回归训练集得分" },
-        { id: "lr_test", ans: "0.75-0.80", score: 0.1, desc: "M14-线性回归测试集得分" },
-        { id: "lr_generalize", ans: "较好", score: 0.1, desc: "M14-线性回归泛化能力" },
-        { id: "lr_merit", ans: "简单易解释，拟合一般", score: 0.1, desc: "M14-线性回归优缺点" },
-        { id: "rf_train", ans: "0.98-1.0", score: 0.1, desc: "M14-随机森林训练集得分" },
-        { id: "rf_test", ans: "0.88-0.92", score: 0.1, desc: "M14-随机森林测试集得分" },
-        { id: "rf_generalize", ans: "优秀", score: 0.1, desc: "M14-随机森林泛化能力" },
-        { id: "rf_merit", ans: "拟合强，泛化好，可解释性弱", score: 0.2, desc: "M14-随机森林优缺点" },
-        { id: "errorAnalysis", ans: "", score: 1, desc: "M14-错误分析（填写即得分）", isText: true },
-        { id: "improveSuggest", ans: "", score: 1, desc: "M14-改进建议（填写即得分）", isText: true }
-    ];
-
-    document.getElementById('btnCheck').onclick = function(){
-        let totalScore = 0;
-        let wrongList = [];
-        let rightList = [];
-
-        // 遍历所有评分项，严格按评分表打分
-        scoringRules.forEach(item => {
-            const userInput = document.getElementById(item.id).value.trim();
-            
-            // 文本类（错误分析/改进建议）：字数≥20字+含关键词才给分
-            if (item.isText) {
-                const keywords = item.id === 'errorAnalysis'
-                    ? ['错误', '问题', '原因', '缺陷', '影响', '分析']
-                    : ['改进', '优化', '建议', '提升', '方案', '措施'];
-                const hasKw = keywords.some(kw => userInput.includes(kw));
-                if (userInput.length >= 20 && hasKw) {
-                    totalScore += item.score;
-                    rightList.push(`✅ ${item.desc} +${item.score}分`);
-                } else {
-                    wrongList.push(`❌ ${item.desc}：字数不足20字或未包含相关关键词`);
-                }
-                return;
-            }
-
-            // 代码/表格数字：模糊匹配校验
-            if (fuzzyMatch(userInput, item.ans)) {
-                totalScore += item.score;
-                rightList.push(`✅ ${item.desc} +${item.score}分`);
-            } else {
-                const hint = (HINTS_222[item.id] || '') + (item.isText ? (item.id === 'errorAnalysis' ? ' 从准确率和模型选择角度分析问题。' : ' 从超参数调整或集成方法角度提出建议。') : '');
-                const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
-                wrongList.push(`❌ ${item.desc} 正确答案：${item.ans}` + hintHtml);
-            }
-        });
-
-        // 分数四舍五入，上限20分
-        totalScore = Math.min(Math.round(totalScore * 100) / 100, 20);
-
-        // 渲染打分结果
-        document.getElementById('finalScore').textContent = totalScore;
-        document.getElementById('scoreResult').style.display = 'block';
-        document.getElementById('answerComparison').style.display = 'block';
-        document.getElementById('wrongAnswer').innerHTML = wrongList.join('<br>') || '无错误';
-        document.getElementById('correctAnswer').innerHTML = rightList.join('<br>') || '全部正确！';
-    };
-
-    // 重置功能：清空所有填空+文本框，隐藏打分结果
-    document.getElementById('btnReset').onclick = function(){
-        // 清空代码填空框
-        document.querySelectorAll('.blank').forEach(i => i.value = '');
-        // 清空表格填空框
-        document.querySelectorAll('.table-blank').forEach(i => i.value = '');
-        // 清空答题纸文本框
-        document.querySelectorAll('.answer-textarea').forEach(i => i.value = '');
-        // 隐藏打分结果
-        document.getElementById('scoreResult').style.display = 'none';
-        document.getElementById('answerComparison').style.display = 'none';
-    };
-</script>
-</body>
-</html>

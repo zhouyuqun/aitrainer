@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人工智能训练师（三级）操作技能考核</title>
-    <script src="../auth.js"></script>
+    <script src="../auth.js">
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        localStorage.removeItem('exam_score_1.2.5');
+        localStorage.removeItem('exam_done_1.2.5');
+        localStorage.removeItem('exam_wrong_1.2.5');
+        localStorage.removeItem('exam_answers_1.2.5');
+        document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
+        var el;
+        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+    }
+</script>
     <style>
         * {
             margin: 0;
@@ -23,6 +36,31 @@
             gap: 20px;
             height: calc(100vh - 40px);
         }
+        .btn-retry {
+            background: #805ad5;
+            color: #fff;
+        }
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+
         /* 左侧题目区域 */
         .question-area {
             width: 50%;
@@ -203,194 +241,9 @@
             <div class="btn-group">
                 <button class="btn-check" onclick="checkScore()">检查打分</button>
                 <button class="btn-reset" onclick="resetAnswer()">重置题目</button>
-                <button class="btn-export" style="padding:10px 20px;background:#38a169;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px;" onclick="exportScore()">📤 导出成绩</button>
-                <button class="btn-back" onclick="location.href='../index.html'">返回首页</button>
+<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">&#x1F4D6; 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
             </div>
-
-            <div id="scoreResult" class="score-area"></div>
-            <div id="compareArea" class="compare-box" style="display: none;"></div>
-        </div>
-    </div>
-
-    <script>
-        // 标准答案
-        const standardAnswer = {
-            answer1: `问题一：数智人响应不准确
-用户不满原因：数据准确性是智能数智人核心指标，回答错误会让用户失去信心，认为系统不可靠。
-影响体验：互动无效浪费时间，用户转向其他服务渠道。
-
-问题二：缺乏个性化交互能力
-用户不满原因：无法记住用户偏好与历史记录，不能个性化服务，用户感觉不被重视。
-影响体验：数智人不够智能，降低用户依赖度与忠诚度。
-
-问题三：用户界面不友好
-用户不满原因：操作步骤繁琐，紧急情况易焦虑，日常使用意愿低。
-影响体验：操作浪费时间，带来使用困惑。`,
-            answer2: `优化步骤1：算法优化提升响应准确性
-A. 收集并标注业务相关数据
-B. 深度学习模型训练与语义优化
-C. 结合用户反馈持续迭代
-
-优化步骤2：构建个性化推荐机制
-A. 基于用户行为构建用户画像
-B. 根据画像提供个性化服务
-C. 动态调整个性化推荐与界面
-
-优化步骤3：优化用户界面设计
-简化操作流程，减少冗余步骤，优化视觉展示
-
-优化效果：响应准确率提升，个性化体验增强，界面易用，用户满意度与忠诚度显著提高。`,
-            score: {
-                m1: 6,
-                m2: 6,
-                m3: 6,
-                m4: 6,
-                m5: 1
-            }
-        };
-
-        // 检查打分
-        function checkScore() {
-            const userAns1 = document.getElementById('answer1').value.trim();
-            const userAns2 = document.getElementById('answer2').value.trim();
-            const scoreResult = document.getElementById('scoreResult');
-            const compareArea = document.getElementById('compareArea');
-            
-            // 基础得分（匹配关键词）
-            let total = 0;
-            // 问题列出得分
-            if(userAns1.includes('响应不准确')) total += 2;
-            if(userAns1.includes('个性化交互')) total += 2;
-            if(userAns1.includes('界面不友好')) total += 2;
-            // 解释得分
-            if(userAns1.includes('不可靠') || userAns1.includes('浪费时间')) total += 2;
-            if(userAns1.includes('不被重视') || userAns1.includes('依赖度低')) total += 2;
-            if(userAns1.includes('步骤繁琐') || userAns1.includes('困惑')) total += 2;
-            // 方案步骤得分
-            if(userAns2.includes('算法优化')) total += 2;
-            if(userAns2.includes('个性化')) total += 2;
-            if(userAns2.includes('界面优化')) total += 2;
-            // 步骤描述得分
-            if(userAns2.includes('数据') && userAns2.includes('模型')) total += 2;
-            if(userAns2.includes('用户画像') && userAns2.includes('推荐')) total += 2;
-            if(userAns2.includes('简化流程') || userAns2.includes('操作')) total += 2;
-            // 效果得分
-            if(userAns2.includes('体验提升') || userAns2.includes('满意度')) total += 1;
-
-            // 显示结果
-            if(total === 25) {
-                scoreResult.className = 'score-area correct';
-                scoreResult.innerHTML = `✅ 得分：${total}/25分，答案完全正确！`;
-                compareArea.style.display = 'none';
-            } else {
-                scoreResult.className = 'score-area error';
-                scoreResult.innerHTML = `❌ 得分：${total}/25分，答案存在错误`;
-                
-                // 显示对比
-                compareArea.style.display = 'block';
-                compareArea.innerHTML = `
-                    <div class="compare-title">答案对比</div>
-                    <div class="user-answer">
-                        <strong>你的答案1：</strong><br>${userAns1 || '未填写'}
-                    </div>
-                    <div class="standard-answer">
-                        <strong>标准答案1：</strong><br>${standardAnswer.answer1}
-                    </div>
-                    <div class="user-answer">
-                        <strong>你的答案2：</strong><br>${userAns2 || '未填写'}
-                    </div>
-                    <div class="standard-answer">
-                        <strong>标准答案2：</strong><br>${standardAnswer.answer2}
-                    </div>
-                    
-                    <div class="hint-box">
-                        <strong>💡 解题思路提示：</strong><br>
-                        <strong>问题1</strong>：从"响应不准确""个性化交互缺失""界面不友好"等关键词入手，挑选最影响业务的2个问题并解释其影响。<br>
-                        <strong>问题2</strong>：方案重点从算法升级（提高识别准确率）、个性化引擎（提升交互体验）、界面简化（降低使用门槛）三方面展开。
-                    </div>
-                `;
-            }
-        }
-
-        // 重置答案
-        function resetAnswer() {
-            document.getElementById('answer1').value = '';
-            document.getElementById('answer2').value = '';
-            document.getElementById('scoreResult').innerHTML = '';
-            document.getElementById('compareArea').style.display = 'none';
-        }
-
-        // ── 答题保存/导出功能 ────────────────────────────────
-        const QID = '1.2.5';
-        const QNAME = '智能数智人系统业务模块问题识别与优化方案设计';
-        const QMAX = 25;
-
-        function getStudentInfo() {
-            return {
-                name: localStorage.getItem('exam_student_name') || '',
-                id: localStorage.getItem('exam_student_id') || ''
-            };
-        }
-
-        function saveAnswers() {
-            const answers = {
-                answer1: document.getElementById('answer1').value,
-                answer2: document.getElementById('answer2').value
-            };
-            localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
-            const result = document.getElementById('scoreResult');
-            if (result && result.innerText.includes('得分')) {
-                const scoreText = result.innerText.match(/得分：(\S+)/);
-                if (scoreText) {
-                    localStorage.setItem('exam_score_' + QID, scoreText[1]);
-                    localStorage.setItem('exam_done_' + QID, '1');
-                }
-            }
-        }
-
-        function restoreAnswers() {
-            const saved = localStorage.getItem('exam_answers_' + QID);
-            if (saved) {
-                const answers = JSON.parse(saved);
-                if (answers.answer1) document.getElementById('answer1').value = answers.answer1;
-                if (answers.answer2) document.getElementById('answer2').value = answers.answer2;
-            }
-        }
-
-        function exportScore() {
-            const stu = getStudentInfo();
-            const result = document.getElementById('scoreResult');
-            const scoreText = result && result.innerText.includes('得分') ? result.innerText.match(/得分：(\S+)/) : null;
-            const score = scoreText ? scoreText[1] : '0';
-            const record = {
-                name: stu.name,
-                id: stu.id,
-                question: QID,
-                questionName: QNAME,
-                score: score,
-                maxScore: QMAX,
-                time: new Date().toLocaleString('zh-CN'),
-                answers: {
-                    answer1: document.getElementById('answer1').value,
-                    answer2: document.getElementById('answer2').value
-                }
-            };
-            const blob = new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = stu.name + '_' + QID + '_成绩.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        const _origCheck5 = window.checkScore;
-        window.checkScore = function() {
-            _origCheck5.apply(this, arguments);
-            saveAnswers();
-        };
-
-        restoreAnswers();
-    </script>
-</body>
-</html>
