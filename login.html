@@ -171,10 +171,16 @@
             const btn = document.getElementById('loginBtn');
             try {
                 const response = await fetch('students.csv');
-                let text = await response.text();
-                // 移除 UTF-8 BOM，防止中文乱码
-                if (text.charCodeAt(0) === 0xFEFF) {
-                    text = text.slice(1);
+                const buffer = await response.arrayBuffer();
+                const bytes = new Uint8Array(buffer);
+                let text;
+                // 检测 UTF-8 BOM（EF BB BF）
+                if (bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) {
+                    // UTF-8 with BOM：跳过3字节BOM后解码
+                    text = new TextDecoder('utf-8').decode(buffer.slice(3));
+                } else {
+                    // 无BOM：按 GBK 解码（Windows Excel 默认编码）
+                    text = new TextDecoder('gbk').decode(buffer);
                 }
                 const lines = text.trim().split('\n');
                 const students = [];
