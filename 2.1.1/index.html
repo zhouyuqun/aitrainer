@@ -423,13 +423,24 @@ print("\n清洗后的数据已保存到 2.1.1_cleaned_data.csv")
             }
         });
 
-        // 清洗规范（3分）+ 标注规范（2分）
+        // 清洗规范（3分）+ 标注规范（2分）：必须有实质内容（≥20字+含关键词）才给分
         const wash = document.getElementById('washNorm').value.trim();
         const label = document.getElementById('labelNorm').value.trim();
-        if (wash) { total +=3; right.push(`✅ 清洗规范 +3分`); }
-        else { wrong.push(`❌ 清洗规范未填写`); }
-        if (label) { total +=2; right.push(`✅ 标注规范 +2分`); }
-        else { wrong.push(`❌ 标注规范未填写`); }
+        // 规范题关键词（至少有1个关键词+字数≥20字才给分，防止随便填几个字拿分）
+        const washKeywords = ['缺失值', 'dropna', '删除', '数据类型', '转换', 'isnull', 'sum', '数据质量'];
+        const labelKeywords = ['mpg', '目标变量', '标注', '标签', 'label', '特征', 'target', 'y值'];
+        const hasWashKw = washKeywords.some(kw => wash.includes(kw));
+        const hasLabelKw = labelKeywords.some(kw => label.includes(kw));
+        if (wash && wash.length >= 20 && hasWashKw) {
+            total += 3; right.push(`✅ 清洗规范 +3分`);
+        } else {
+            wrong.push(`❌ 清洗规范：字数不足20字或未包含数据清洗相关关键词`);
+        }
+        if (label && label.length >= 20 && hasLabelKw) {
+            total += 2; right.push(`✅ 标注规范 +2分`);
+        } else {
+            wrong.push(`❌ 标注规范：字数不足20字或未包含数据标注相关关键词`);
+        }
 
         total = Math.min(total,15);
         document.getElementById('finalScore').textContent = total;

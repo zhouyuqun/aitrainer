@@ -368,11 +368,15 @@ cleaned_file_path = '2.1.3_cleaned_data.csv'
                 }
             });
 
-            // 规范题 5分
+            // 规范题 5分：必须字数≥20字+含关键词才给分
             const wash = document.getElementById('washNorm').value.trim();
             const feature = document.getElementById('featureNorm').value.trim();
-            if(wash) total +=3;
-            if(feature) total +=2;
+            const washKw = ['缺失', '删除', 'dropna', 'isnull', '数据类型', '转换', '数值', '质量', '异常', '处理'];
+            const featureKw = ['特征', 'feature', '选择', '重要', '相关性', '模型', '预测'];
+            const hasWashKw = washKw.some(k => wash.includes(k));
+            const hasFeatureKw = featureKw.some(k => feature.includes(k));
+            if (wash && wash.length >= 20 && hasWashKw) total += 3;
+            if (feature && feature.length >= 20 && hasFeatureKw) total += 2;
 
             document.getElementById('finalScore').textContent = total;
             document.getElementById('codeCompareResult').innerHTML = codeCompareHtml;

@@ -561,13 +561,17 @@ with open('2.2.3_report_xgb.txt', 'w') as xgb_report_file:
         scoringRules.forEach(item => {
             const userInput = document.getElementById(item.id).value.trim();
             
-            // 文本类（错误分析/改进建议）：填写即得分，模糊匹配
+            // 文本类（错误分析/改进建议）：必须有实质内容才给分（字数≥20字+含关键词）
             if (item.isText) {
-                if (userInput.length > 0) {
+                const keywords = item.id === 'error_analysis'
+                    ? ['错误', '问题', '原因', '缺陷', '影响', '分析']
+                    : ['改进', '优化', '建议', '提升', '方案', '措施'];
+                const hasKw = keywords.some(kw => userInput.includes(kw));
+                if (userInput.length >= 20 && hasKw) {
                     totalScore += item.score;
                     rightList.push(`✅ ${item.desc} +${item.score}分`);
                 } else {
-                    wrongList.push(`❌ ${item.desc} 未填写，不得分`);
+                    wrongList.push(`❌ ${item.desc}：字数不足20字或未包含相关关键词`);
                 }
                 return;
             }

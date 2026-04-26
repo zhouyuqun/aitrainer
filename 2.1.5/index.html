@@ -371,15 +371,23 @@ cleaned_file_path = <input type="text" class="blank" id="b14">
             }
         });
 
-        // 清洗规范 + 标注规范（5分，模糊匹配）
+        // 清洗规范（3分）+ 标注规范（2分）：必须字数≥20字+含关键词才给分
         const wash = document.getElementById('washNorm').value.trim();
         const label = document.getElementById('labelNorm').value.trim();
-        
-        if (wash) { total += 3; right.push(`✅ 清洗规范 +3分`); }
-        else { wrong.push(`❌ 清洗规范未填写`); }
-        
-        if (label) { total += 2; right.push(`✅ 标注规范 +2分`); }
-        else { wrong.push(`❌ 标注规范未填写`); }
+        const washKw = ['缺失', '删除', 'dropna', 'isnull', '数据类型', '转换', '数值', '质量', '异常', '处理'];
+        const labelKw = ['标注', '标签', '特征', '目标', '变量', 'label', '分类'];
+        const hasWashKw = washKw.some(k => wash.includes(k));
+        const hasLabelKw = labelKw.some(k => label.includes(k));
+        if (wash && wash.length >= 20 && hasWashKw) {
+            total += 3; right.push(`✅ 清洗规范 +3分`);
+        } else {
+            wrong.push(`❌ 清洗规范：字数不足20字或未包含数据清洗相关关键词`);
+        }
+        if (label && label.length >= 20 && hasLabelKw) {
+            total += 2; right.push(`✅ 标注规范 +2分`);
+        } else {
+            wrong.push(`❌ 标注规范：字数不足20字或未包含数据标注相关关键词`);
+        }
 
         total = Math.min(total, 15);
 

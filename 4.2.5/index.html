@@ -240,7 +240,20 @@ function checkScore() {
     let per = 20;
 
     user.forEach((val, i) => {
-        let ok = val.length > 3 && (answers[i].includes(val) || val.includes(answers[i].substring(0,8)));
+        // 每题必须包含对应关键词才算正确，杜绝随便填4个字符拿20分
+        const keywords = [
+            // Q1 图像标注工具
+            ['LabelImg', 'VIA', 'CVAT', 'RectLabel', 'ScaLabel', 'Labelme', '标注工具'],
+            // Q2 深度学习模型
+            ['CNN', '卷积', 'Mask', 'R-CNN', 'U-Net', '神经网络', '深度学习'],
+            // Q3 跨学科团队
+            ['跨学科', '考古', '艺术史', '计算机视觉', 'AI工程师'],
+            // Q4 数据安全
+            ['加密', 'AES', 'RSA', '隐私', '安全', '区块链'],
+            // Q5 VR/AR技术
+            ['VR', 'AR', '虚拟现实', '增强现实', '沉浸', '元宇宙']
+        ];
+        let ok = keywords[i].some(kw => val.includes(kw)) && val.length >= 4;
         if (ok) {
             score += per;
             detail += `<p class="right">第${i+1}空：正确</p>`;
