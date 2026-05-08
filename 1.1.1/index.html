@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人工智能训练师（三级）操作技能考核</title>
+    <title>人工智能训练师（三级）操作技能考核 - 1.1.1</title>
+    <script src="../auth.js"></script>
     <style>
         * {
             margin: 0;
@@ -53,7 +54,6 @@
             overflow: hidden;
         }
         
-        /* 左右等宽（调整 flex 比例） */
         .column {
             flex: 1;
             padding: 20px;
@@ -92,23 +92,35 @@
         
         .blank {
             display: inline-block;
-            min-width: 80px;
+            min-width: 160px;
             border: none;
-            border-bottom: 1px solid #666;
-            background: transparent;
-            font-family: inherit;
-            font-size: inherit;
+            border-bottom: 2px solid #4a5568;
+            background: #f7fafc;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 14px;
+            color: #1a202c;
             outline: none;
-            padding: 0 4px;
+            padding: 2px 8px;
             margin: 0 2px;
-            text-align: center;
+            text-align: left;
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            border-radius: 3px 3px 0 0;
         }
+        .blank:focus {
+            border-bottom-color: #3182ce;
+            background: #ebf8ff;
+        }
+        .blank::-webkit-scrollbar { height: 4px; }
+        .blank::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 2px; }
         
         .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 20px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -121,14 +133,39 @@
             transition: all 0.3s;
         }
         
-        .btn-check {
-            background: #3182ce;
-            color: #fff;
+        .btn-check  { background: #3182ce; color: #fff; }
+        .btn-reset  { background: #e53e3e; color: #fff; }
+        .btn-done   { background: #2e7d32; color: #fff; }
+        .btn-export { background: #805ad5; color: #fff; }
+        .btn-retry  { background: #805ad5; color: #fff; }
+
+        .btn-export:hover { background: #6b46c1; }
+
+        .analysis-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
         }
-        
-        .btn-reset {
-            background: #e53e3e;
-            color: #fff;
+        .analysis-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #bee3f8;
+            padding-bottom: 6px;
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c5282;
+        }
+        .analysis-content code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
         }
         
         .score-result {
@@ -150,6 +187,7 @@
             border: 1px solid #fc8181;
             border-radius: 4px;
             display: none;
+            min-height: 120px;
         }
         
         .comparison-title {
@@ -163,6 +201,7 @@
             padding: 8px;
             border-radius: 4px;
             line-height: 1.8;
+            min-height: 40px;
         }
         
         .correct-answer {
@@ -174,16 +213,30 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
+
+        .hint-box {
+            margin-top: 6px;
+            padding: 8px 10px;
+            background: #fffbeb;
+            border-left: 3px solid #f59e0b;
+            border-radius: 0 4px 4px 0;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .hint-box::before {
+            content: "💡 提示：";
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="exam-header">
-        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
-        人工智能训练师（三级）操作技能考核 - 智能医疗系统中的业务数据处理流程设计
+        <button class="back-btn" onclick="location.href='../index.html'">← 返回</button>
+        人工智能训练师（三级）操作技能考核 - 1.1.1 智能医疗系统中的业务数据处理流程设计
     </div>
 
     <div class="container">
-        <!-- 左侧题目（加宽） -->
+        <!-- 左侧题目 -->
         <div class="column" style="flex: 1.1;">
             <div class="section-title">考试题目</div>
             <div class="question-content">
@@ -221,11 +274,10 @@
             </div>
         </div>
 
-        <!-- 右侧代码区（纯空白、输入框填空） -->
+        <!-- 右侧代码区 -->
         <div class="column" style="flex: 1;">
             <div class="section-title">代码填空区</div>
-            <div class="code-editor">
-import pandas as pd
+            <div class="code-editor">import pandas as pd
 import numpy as np
 
 # 读取数据集 1分
@@ -286,13 +338,25 @@ age_patient_count = data['AgeRange']<input type="text" class="blank" id="b22">
 # 输出结果
 print("年龄区间中高风险患者的比例和患者数:")
 print(age_risk_rate) 
-print(age_patient_count)
-            </div>
+print(age_patient_count)</div>
 
             <div class="btn-group">
-                <button class="btn btn-check" id="btnCheck">检查答案</button>
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
+                <button class="btn btn-done" id="btnDone" onclick="markDone()">✓ 标记完成</button>
+                <button class="btn btn-export" id="btnExport" onclick="exportScore()">📤 导出成绩</button>
             </div>
+            <div style="text-align:center;margin-top:8px;">
+                <button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">🔄 重做本题</button>
+            </div>
+
+            <!-- 解析区 -->
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">📖 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
+            </div>
+
+            <div id="doneMsg" style="text-align:center;color:#2e7d32;font-size:13px;margin-top:8px;display:none;">✅ 已标记完成</div>
 
             <div class="score-result" id="scoreResult">
                 本次得分：<span id="finalScore">0</span> / 25 分
@@ -300,70 +364,177 @@ print(age_patient_count)
 
             <div class="answer-comparison" id="answerComparison">
                 <div class="comparison-title">答案对比</div>
-                <div class="wrong-answer" id="wrongAnswer"></div>
-                <div class="correct-answer" id="correctAnswer"></div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
             </div>
         </div>
     </div>
 
-    <script>
-        // 【严格匹配评分表】标准答案与分值
-        const scoring = [
-            { id:"b1", ans:"pd.read_csv('patient_data.csv')", score:1 },  // M4
-            { id:"b2", ans:"data['RiskLevel']", score:3 },             // M5
-            { id:"b3", ans:"np.where", score:0 },
-            { id:"b4", ans:"data['DaysInHospital']>7", score:0 },
-            { id:"b5", ans:"'RiskLevel'", score:0 },
-            { id:"b6", ans:"value_counts()", score:2 },                 // M6
-            { id:"b7", ans:"len(data)", score:1 },                     // M7
-            { id:"b8", ans:"len(data)", score:1 },                     // M8
-            { id:"b9", ans:"pd.cut", score:0 },
-            { id:"b10", ans:"data['BMI']", score:0 },
-            { id:"b11", ans:"bins=bmi_bins", score:0 },
-            { id:"b12", ans:"labels=bmi_labels", score:4 },                    // M9
-            { id:"b13", ans:"data.groupby", score:0 },
-            { id:"b14", ans:"'BMIRange'", score:2 },                   // M10
-            { id:"b15", ans:"value_counts().sort_index()", score:1 },                    // M11
-            { id:"b16", ans:"pd.cut", score:0 },
-            { id:"b17", ans:"data['Age']", score:0 },
-            { id:"b18", ans:"bins=age_bins", score:0 },
-            { id:"b19", ans:"labels=age_labels", score:4 },                    // M12
-            { id:"b20", ans:"data.groupby", score:0 },
-            { id:"b21", ans:"'AgeRange'", score:2 },                   // M13
-            { id:"b22", ans:"value_counts().sort_index()", score:1 },                    // M14
-        ];
+<script>
+    const QID = '1.1.1';
 
-        // 检查答案
-        document.getElementById('btnCheck').onclick = function(){
-            let total = 0;
-            let wrong = [];
-            let right = [];
-            
-            scoring.forEach(item => {
-                const val = document.getElementById(item.id).value.trim();
-                if(val === item.ans){
-                    total += item.score;
-                    right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
-                }else{
-                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
-                }
+    // 页面加载时还原已保存的答案
+    window.addEventListener('DOMContentLoaded', function() {
+        const saved = localStorage.getItem('exam_answers_' + QID);
+        if (saved) {
+            const answers = JSON.parse(saved);
+            Object.keys(answers).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = answers[id];
             });
-            
-            document.getElementById('finalScore').textContent = total;
-            document.getElementById('scoreResult').style.display = 'block';
-            document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
-            document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
-            document.getElementById('answerComparison').style.display = 'block';
-        };
+        }
+        if (localStorage.getItem('exam_done_' + QID)) {
+            document.getElementById('btnDone').textContent = '✓ 已完成';
+            document.getElementById('doneMsg').style.display = 'block';
+        }
+    });
 
-        // 重置
-        document.getElementById('btnReset').onclick = function(){
-            document.querySelectorAll('.blank').forEach(i => i.value = '');
-            document.getElementById('scoreResult').style.display = 'none';
-            document.getElementById('answerComparison').style.display = 'none';
+    // 自动保存答案
+    function saveAnswers() {
+        const answers = {};
+        document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => {
+            answers[el.id] = el.value;
+        });
+        localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
+    }
+    document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => {
+        el.addEventListener('input', saveAnswers);
+    });
+
+    // 导出成绩
+    function exportScore() {
+        const studentName = localStorage.getItem('exam_student_name') || '未知';
+        const studentId = localStorage.getItem('exam_student_id') || localStorage.getItem('exam_logged_in') || '未知';
+        const score = localStorage.getItem('exam_score_' + QID) || '0';
+        const doneTime = localStorage.getItem('exam_done_' + QID) || '';
+        const answers = JSON.parse(localStorage.getItem('exam_answers_' + QID) || '{}');
+        const record = {
+            studentName, studentId,
+            questionId: QID,
+            score: parseFloat(score),
+            doneTime, answers,
+            exportedAt: new Date().toISOString()
         };
-// 👇 把得分存到本地，给首页统计
-//localStorage.setItem('score_' + location.pathname.split('/').pop(), total);
-    </script>
+        const blob = new Blob([JSON.stringify(record, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `成绩_${QID}_${studentName}_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // 标记完成
+    function markDone() {
+        localStorage.setItem('exam_done_' + QID, new Date().toISOString());
+        document.getElementById('btnDone').textContent = '✓ 已完成';
+        document.getElementById('doneMsg').style.display = 'block';
+    }
+
+    // 模糊匹配
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user === correct || user.includes(correct) || correct.includes(user);
+    }
+
+    // 标准答案与分值
+    const scoring = [
+        { id:"b1",  ans:"pd.read_csv('patient_data.csv')",  score:1, hint:"用 pandas 的 read_csv 方法加载 CSV 文件，注意文件名用引号包裹" },
+        { id:"b2",  ans:"data['RiskLevel']",                score:3, hint:"创建新列 RiskLevel，用 data['RiskLevel'] = np.where(...) 赋值" },
+        { id:"b3",  ans:"np.where",                         score:0 },
+        { id:"b4",  ans:"data['DaysInHospital']>7",         score:0 },
+        { id:"b5",  ans:"'RiskLevel'",                      score:0 },
+        { id:"b6",  ans:"value_counts()",                   score:2, hint:"统计各类别数量用 value_counts() 方法" },
+        { id:"b7",  ans:"len(data)",                        score:1, hint:"总患者数用 len(data) 获取" },
+        { id:"b8",  ans:"len(data)",                        score:1, hint:"总患者数用 len(data) 获取" },
+        { id:"b9",  ans:"pd.cut",                           score:0 },
+        { id:"b10", ans:"data['BMI']",                      score:0 },
+        { id:"b11", ans:"bins=bmi_bins",                    score:0 },
+        { id:"b12", ans:"labels=bmi_labels",                score:4, hint:"pd.cut(数据列, bins=区间列表, labels=标签列表, right=False) 将连续数值划分为类别区间" },
+        { id:"b13", ans:"data.groupby",                     score:0 },
+        { id:"b14", ans:"'BMIRange'",                       score:2, hint:"先 groupby('BMIRange') 分组，再对 RiskLevel 列用 apply 计算高风险比例" },
+        { id:"b15", ans:"value_counts().sort_index()",      score:1, hint:"统计各区间患者数用 .value_counts().sort_index()，按区间顺序排列" },
+        { id:"b16", ans:"pd.cut",                           score:0 },
+        { id:"b17", ans:"data['Age']",                      score:0 },
+        { id:"b18", ans:"bins=age_bins",                    score:0 },
+        { id:"b19", ans:"labels=age_labels",                score:4, hint:"pd.cut(数据列, bins=区间列表, labels=标签列表, right=False) 将年龄划分为区间" },
+        { id:"b20", ans:"data.groupby",                     score:0 },
+        { id:"b21", ans:"'AgeRange'",                       score:2, hint:"先 groupby('AgeRange') 分组，再对 RiskLevel 列用 apply 计算高风险比例" },
+        { id:"b22", ans:"value_counts().sort_index()",      score:1, hint:"统计各区间患者数用 .value_counts().sort_index()，按区间顺序排列" },
+    ];
+
+    // 检查打分
+    document.getElementById('btnCheck').onclick = function() {
+        let total = 0;
+        let wrong = [];
+        let right = [];
+
+        scoring.forEach(item => {
+            const val = document.getElementById(item.id).value.trim();
+            if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push(`✅ ${item.id}：正确 +${item.score}分`);
+            } else {
+                let entry = `❌ ${item.id} 正确：${item.ans}`;
+                if (item.hint) entry += `<div class="hint-box">${item.hint}</div>`;
+                wrong.push(entry);
+            }
+        });
+
+        total = Math.min(total, 25);
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
+
+        localStorage.setItem('exam_score_' + QID, total);
+        markDone();
+
+        if (wrong.length > 0) {
+            localStorage.setItem('exam_wrong_' + QID, '1');
+        } else {
+            localStorage.removeItem('exam_wrong_' + QID);
+        }
+
+        // 显示解析
+        var analysisEl = document.getElementById('analysisContent');
+        var analysisBox = document.getElementById('analysisBox');
+        if (analysisEl && typeof questionAnalysis !== 'undefined') {
+            analysisEl.innerHTML = questionAnalysis;
+            if (analysisBox) analysisBox.style.display = 'block';
+        }
+    };
+
+    // 重置代码
+    document.getElementById('btnReset').onclick = function() {
+        document.querySelectorAll('.blank').forEach(i => i.value = '');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+        localStorage.removeItem('exam_answers_' + QID);
+        localStorage.removeItem('exam_score_' + QID);
+        localStorage.removeItem('exam_done_' + QID);
+        document.getElementById('btnDone').textContent = '✓ 标记完成';
+        document.getElementById('doneMsg').style.display = 'none';
+    };
+
+    // 重做本题
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        localStorage.removeItem('exam_score_' + QID);
+        localStorage.removeItem('exam_done_' + QID);
+        localStorage.removeItem('exam_wrong_' + QID);
+        localStorage.removeItem('exam_answers_' + QID);
+        document.querySelectorAll('.blank').forEach(function(i) { i.value = ''; });
+        var el;
+        el = document.getElementById('scoreResult'); if(el) el.style.display = 'none';
+        el = document.getElementById('answerComparison'); if(el) el.style.display = 'none';
+        el = document.getElementById('analysisBox'); if(el) el.style.display = 'none';
+        el = document.getElementById('finalScore'); if(el) el.textContent = '?';
+        alert('已重置，可重新作答！');
+    }
+</script>
 </body>
 </html>
