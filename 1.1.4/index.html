@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <script src="../auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人工智能训练师（三级）操作技能考核</title>
@@ -90,17 +91,37 @@
         
         .blank {
             display: inline-block;
-            min-width: 80px;
+            min-width: 160px;
             border: none;
-            border-bottom: 1px solid #666;
-            background: transparent;
-            font-family: inherit;
-            font-size: inherit;
+            border-bottom: 2px solid #4a5568;
+            background: #f7fafc;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 14px;
+            color: #1a202c;
             outline: none;
-            padding: 0 4px;
+            padding: 2px 8px;
             margin: 0 2px;
-            text-align: center;
+            text-align: left;
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            border-radius: 3px 3px 0 0;
         }
+        .blank:focus { border-bottom-color: #3182ce; background: #ebf8ff; }
+        .blank::-webkit-scrollbar { height: 4px; }
+        .blank::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 2px; }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        .answer-comparison { min-height: 120px; }
+        .correct-answer, .wrong-answer { min-height: 40px; }
         
         .btn-group {
             display: flex;
@@ -172,11 +193,46 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
-    </style>
+    
+
+        .blank {
+            display: inline-block;
+            min-width: 160px;
+            border: none;
+            border-bottom: 2px solid #4a5568;
+            background: #f7fafc;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 14px;
+            color: #1a202c;
+            outline: none;
+            padding: 2px 8px;
+            margin: 0 2px;
+            text-align: left;
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            border-radius: 3px 3px 0 0;
+        }
+        .blank:focus { border-bottom-color: #3182ce; background: #ebf8ff; }
+        .blank::-webkit-scrollbar { height: 4px; }
+        .blank::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 2px; }
+        .text-answer { width: 100%; height: 80px; margin: 8px 0; padding: 8px; border: 1px solid #ddd; font-size: 13px; }
+        .btn-done  { background: #2e7d32; color: #fff; }
+        .btn-export{ background: #805ad5; color: #fff; }
+        .btn-export:hover{ background: #6b46c1; }
+        .btn-retry { background: #805ad5; color: #fff; }
+        .analysis-box { background: #ebf8ff; border: 1px solid #90cdf4; border-radius: 6px; padding: 16px; margin-top: 16px; }
+        .analysis-title { font-size: 15px; font-weight: bold; color: #2b6cb0; margin-bottom: 10px; border-bottom: 1px solid #bee3f8; padding-bottom: 6px; }
+        .analysis-content { font-size: 14px; line-height: 1.8; color: #2c5282; }
+        .hint-box { margin-top: 6px; padding: 8px 10px; background: #fffbeb; border-left: 3px solid #f59e0b; border-radius: 0 4px 4px 0; font-size: 13px; color: #92400e; }
+        .hint-box::before { content: "💡 提示："; font-weight: bold; }
+        .answer-comparison { min-height: 120px; }
+        .correct-answer, .wrong-answer { min-height: 40px; }
+</style>
 </head>
 <body>
     <div class="exam-header">
-        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
+        <button class="back-btn" onclick="location.href='../index.html'">← 返回</button>
         人工智能训练师（三级）操作技能考核 - 用户行为数据处理与分析流程设计
     </div>
     <div class="container">
@@ -272,11 +328,17 @@ print("年龄段用户数：\n", age_counts)
             </div>
 
             <div class="btn-group">
-                <button class="btn btn-check" id="btnCheck">检查答案</button>
-                <button class="btn btn-reset" id="btnReset">重置代码</button>
+                <button class="btn btn-check" id="btnCheck">检查打分</button>
+                <button class="btn btn-reset"  id="btnReset">重置代码</button>
+                <button class="btn btn-done"   id="btnDone"   onclick="markDone()">✓ 标记完成</button>
+                <button class="btn btn-export"  id="btnExport" onclick="exportScore()">📤 导出成绩</button>
             </div>
-
-            <div class="score-result" id="scoreResult">
+            <button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()" style="display:block;margin:10px auto 0;font-size:14px;">🔄 重做本题</button>
+            <div class="analysis-box" id="analysisBox" style="display:none;">
+                <div class="analysis-title">📖 题目解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
+            </div>
+            <div id="doneMsg" style="text-align:center;color:#2e7d32;font-size:13px;margin-top:8px;display:none;">✅ 已标记完成</div><div class="score-result" id="scoreResult">
                 本次得分：<span id="finalScore">0</span> / 25 分
             </div>
 
@@ -289,63 +351,108 @@ print("年龄段用户数：\n", age_counts)
     </div>
 
     <script>
-        const scoring = [
-            { id:"b1", ans:"pd.read_csv('user_behavior_data.csv')", score:2 },
-            { id:"b2", ans:"data.head()", score:2 },
-            { id:"b3", ans:"data.dropna()", score:2 },
-            
-            { id:"b4", ans:"['Age']", score:0 },
-            { id:"b5", ans:"data['Age'].astype(int)", score:2 },
-            
-            { id:"b6", ans:"['PurchaseAmount']", score:0 },
-            { id:"b7", ans:"data['PurchaseAmount'].astype(float)", score:2 },
-            
-            { id:"b8", ans:"['ReviewScore']", score:0 },
-            { id:"b9", ans:"data['ReviewScore'].astype(int)", score:2 },
-            
-            { id:"b10", ans:"data['Age'].between", score:0 },
-            { id:"b11", ans:"data['ReviewScore'].between", score:2 },
-            
-            { id:"b12", ans:"data['PurchaseAmount'].mean()", score:0 },
-            { id:"b13", ans:"data['PurchaseAmount'].std()", score:2 },
-            
-            { id:"b14", ans:"data['ReviewScore'].mean()", score:0 },
-            { id:"b15", ans:"data['ReviewScore'].std()", score:2 },
-            
-            { id:"b16", ans:"data.to_csv('cleaned_user_behavior_data.csv',index=False)", score:1 },
-            
-            { id:"b17", ans:"data['PurchaseCategory'].value_counts()", score:2 },
-            { id:"b18", ans:"data.groupby('Gender')['PurchaseAmount'].mean()", score:2 },
-            { id:"b19", ans:"pd.cut(data['Age'],bins=age_bins,labels=age_labels,right=False)", score:2 },
-        ];
-
-        document.getElementById('btnCheck').onclick = function(){
-            let total = 0;
-            let wrong = [];
-            let right = [];
-            
-            scoring.forEach(item => {
-                const val = document.getElementById(item.id).value.trim();
-                if(val === item.ans){
-                    total += item.score;
-                    right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
-                }else{
-                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
-                }
+    const QID = '1.1.4';
+    window.addEventListener('DOMContentLoaded', function() {
+        const saved = localStorage.getItem('exam_answers_' + QID);
+        if (saved) {
+            const answers = JSON.parse(saved);
+            Object.keys(answers).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = answers[id];
             });
-            
-            document.getElementById('finalScore').textContent = total;
-            document.getElementById('scoreResult').style.display = 'block';
-            document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
-            document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
-            document.getElementById('answerComparison').style.display = 'block';
-        };
-
-        document.getElementById('btnReset').onclick = function(){
-            document.querySelectorAll('.blank').forEach(i => i.value = '');
-            document.getElementById('scoreResult').style.display = 'none';
-            document.getElementById('answerComparison').style.display = 'none';
-        };
-    </script>
+        }
+        if (localStorage.getItem('exam_done_' + QID)) {
+            document.getElementById('btnDone').textContent = '✓ 已完成';
+            document.getElementById('doneMsg').style.display = 'block';
+        }
+    });
+    function saveAnswers() {
+        const answers = {};
+        document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => { answers[el.id] = el.value; });
+        localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
+    }
+    document.querySelectorAll('input.blank, textarea.text-answer').forEach(el => { el.addEventListener('input', saveAnswers); });
+    function exportScore() {
+        const studentName = localStorage.getItem('exam_student_name') || '未知';
+        const studentId  = localStorage.getItem('exam_student_id') || localStorage.getItem('exam_logged_in') || '未知';
+        const score      = localStorage.getItem('exam_score_' + QID) || '0';
+        const answers    = JSON.parse(localStorage.getItem('exam_answers_' + QID) || '{}');
+        const record = { studentName, studentId, questionId: QID, score: parseFloat(score), answers, exportedAt: new Date().toISOString() };
+        const blob = new Blob([JSON.stringify(record, null, 2)], {type:'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `成绩_${QID}_${studentName}_${new Date().toISOString().slice(0,10)}.json`;
+        a.click(); URL.revokeObjectURL(a.href);
+    }
+    function markDone() {
+        localStorage.setItem('exam_done_' + QID, new Date().toISOString());
+        document.getElementById('btnDone').textContent = '✓ 已完成';
+        document.getElementById('doneMsg').style.display = 'block';
+    }
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user === correct || user.includes(correct) || correct.includes(user);
+    }
+        const scoring = [
+        { id:"b1",  ans:"pd.read_csv('user_behavior_data.csv')",    score:2, hint:"用 pandas 读取用户行为数据" },
+        { id:"b2",  ans:"data.head()",                             score:2, hint:"显示前5行用 head()" },
+        { id:"b3",  ans:"data.dropna()",                            score:2, hint:"删除缺失值行 dropna()" },
+        { id:"b4",  ans:"['Age']",                                  score:0, hint:"访问年龄列" },
+        { id:"b5",  ans:"data['Age'].astype(int)",                  score:2, hint:"转整数 astype(int)" },
+        { id:"b6",  ans:"['PurchaseAmount']",                        score:0, hint:"购买金额列" },
+        { id:"b7",  ans:"data['PurchaseAmount'].astype(float)",     score:2, hint:"转浮点 astype(float)" },
+        { id:"b8",  ans:"['ReviewScore']",                          score:0, hint:"评价评分列" },
+        { id:"b9",  ans:"data['ReviewScore'].astype(int)",         score:2, hint:"评分转整数" },
+        { id:"b10", ans:"data['Age'].between",                     score:0, hint:"年龄范围判断" },
+        { id:"b11", ans:"data['ReviewScore'].between",             score:2, hint:"评分范围 1-5" },
+        { id:"b12", ans:"data['PurchaseAmount'].mean()",           score:0, hint:"标准化先算均值" },
+        { id:"b13", ans:"data['PurchaseAmount'].std()",            score:2, hint:"标准化计算标准差" },
+        { id:"b14", ans:"data['ReviewScore'].mean()",             score:0, hint:"评分均值" },
+        { id:"b15", ans:"data['ReviewScore'].std()",             score:2, hint:"评分标准差" },
+        { id:"b16", ans:"data.to_csv('cleaned_user_behavior_data.csv',index=False)", score:1, hint:"保存，文件名引号，index=False" },
+        { id:"b17", ans:"data['PurchaseCategory'].value_counts()",  score:2, hint:"统计类别数量" },
+        { id:"b18", ans:"data.groupby('Gender')['PurchaseAmount'].mean()", score:2, hint:"按性别分组计算均值" },
+        { id:"b19", ans:"pd.cut(data['Age'],bins=age_bins,labels=age_labels,right=False)", score:2, hint:"pd.cut 划分年龄段" },
+    ];
+    document.getElementById('btnCheck').onclick = function(){
+        let total = 0, wrong = [], right = [];
+        scoring.forEach(item => {
+            const val = document.getElementById(item.id).value.trim();
+            if (fuzzyMatch(val, item.ans)) { total += item.score; right.push(`✅ ${item.id}：正确 +${item.score}分`); }
+            else { let entry = `❌ ${item.id} 正确：${item.ans}`; if (item.hint) entry += `<div class="hint-box">${item.hint}</div>`; wrong.push(entry); }
+        });
+        total = Math.min(total, 25);
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '全部正确';
+        localStorage.setItem('exam_score_' + QID, total);
+        markDone();
+    };
+    document.getElementById('btnReset').onclick = function(){
+        document.querySelectorAll('.blank').forEach(i=>i.value='');
+        document.querySelectorAll('.text-answer').forEach(i=>i.value='');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+        localStorage.removeItem('exam_answers_' + QID);
+        localStorage.removeItem('exam_score_' + QID);
+        localStorage.removeItem('exam_done_' + QID);
+        document.getElementById('btnDone').textContent = '✓ 标记完成';
+        document.getElementById('doneMsg').style.display = 'none';
+    };
+    function resetThisQuestion() {
+        if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        localStorage.removeItem('exam_score_' + QID);
+        localStorage.removeItem('exam_done_'  + QID);
+        localStorage.removeItem('exam_wrong_' + QID);
+        localStorage.removeItem('exam_answers_' + QID);
+        document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+        ['scoreResult','answerComparison','analysisBox'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
+        var el = document.getElementById('finalScore'); if(el) el.textContent='?';
+        alert('已重置，可重新作答！');
+    }
+</script>
 </body>
 </html>
