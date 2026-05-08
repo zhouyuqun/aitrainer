@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人工智能训练师（三级）操作技能考核</title>
-    <script src="../auth.js"></script>
     <style>
         * {
             margin: 0;
@@ -91,34 +90,18 @@
             white-space: pre;
         }
         
-                .blank {
+        .blank {
             display: inline-block;
-            min-width: 300px;
+            min-width: 80px;
             border: none;
-            border-bottom: 2px solid #4a5568;
-            background: #f7fafc;
-            font-family: Consolas, 'Courier New', monospace;
-            font-size: 14px;
-            color: #1a202c;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
             outline: none;
-            padding: 2px 8px;
+            padding: 0 4px;
             margin: 0 2px;
-            text-align: left;
-            white-space: nowrap;
-            overflow-x: auto;
-            max-width: 100%;
-            border-radius: 3px 3px 0 0;
-        }
-        .blank:focus {
-            border-bottom-color: #3182ce;
-            background: #ebf8ff;
-        }
-        .blank::-webkit-scrollbar {
-            height: 4px;
-        }
-        .blank::-webkit-scrollbar-thumb {
-            background: #a0aec0;
-            border-radius: 2px;
+            text-align: center;
         }
         
         .btn-group {
@@ -191,64 +174,11 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
-
-        .hint-box {
-            margin-top: 6px;
-            padding: 8px 10px;
-            background: #fffbeb;
-            border-left: 3px solid #f59e0b;
-            border-radius: 0 4px 4px 0;
-            font-size: 13px;
-            color: #92400e;
-        }
-        .hint-box::before {
-            content: "💡 提示：";
-            font-weight: bold;
-        }
-
-        .btn-export {
-            background: #38a169;
-            color: #fff;
-        }
-        .btn-retry {
-            background: #805ad5;
-            color: #fff;
-        }
-
-        .analysis-box {
-            background: #ebf8ff;
-            border: 1px solid #90cdf4;
-            border-radius: 6px;
-            padding: 16px;
-        }
-        .analysis-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #2b6cb0;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #bee3f8;
-            padding-bottom: 6px;
-        }
-        .analysis-content {
-            font-size: 14px;
-            line-height: 1.8;
-            color: #2c5282;
-        }
-        .analysis-content h4 {
-            margin-top: 10px;
-            color: #2c5282;
-        }
-        .analysis-content code {
-            background: #e2e8f0;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: Consolas, monospace;
-        }
     </style>
 </head>
 <body>
     <div class="exam-header">
-        <button class="back-btn" onclick="location.href='../index.html'">← 返回</button>
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
         人工智能训练师（三级）操作技能考核 - 智能医疗系统中的业务数据处理流程设计
     </div>
 
@@ -329,10 +259,10 @@ bmi_labels = ['偏瘦', '正常', '超重', '肥胖']
 data['BMIRange'] = <input type="text" class="blank" id="b9">(<input type="text" class="blank" id="b10">, <input type="text" class="blank" id="b11">, <input type="text" class="blank" id="b12">, right=False)
 
 # 计算每个BMI区间中高风险患者的比例 2分
-bmi_risk_rate = <input type="text" class="blank" id="b13">['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
+bmi_risk_rate = <input type="text" class="blank" id="b13">(<input type="text" class="blank" id="b14">)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
 
 # 统计每个BMI区间的患者数量 1分
-bmi_patient_count = data['BMIRange'].<input type="text" class="blank" id="b15">
+bmi_patient_count = data['BMIRange']<input type="text" class="blank" id="b15">
 
 # 输出结果
 print("BMI区间中高风险患者的比例和患者数:")
@@ -348,10 +278,10 @@ age_labels = ['≤25岁', '26-35岁', '36-45岁', '46-55岁', '56-65岁', '＞65
 data['AgeRange'] = <input type="text" class="blank" id="b16">(<input type="text" class="blank" id="b17">, <input type="text" class="blank" id="b18">, <input type="text" class="blank" id="b19">, right=False)
 
 # 计算每个年龄区间中高风险患者的比例 2分
-age_risk_rate = <input type="text" class="blank" id="b20">['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
+age_risk_rate = <input type="text" class="blank" id="b20">(<input type="text" class="blank" id="b21">)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())
 
 # 统计每个年龄区间的患者数量 1分
-age_patient_count = data['AgeRange'].<input type="text" class="blank" id="b22">
+age_patient_count = data['AgeRange']<input type="text" class="blank" id="b22">
 
 # 输出结果
 print("年龄区间中高风险患者的比例和患者数:")
@@ -361,15 +291,7 @@ print(age_patient_count)
 
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查答案</button>
-                <button class="btn btn-reset" id="btnReset">重置本题</button>
-                <button class="btn btn-export" id="btnExport">📤 导出成绩</button>
-                <button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">🔄 重做本题</button>
-            </div>
-
-            <!-- 解析区 -->
-            <div class="analysis-box" id="analysisBox" style="display:none; margin-top:20px;">
-                <div class="analysis-title">📖 题目解析</div>
-                <div class="analysis-content" id="analysisContent"></div>
+                <button class="btn btn-reset" id="btnReset">重置代码</button>
             </div>
 
             <div class="score-result" id="scoreResult">
@@ -385,214 +307,63 @@ print(age_patient_count)
     </div>
 
     <script>
-        // 模糊匹配：去除所有空格后比对，容忍格式差异（如 X,y 与 X, y）
-        function fuzzyMatch(user, correct) {
-            if (!user) return false;
-            const u = user.trim().toLowerCase();
-            const c = correct.trim().toLowerCase();
-            // 去除所有空格后严格相等，或互为子串
-            return u.replace(/\s+/g, '') === c.replace(/\s+/g, '')
-                || u.replace(/\s+/g, '').includes(c.replace(/\s+/g, ''))
-                || c.replace(/\s+/g, '').includes(u.replace(/\s+/g, ''));
-        }
-
-        // 【评分表】标准答案与分值（含解析）
+        // 【严格匹配评分表】标准答案与分值
         const scoring = [
-            { id:"b1",  ans:"pd.read_csv('patient_data.csv')",           score:1, hint:"用 pandas 的 read_csv 方法加载数据集，文件名要用引号包裹" },
-            { id:"b2",  ans:"data['RiskLevel']",                         score:3, hint:"用 np.where 创建新列 'RiskLevel'，格式：data['RiskLevel'] = np.where(条件, '高风险患者', '低风险患者')" },
-            { id:"b3",  ans:"np.where",                                   score:0 },
-            { id:"b4",  ans:"data['DaysInHospital']>7",                   score:0 },
-            { id:"b5",  ans:"'RiskLevel'",                               score:0 },
-            { id:"b6",  ans:"value_counts()",                             score:2, hint:"统计各分类数量用 value_counts() 方法，直接在列上调用，如：data['RiskLevel'].value_counts()" },
-            { id:"b7",  ans:"len(data)",                                  score:1, hint:"计算占比时分母用 len(data) 获取总行数，不要硬编码数字" },
-            { id:"b8",  ans:"len(data)",                                  score:1 },
-            { id:"b9",  ans:"pd.cut",                                     score:0 },
-            { id:"b10", ans:"data['BMI']",                                 score:0 },
-            { id:"b11", ans:"bins=bmi_bins",                               score:0 },
-            { id:"b12", ans:"labels=bmi_labels",                          score:4, hint:"用 pd.cut 对 BMI 划分区间，注意参数 bins=bmi_bins，labels=bmi_labels，right=False 表示左闭右开" },
-            { id:"b13", ans:"data.groupby('BMIRange')",                   score:2, hint:"用 groupby('BMIRange') 按区间分组，然后对 RiskLevel 列用 apply 计算高风险比例" },
-            { id:"b14", ans:"'BMIRange'",                                   score:0 },
-            { id:"b15", ans:"value_counts().sort_index()",                 score:1, hint:"统计各区间患者数量，用 value_counts().sort_index() 按区间顺序排列" },
-            { id:"b16", ans:"pd.cut",                                       score:0 },
-            { id:"b17", ans:"data['Age']",                                  score:0 },
-            { id:"b18", ans:"bins=age_bins",                                score:0 },
-            { id:"b19", ans:"labels=age_labels",                           score:4, hint:"用 pd.cut 对年龄划分6个区间，参数格式与 BMI 相同，right=False 左闭右开" },
-            { id:"b20", ans:"data.groupby('AgeRange')",                    score:2, hint:"按 'AgeRange' 分组后，用 apply(lambda x: (x=='高风险患者').mean()) 计算各年龄段高风险比例" },
-            { id:"b21", ans:"'AgeRange'",                                   score:0 },
-            { id:"b22", ans:"value_counts().sort_index()",                 score:1 },
+            { id:"b1", ans:"pd.read_csv('patient_data.csv')", score:1 },  // M4
+            { id:"b2", ans:"data['RiskLevel']", score:3 },             // M5
+            { id:"b3", ans:"np.where", score:0 },
+            { id:"b4", ans:"data['DaysInHospital']>7", score:0 },
+            { id:"b5", ans:"'RiskLevel'", score:0 },
+            { id:"b6", ans:"value_counts()", score:2 },                 // M6
+            { id:"b7", ans:"len(data)", score:1 },                     // M7
+            { id:"b8", ans:"len(data)", score:1 },                     // M8
+            { id:"b9", ans:"pd.cut", score:0 },
+            { id:"b10", ans:"data['BMI']", score:0 },
+            { id:"b11", ans:"bins=bmi_bins", score:0 },
+            { id:"b12", ans:"labels=bmi_labels", score:4 },                    // M9
+            { id:"b13", ans:"data.groupby", score:0 },
+            { id:"b14", ans:"'BMIRange'", score:2 },                   // M10
+            { id:"b15", ans:"value_counts().sort_index()", score:1 },                    // M11
+            { id:"b16", ans:"pd.cut", score:0 },
+            { id:"b17", ans:"data['Age']", score:0 },
+            { id:"b18", ans:"bins=age_bins", score:0 },
+            { id:"b19", ans:"labels=age_labels", score:4 },                    // M12
+            { id:"b20", ans:"data.groupby", score:0 },
+            { id:"b21", ans:"'AgeRange'", score:2 },                   // M13
+            { id:"b22", ans:"value_counts().sort_index()", score:1 },                    // M14
         ];
-
-        // 题目完整解析
-        const questionAnalysis = `
-<h4>考点一：数据读取</h4>
-<p>使用 <code>pd.read_csv()</code> 读取 CSV 文件是 pandas 最基础的操作。文件名必须用引号包裹。</p>
-
-<h4>考点二：条件赋值 np.where()</h4>
-<p><code>np.where(条件, 值1, 值2)</code> 是向量化条件赋值：<br>
-条件为 True 时返回 值1，为 False 时返回 值2。<br>
-本题中：<code>data['DaysInHospital'] > 7</code> 为条件，超过7天返回"高风险患者"，否则返回"低风险患者"。</p>
-
-<h4>考点三：分组统计 value_counts()</h4>
-<p><code>series.value_counts()</code> 统计各分类的数量，直接在 Series 上调用。</p>
-
-<h4>考点四：占比计算</h4>
-<p>占比 = 某类数量 / 总数量。<br>
-用 <code>len(data)</code> 获取数据总行数，不要硬编码数字。</p>
-
-<h4>考点五：区间划分 pd.cut()</h4>
-<p><code>pd.cut(数据, bins=区间边界, labels=区间标签, right=False)</code><br>
-- <code>bins</code>：划分点，如 <code>[0, 18.5, 24, 28, np.inf]</code><br>
-- <code>labels</code>：区间名称<br>
-- <code>right=False</code>：左闭右开，即 [0, 18.5)</p>
-
-<h4>考点六：分组聚合 groupby()</h4>
-<p><code>data.groupby('列名')['统计列'].操作()</code><br>
-本题用 <code>apply(lambda x: (x=='高风险患者').mean())</code> 计算各区间高风险患者比例。</p>
-        `;
 
         // 检查答案
         document.getElementById('btnCheck').onclick = function(){
             let total = 0;
             let wrong = [];
             let right = [];
-
+            
             scoring.forEach(item => {
                 const val = document.getElementById(item.id).value.trim();
-                if(fuzzyMatch(val, item.ans)){
+                if(val === item.ans){
                     total += item.score;
-                    right.push(`✅ ${item.id}：${val}（+${item.score}分）`);
+                    right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
                 }else{
-                    let entry = `❌ ${item.id} 正确答案：${item.ans}`;
-                    if (item.hint) entry += `<div class="hint-box">${item.hint}</div>`;
-                    wrong.push(entry);
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
                 }
             });
-
+            
             document.getElementById('finalScore').textContent = total;
             document.getElementById('scoreResult').style.display = 'block';
             document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
             document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
             document.getElementById('answerComparison').style.display = 'block';
-
-            // 显示解析
-            document.getElementById('analysisContent').innerHTML = questionAnalysis;
-            document.getElementById('analysisBox').style.display = 'block';
-
-            // 记录错题（只要有错题就记）
-            if (wrong.length > 0) {
-                localStorage.setItem('exam_wrong_' + QID, '1');
-                localStorage.setItem('exam_score_' + QID, total);
-                localStorage.setItem('exam_done_' + QID, '1');
-            } else {
-                // 全对则清除错题记录
-                localStorage.removeItem('exam_wrong_' + QID);
-                localStorage.setItem('exam_score_' + QID, total);
-                localStorage.setItem('exam_done_' + QID, '1');
-            }
         };
 
-        // 重置本题答案
+        // 重置
         document.getElementById('btnReset').onclick = function(){
             document.querySelectorAll('.blank').forEach(i => i.value = '');
             document.getElementById('scoreResult').style.display = 'none';
             document.getElementById('answerComparison').style.display = 'none';
-            document.getElementById('analysisBox').style.display = 'none';
         };
-
-        // ── 答题保存/导出功能 ────────────────────────────────
-        const QID = '1.1.1';
-        const QNAME = '智能医疗系统中的业务数据处理流程设计';
-        const QMAX = 25;
-
-        function getStudentInfo() {
-            return {
-                name: localStorage.getItem('exam_student_name') || '',
-                id: localStorage.getItem('exam_student_id') || ''
-            };
-        }
-
-        // 重做本题（清除所有记录）
-        function resetThisQuestion() {
-            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
-            localStorage.removeItem('exam_score_' + QID);
-            localStorage.removeItem('exam_done_' + QID);
-            localStorage.removeItem('exam_wrong_' + QID);
-            localStorage.removeItem('exam_answers_' + QID);
-            document.querySelectorAll('.blank').forEach(i => i.value = '');
-            document.getElementById('scoreResult').style.display = 'none';
-            document.getElementById('answerComparison').style.display = 'none';
-            document.getElementById('analysisBox').style.display = 'none';
-            document.getElementById('finalScore').textContent = '?';
-            alert('已重置，可重新作答！');
-        }
-
-        function saveAnswers() {
-            const answers = {};
-            scoring.forEach(item => {
-                const el = document.getElementById(item.id);
-                if (el) answers[item.id] = el.value;
-            });
-            localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
-            const scoreEl = document.getElementById('finalScore');
-            if (scoreEl && scoreEl.textContent !== '0') {
-                localStorage.setItem('exam_score_' + QID, scoreEl.textContent);
-                localStorage.setItem('exam_done_' + QID, '1');
-            }
-        }
-
-        function restoreAnswers() {
-            const saved = localStorage.getItem('exam_answers_' + QID);
-            if (saved) {
-                const answers = JSON.parse(saved);
-                Object.keys(answers).forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.value = answers[id];
-                });
-            }
-            const savedScore = localStorage.getItem('exam_score_' + QID);
-            if (savedScore) {
-                document.getElementById('finalScore').textContent = savedScore;
-                document.getElementById('scoreResult').style.display = 'block';
-                document.getElementById('answerComparison').style.display = 'block';
-            }
-        }
-
-        document.getElementById('btnExport').onclick = function() {
-            const stu = getStudentInfo();
-            const score = document.getElementById('finalScore').textContent;
-            const answers = {};
-            scoring.forEach(item => {
-                const el = document.getElementById(item.id);
-                if (el) answers[item.id] = el.value;
-            });
-            const record = {
-                studentName: stu.name,
-                studentId: stu.id,
-                questionId: QID,
-                questionName: QNAME,
-                score: score,
-                maxScore: QMAX,
-                time: new Date().toLocaleString('zh-CN'),
-                answers: answers
-            };
-            const blob = new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = stu.name + '_' + QID + '_成绩.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        };
-
-        // 评分后自动保存
-        const _origCheck = document.getElementById('btnCheck').onclick;
-        document.getElementById('btnCheck').onclick = function() {
-            _origCheck.call(this);
-            saveAnswers();
-        };
-
-        // 页面加载时恢复答案
-        restoreAnswers();
+// 👇 把得分存到本地，给首页统计
+//localStorage.setItem('score_' + location.pathname.split('/').pop(), total);
     </script>
 </body>
 </html>

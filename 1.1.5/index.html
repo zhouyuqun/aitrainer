@@ -57,31 +57,6 @@
             padding: 20px;
             border-right: 1px solid #e2e8f0;
         }
-        .btn-retry {
-            background: #805ad5;
-            color: #fff;
-        }
-        .analysis-box {
-            background: #ebf8ff;
-            border: 1px solid #90cdf4;
-            border-radius: 6px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-        .analysis-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #2b6cb0;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #bee3f8;
-            padding-bottom: 6px;
-        }
-        .analysis-content {
-            font-size: 14px;
-            line-height: 1.8;
-            color: #2c5282;
-        }
-
         
         .column:last-child {
             border-right: none;
@@ -113,34 +88,18 @@
             white-space: pre;
         }
         
-                .blank {
+        .blank {
             display: inline-block;
-            min-width: 300px;
+            min-width: 80px;
             border: none;
-            border-bottom: 2px solid #4a5568;
-            background: #f7fafc;
-            font-family: Consolas, 'Courier New', monospace;
-            font-size: 14px;
-            color: #1a202c;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
             outline: none;
-            padding: 2px 8px;
+            padding: 0 4px;
             margin: 0 2px;
-            text-align: left;
-            white-space: nowrap;
-            overflow-x: auto;
-            max-width: 100%;
-            border-radius: 3px 3px 0 0;
-        }
-        .blank:focus {
-            border-bottom-color: #3182ce;
-            background: #ebf8ff;
-        }
-        .blank::-webkit-scrollbar {
-            height: 4px;
-        }
-        .blank::-webkit-scrollbar-thumb {
-            background: #a0aec0;
-            border-radius: 2px;
+            text-align: center;
         }
         
         .btn-group {
@@ -215,22 +174,11 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
-
-        .hint-box {
-            background: #fffbeb;
-            border-left: 4px solid #f59e0b;
-            border-radius: 0 6px 6px 0;
-            padding: 10px 14px;
-            margin-top: 6px;
-            font-size: 13px;
-            color: #92400e;
-        }
-        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
     <div class="exam-header">
-        <button class="back-btn" onclick="location.href='../index.html'">← 返回</button>
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
         人工智能训练师（三级）操作技能考核 - 1.1.5 智能交通系统的数据采集、处理和审核流程设计
     </div>
     <div class="container">
@@ -327,37 +275,81 @@ print("不同年龄段的驾驶员数:\n", age_group_counts)
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查打分</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
-<button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
-            <!-- 解析区 -->
-            <div class="analysis-box" id="analysisBox" style="display:none;">
-                <div class="analysis-title">&#x1F4D6; 题目解析</div>
-                <div class="analysis-content" id="analysisContent"></div>
             </div>
+            <div class="score-result" id="scoreResult">
+                本次得分：<span id="finalScore">0</span> / 25 分
+            </div>
+            <div class="answer-comparison" id="answerComparison">
+                <div class="comparison-title">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer">无错误</div>
+                <div class="correct-answer" id="correctAnswer">无正确答案</div>
+            </div>
+        </div>
+    </div>
 <script>
-        const QID = "1.1.5";
-        const QNAME = "";
-        const QMAX = 0;
-        function getStudentInfo() {
-            return {
-                name: localStorage.getItem("exam_student_name") || "",
-                id: localStorage.getItem("exam_student_id") || ""
-            };
-        }
+    // 忽略空格匹配代码
+    function fuzzyMatch(user, correct) {
+        if (!user || user.trim() === '') return false;
+        user = user.replace(/\s+/g, '').toLowerCase();
+        correct = correct.replace(/\s+/g, '').toLowerCase();
+        return user === correct;
+    }
+    
+    // 标准答案（满分25分）
+    const scoring = [
+        { id:"b1", ans:"pd.read_csv('vehicle_traffic_data.csv')", score:2 },
+        { id:"b2", ans:"data.head()", score:2 },
+        { id:"b3", ans:"data.dropna()", score:2 },
+        { id:"b5", ans:"data['Age'].astype", score:1 },
+        { id:"b7", ans:"data['Speed'].astype", score:1 },
+        { id:"b9", ans:"data['TravelDistance'].astype", score:1 },
+        { id:"b11", ans:"data['TravelTime'].astype", score:1 },
+        { id:"b15", ans:"data['TravelTime'].between", score:2 },
+        { id:"b16", ans:"data.to_csv", score:1 },
+        { id:"b20", ans:"data['TravelTime'].between", score:1 },
+        { id:"b21", ans:"data['TrafficEvent'].value_counts()", score:2 },
+        { id:"b23", ans:"agg({'Speed':'mean','TravelDistance':'mean','TravelTime':'mean'})", score:2 },
+        { id:"b28", ans:"data['AgeGroup'].value_counts().sort_index()", score:5 }
+    ];
 
-        // 重做本题（清除所有记录）
-        function resetThisQuestion() {
-            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
-            localStorage.removeItem('exam_score_' + QID);
-            localStorage.removeItem('exam_done_' + QID);
-            localStorage.removeItem('exam_wrong_' + QID);
-            localStorage.removeItem('exam_answers_' + QID);
-            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
-            var el;
-            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
-            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
-            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
-            el = document.getElementById('finalScore'); if(el) el.textContent='?';
-            alert('已重置，可重新作答！');
-        }
+    document.getElementById('btnCheck').onclick = function(){
+        let total = 0;
+        let wrong = [];
+        let right = [];
+        let hasEmpty = false;
+        
+        scoring.forEach(item => {
+            const el = document.getElementById(item.id);
+            if (!el) return;
+            
+            const val = el.value.trim();
+            
+            if (val === '') {
+                hasEmpty = true;
+                wrong.push(`❌ ${item.id} 未填写`);
+            } else if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push(`✅ ${item.id}：正确 +${item.score}分`);
+            } else {
+                wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
+            }
+        });
+        
+        // 只有在所有有分的空都填了才计分
+        total = Math.min(total, 25);
+        
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || '无错误';
+        document.getElementById('correctAnswer').innerHTML = right.join('<br>') || '无正确答案';
+    };
 
+    document.getElementById('btnReset').onclick = function(){
+        document.querySelectorAll('.blank').forEach(i=>i.value='');
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    };
 </script>
+</body>
+</html>

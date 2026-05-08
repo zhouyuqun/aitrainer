@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人工智能训练师（三级）操作技能考核</title>
-    <script src="../auth.js"></script>
     <style>
         * {
             margin: 0;
@@ -90,34 +89,18 @@
             white-space: pre;
         }
         
-                .blank {
+        .blank {
             display: inline-block;
-            min-width: 300px;
+            min-width: 80px;
             border: none;
-            border-bottom: 2px solid #4a5568;
-            background: #f7fafc;
-            font-family: Consolas, 'Courier New', monospace;
-            font-size: 14px;
-            color: #1a202c;
+            border-bottom: 1px solid #666;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
             outline: none;
-            padding: 2px 8px;
+            padding: 0 4px;
             margin: 0 2px;
-            text-align: left;
-            white-space: nowrap;
-            overflow-x: auto;
-            max-width: 100%;
-            border-radius: 3px 3px 0 0;
-        }
-        .blank:focus {
-            border-bottom-color: #3182ce;
-            background: #ebf8ff;
-        }
-        .blank::-webkit-scrollbar {
-            height: 4px;
-        }
-        .blank::-webkit-scrollbar-thumb {
-            background: #a0aec0;
-            border-radius: 2px;
+            text-align: center;
         }
         
         .btn-group {
@@ -190,63 +173,11 @@
             background: #fee;
             border-left: 4px solid #e53e3e;
         }
-
-        .btn-export {
-            background: #38a169;
-            color: #fff;
-        }
-        .btn-retry {
-            background: #805ad5;
-            color: #fff;
-        }
-        .analysis-box {
-            background: #ebf8ff;
-            border: 1px solid #90cdf4;
-            border-radius: 6px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-        .analysis-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #2b6cb0;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #bee3f8;
-            padding-bottom: 6px;
-        }
-        .analysis-content {
-            font-size: 14px;
-            line-height: 1.8;
-            color: #2c5282;
-        }
-        .analysis-content h4 {
-            margin-top: 12px;
-            color: #2c5282;
-            font-size: 14px;
-        }
-        .analysis-content code {
-            background: #e2e8f0;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: Consolas, monospace;
-        }
-
-
-        .hint-box {
-            background: #fffbeb;
-            border-left: 4px solid #f59e0b;
-            border-radius: 0 6px 6px 0;
-            padding: 10px 14px;
-            margin-top: 6px;
-            font-size: 13px;
-            color: #92400e;
-        }
-        .hint-box strong { color: #b45309; }
     </style>
 </head>
 <body>
     <div class="exam-header">
-        <button class="back-btn" onclick="location.href='../index.html'">← 返回</button>
+        <button class="back-btn" onclick="location.href='index.html'">← 返回</button>
         人工智能训练师（三级）操作技能考核 - 金融机构信用评估系统中的业务数据审核流程设计
     </div>
     <div class="container">
@@ -356,15 +287,7 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
             <div class="btn-group">
                 <button class="btn btn-check" id="btnCheck">检查答案</button>
                 <button class="btn btn-reset" id="btnReset">重置代码</button>
-                <button class="btn btn-export" id="btnExport">📤 导出成绩</button>
-            </div><button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">🔄 重做本题</button>
-
-            <!-- 解析区 -->
-            <div class="analysis-box" id="analysisBox" style="display:none;">
-                <div class="analysis-title">📖 题目解析</div>
-                <div class="analysis-content" id="analysisContent"></div>
             </div>
-
             <div class="score-result" id="scoreResult">
                 本次得分：<span id="finalScore">0</span> / 20 分
             </div>
@@ -377,23 +300,6 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
     </div>
     <script>
         // 【严格匹配评分表】标准答案与分值
-                const HINTS = {
-            "b1":"使用 <code>isnull().sum()</code> 统计每列缺失值数量",
-            "b2":"使用 <code>duplicated().sum()</code> 统计重复行数量",
-            "b3":"引用 <code>data['Age']</code> 列",
-            "b4":"使用 <code>between(18, 70)</code> 判断年龄是否在合理区间",
-            "b5":"引用 <code>data['Income']</code> 列",
-            "b6":"填写合理阈值 <code>0</code>（收入应>0）",
-            "b7":"引用 <code>data['LoanAmount']</code> 列",
-            "b8":"引用 <code>data['Income']</code>（贷款不超过收入5倍）",
-            "b9":"引用 <code>data['CreditScore']</code> 列",
-            "b10":"使用 <code>between(300, 850)</code> 判断信用分范围",
-            "b11":"引用清洗后数据 <code>cleaned_data</code>",
-            "b12":"使用 <code>to_csv</code> 方法保存",
-            "b13":"填写文件名 <code>'cleaned_credit_data.csv'</code>",
-        };
-
-
         const scoring = [
             { id:"b1", ans:"isnull().sum()", score:2 },
             { id:"b2", ans:"duplicated().sum()", score:2 },
@@ -421,9 +327,7 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
                     total += item.score;
                     right.push(`✅ ${item.id}：${item.ans}（+${item.score}分）`);
                 }else{
-                    const hint = HINTS[item.id] || '';
-                    const hintHtml = hint ? `<div class="hint-box"><strong>💡 提示：</strong>${hint}</div>` : '';
-                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}` + hintHtml);
+                    wrong.push(`❌ ${item.id} 正确答案：${item.ans}`);
                 }
             });
             
@@ -432,21 +336,6 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
             document.getElementById('wrongAnswer').innerHTML = wrong.join('<br>') || "无错误";
             document.getElementById('correctAnswer').innerHTML = right.join('<br>') || "全部正确！";
             document.getElementById('answerComparison').style.display = 'block';
-
-        // 记录错题
-        if (wrong.length > 0) {
-            localStorage.setItem('exam_wrong_' + QID, '1');
-        } else {
-            localStorage.removeItem('exam_wrong_' + QID);
-        }
-        // 显示解析
-        var analysisEl = document.getElementById('analysisContent');
-        var analysisBox = document.getElementById('analysisBox');
-        if (analysisEl && typeof questionAnalysis !== 'undefined') {
-            analysisEl.innerHTML = questionAnalysis;
-            if (analysisBox) analysisBox.style.display = 'block';
-        }
-
         };
         // 重置
         document.getElementById('btnReset').onclick = function(){
@@ -454,99 +343,6 @@ print("数据清洗完成，已保存为 'cleaned_credit_data.csv'")
             document.getElementById('scoreResult').style.display = 'none';
             document.getElementById('answerComparison').style.display = 'none';
         };
-
-        // ── 答题保存/导出功能 ────────────────────────────────
-        const QID = '1.1.3';
-        const QNAME = '金融机构信用评估系统中的业务数据审核流程设计';
-        const QMAX = 20;
-
-        function getStudentInfo() {
-            return {
-                name: localStorage.getItem('exam_student_name') || '',
-                id: localStorage.getItem('exam_student_id') || ''
-            };
-        }
-
-        // 重做本题（清除所有记录）
-        function resetThisQuestion() {
-            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
-            localStorage.removeItem('exam_score_' + QID);
-            localStorage.removeItem('exam_done_' + QID);
-            localStorage.removeItem('exam_wrong_' + QID);
-            localStorage.removeItem('exam_answers_' + QID);
-            document.querySelectorAll('.blank').forEach(i => i.value = '');
-            document.getElementById('scoreResult').style.display = 'none';
-            document.getElementById('answerComparison').style.display = 'none';
-            document.getElementById('analysisBox').style.display = 'none';
-            document.getElementById('finalScore').textContent = '?';
-            alert('已重置，可重新作答！');
-        }
-
-        function saveAnswers() {
-            const answers = {};
-            scoring.forEach(item => {
-                const el = document.getElementById(item.id);
-                if (el) answers[item.id] = el.value;
-            });
-            localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
-            const scoreEl = document.getElementById('finalScore');
-            if (scoreEl && scoreEl.textContent !== '0') {
-                localStorage.setItem('exam_score_' + QID, scoreEl.textContent);
-                localStorage.setItem('exam_done_' + QID, '1');
-            }
-        }
-
-        function restoreAnswers() {
-            const saved = localStorage.getItem('exam_answers_' + QID);
-            if (saved) {
-                const answers = JSON.parse(saved);
-                Object.keys(answers).forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.value = answers[id];
-                });
-            }
-            const savedScore = localStorage.getItem('exam_score_' + QID);
-            if (savedScore) {
-                document.getElementById('finalScore').textContent = savedScore;
-                document.getElementById('scoreResult').style.display = 'block';
-                document.getElementById('answerComparison').style.display = 'block';
-            }
-        }
-
-        document.getElementById('btnExport').onclick = function() {
-            const stu = getStudentInfo();
-            const score = document.getElementById('finalScore').textContent;
-            const answers = {};
-            scoring.forEach(item => {
-                const el = document.getElementById(item.id);
-                if (el) answers[item.id] = el.value;
-            });
-            const record = {
-                name: stu.name,
-                id: stu.id,
-                question: QID,
-                questionName: QNAME,
-                score: score,
-                maxScore: QMAX,
-                time: new Date().toLocaleString('zh-CN'),
-                answers: answers
-            };
-            const blob = new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = stu.name + '_' + QID + '_成绩.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        };
-
-        const _origCheck3 = document.getElementById('btnCheck').onclick;
-        document.getElementById('btnCheck').onclick = function() {
-            _origCheck3.call(this);
-            saveAnswers();
-        };
-
-        restoreAnswers();
     </script>
 </body>
 </html>
