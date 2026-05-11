@@ -7,8 +7,6 @@
     <script src="../auth.js"></script>
 <script>
         const QID = '1.2.5';
-        const QNAME = '';
-        const QMAX = 0;
 
         function getStudentInfo() {
             return {
@@ -16,32 +14,24 @@
                 id: localStorage.getItem('exam_student_id') || ''
             };
         }
-2.5');
-        localStorage.removeItem('exam_wrong_' + QID + ');
-        localStorage.removeItem('exam_answers_' + QID + ');
-        document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
-        var el;
-        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
-        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
-        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
-    }
 
-        // 重做本题（清除所有记录）
-        function resetThisQuestion() {
-            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+        function resetAll() {
             localStorage.removeItem('exam_score_' + QID);
             localStorage.removeItem('exam_done_' + QID);
             localStorage.removeItem('exam_wrong_' + QID);
             localStorage.removeItem('exam_answers_' + QID);
-            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            document.querySelectorAll('input[type=text], textarea').forEach(function(i){i.value='';});
             var el;
             el = document.getElementById('scoreResult'); if(el) el.style.display='none';
             el = document.getElementById('answerComparison'); if(el) el.style.display='none';
             el = document.getElementById('analysisBox'); if(el) el.style.display='none';
-            el = document.getElementById('finalScore'); if(el) el.textContent='?';
+        }
+
+        function resetThisQuestion() {
+            if (!confirm('确定要重做本题吗？成绩记录将被清除。')) return;
+            resetAll();
             alert('已重置，可重新作答！');
         }
-</script>
 </script>
     <style>
         * {
@@ -267,8 +257,94 @@
                 <button class="btn-check" onclick="checkScore()">检查打分</button>
                 <button class="btn-reset" onclick="resetAnswer()">重置题目</button>
 <button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
-            <!-- 解析区 -->
-            <div class="analysis-box" id="analysisBox" style="display:none;">
-                <div class="analysis-title">&#x1F4D6; 题目解析</div>
-                <div class="analysis-content" id="analysisContent"></div>
-            </div>
+        </div>
+
+        <div id="scoreResult" style="display:none;text-align:center;font-size:18px;font-weight:bold;
+            color:#e74c3c;margin-top:15px;padding:12px;background:#fff5f5;border-radius:6px;">
+            本次得分：<span id="finalScore">0</span> / 25 分
+        </div>
+        <div id="answerComparison" style="display:none;margin-top:15px;padding:15px;
+            background:#f8f9fa;border-radius:6px;border:1px solid #dee2e6;">
+            <div style="font-weight:bold;margin-bottom:10px;color:#2c5282;">答案对比</div>
+            <div id="wrongAnswer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1.2.5 评分（文字题，模糊匹配关键词）
+    const standardAnswer_125 = {
+        part1: {
+            keywords: ['响应不准确','个性化','缺乏个性','交互能力','语音识别','准确率','用户体验','满意度'],
+            score: 12
+        },
+        part2: {
+            keywords: ['优化','数据采集','模型训练','迭代','个性化推荐','知识库','提升','效果'],
+            score: 13
+        }
+    };
+
+    function checkScore() {
+        var ans1 = document.getElementById('answer1') ? document.getElementById('answer1').value.trim() : '';
+        var ans2 = document.getElementById('answer2') ? document.getElementById('answer2').value.trim() : '';
+        var score = 0;
+        var html = '';
+
+        // 评分：问题识别（12分，按关键词覆盖率）
+        var kw1 = standardAnswer_125.part1.keywords;
+        var hit1 = kw1.filter(function(k){return ans1.includes(k);}).length;
+        var s1 = Math.min(Math.round(hit1 / kw1.length * standardAnswer_125.part1.score), standardAnswer_125.part1.score);
+        score += s1;
+        html += '<div style="color:' + (s1 >= 8 ? '#27ae60' : '#e74c3c') + ';margin:4px 0;">';
+        html += '1.2.5-1 问题识别：' + s1 + '/' + standardAnswer_125.part1.score + '分（命中关键词：' + hit1 + '/' + kw1.length + '）</div>';
+
+        // 评分：优化方案（13分）
+        var kw2 = standardAnswer_125.part2.keywords;
+        var hit2 = kw2.filter(function(k){return ans2.includes(k);}).length;
+        var s2 = Math.min(Math.round(hit2 / kw2.length * standardAnswer_125.part2.score), standardAnswer_125.part2.score);
+        score += s2;
+        html += '<div style="color:' + (s2 >= 9 ? '#27ae60' : '#e74c3c') + ';margin:4px 0;">';
+        html += '1.2.5-2 优化方案：' + s2 + '/' + standardAnswer_125.part2.score + '分（命中关键词：' + hit2 + '/' + kw2.length + '）</div>';
+
+        document.getElementById('finalScore').textContent = score;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = html;
+
+        localStorage.setItem('exam_score_' + QID, score);
+        localStorage.setItem('exam_done_' + QID, new Date().toISOString());
+    }
+
+    function resetAnswer() {
+        document.getElementById('answer1').value = '';
+        document.getElementById('answer2').value = '';
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    }
+
+    // 页面加载还原
+    window.addEventListener('DOMContentLoaded', function() {
+        var saved = localStorage.getItem('exam_answers_' + QID);
+        if (saved) {
+            try {
+                var a = JSON.parse(saved);
+                if (a.answer1 && document.getElementById('answer1')) document.getElementById('answer1').value = a.answer1;
+                if (a.answer2 && document.getElementById('answer2')) document.getElementById('answer2').value = a.answer2;
+            } catch(e) {}
+        }
+    });
+
+    // 自动保存
+    ['answer1','answer2'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', function() {
+            var answers = {
+                answer1: document.getElementById('answer1') ? document.getElementById('answer1').value : '',
+                answer2: document.getElementById('answer2') ? document.getElementById('answer2').value : ''
+            };
+            localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
+        });
+    });
+</script>
+</body>
+</html>

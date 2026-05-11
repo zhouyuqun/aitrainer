@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能家居环境控制模拟考试</title>
     <script src="../auth.js"></script>
-<script>
-        const QID = '3.1.5';
-        const QNAME = '';
-        const QMAX = 0;
-
         function getStudentInfo() {
             return {
                 name: localStorage.getItem('exam_student_name') || '',
@@ -26,14 +21,9 @@ ne_3.1.5');
         el = document.getElementById('analysisBox'); if(el) el.style.display='none';
     }
 
-        // 重做本题（清除所有记录<script>        const QID = '3.1.5';
-        const QNAME = '';
-        const QMAX = 0;
-   function resetThisQuestion() {
- </script>  if (!confirm('确定要重做本题吗？成绩记录将被清除<script>        const QID = '3.1.5';
-        const QNAME = '';
-        const QMAX = 0;
-turn;
+        // 重做本题（清除所有记录
+ </script>  if (!confirm('确定要重做本题吗？成绩记录将被清除turn;
+
             localStorage.removeItem('exam_score_' + QID);
             localStorage.removeItem('exam_done_' + QID);
             localStorage.removeItem('exam_wrong_' + QID);
@@ -357,10 +347,7 @@ turn;
 
                         <!-- 代码编辑器3 -->
                         <div class="code-editor-item" data-editor-id="3">
-                            <label class="block <script>        const QID = '3.1.5';
-        const QNAME = '';
-        const QMAX = 0;
-mibold mb-2 text-gray-700">题目3代码：</label>
+                            <label class="block font-medium mb-1">题目3代码：</label>
                             <div class="relative">
                                 <textarea class="w-full h-64 p-3 border border-gray-300 rounded-md code-editor text-sm bg-gray-50 resize-none" placeholder="请在此编写代码..."></textarea>
                                 <div class="absolute top-2 right-2">
@@ -668,5 +655,11 @@ console.log(responseTimeStats);`
             }
         }
     </script>
+
+<!-- score alias divs for resetThisQuestion compatibility -->
+<div id="scoreResult" style="display:none;"></div>
+<div id="answerComparison" style="display:none;"></div>
+<div id="analysisBox" style="display:none;"></div>
+
 </body>
 </html>

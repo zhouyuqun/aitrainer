@@ -456,10 +456,17 @@ with open('2.2.2_report_rf.txt', 'w') as results_rf_file:
                 <div class="analysis-title">&#x1F4D6; 题目解析</div>
                 <div class="analysis-content" id="analysisContent"></div>
             </div>
+
+            <div class="score-result" id="scoreResult" style="margin-top:15px;padding:12px;background:#f0fff4;border:1px solid #9ae6b4;border-radius:4px;font-weight:bold;color:#22543d;display:none;"></div>
+            <div class="answer-comparison" id="answerComparison" style="margin-top:12px;padding:12px;background:#fff5f5;border:1px solid #fc8181;border-radius:4px;display:none;">
+                <div style="font-weight:bold;margin-bottom:8px;color:#c53030;">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer" style="background:#fee;border-left:4px solid #e53e3e;padding:8px;margin-bottom:8px;border-radius:4px;line-height:1.8;"></div>
+                <div class="correct-answer" id="correctAnswer" style="background:#e6f9f0;border-left:4px solid #38a169;padding:8px;border-radius:4px;line-height:1.8;"></div>
+            </div>
 <script>
         const QID = "2.2.2";
         const QNAME = "";
-        const QMAX = 0;
+        // QMAX set in scoring block
         function getStudentInfo() {
             return {
                 name: localStorage.getItem("exam_student_name") || "",
@@ -483,4 +490,113 @@ with open('2.2.2_report_rf.txt', 'w') as results_rf_file:
             alert('已重置，可重新作答！');
         }
 
+
+    // ── 打分逻辑（自动注入）──────────────────────────────────
+    const QMAX = 20;
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user === correct || user.includes(correct) || correct.includes(user);
+    }
+    const scoring = [
+        {id:"M1_1", ans:"pd.read_csv('auto-mpg.csv', na_values='?')", score:1, hint:"read_csv 并设 na_values=\'?\'"},
+        {id:"M1_2", ans:"df.head()", score:1, hint:"df.head()"},
+        {id:"M2_1", ans:"pd.to_numeric", score:1, hint:"pd.to_numeric(df[\'horsepower\'], errors=\'coerce\')"},
+        {id:"M2_2", ans:"df['horsepower']", score:0, hint:""},
+        {id:"M2_3", ans:"df.dropna()", score:1, hint:"df.dropna()"},
+        {id:"M3_1", ans:"df[['cylinders','displacement','horsepower','weight','acceleration','model_year','origin']]", score:1, hint:"选择7个特征列"},
+        {id:"M3_2", ans:"df['mpg']", score:1, hint:"df[\'mpg\']"},
+        {id:"M4_1", ans:"train_test_split", score:0, hint:""},
+        {id:"M4_2", ans:"X, y, test_size=0.2", score:1, hint:"test_size=0.2"},
+        {id:"M5_1", ans:"Pipeline", score:1, hint:"Pipeline([...])"},
+        {id:"M5_2", ans:"StandardScaler()", score:0, hint:""},
+        {id:"M5_3", ans:"LinearRegression()", score:1, hint:"LinearRegression()"},
+        {id:"M6", ans:"pipeline.fit(X_train, y_train)", score:1, hint:"pipeline.fit(X_train, y_train)"},
+        {id:"M7", ans:"dump(pipeline, model_file)", score:1, hint:"pickle.dump(pipeline, model_file)"},
+        {id:"M8", ans:"pipeline.predict(X_test)", score:1, hint:"pipeline.predict(X_test)"},
+        {id:"M9", ans:"results_df.to_csv", score:1, hint:"results_df.to_csv(...)"},
+        {id:"M10_1", ans:"RandomForestRegressor", score:0, hint:""},
+        {id:"M10_2", ans:"n_estimators=100", score:1, hint:"n_estimators=100"},
+        {id:"M11", ans:"rf_model.fit(X_train, y_train)", score:1, hint:"rf_model.fit(X_train, y_train)"},
+        {id:"M12", ans:"rf_model.predict(X_test)", score:1, hint:"rf_model.predict(X_test)"},
+        {id:"M13", ans:"results_rf_df.to_csv", score:1, hint:"results_rf_df.to_csv(...)"}
+    ];
+    const textScoring = [
+        {id:"errorAnalysis", keywords:["过拟合", "欠拟合", "精确", "误差", "R²", "分析"], score:1, hint:"错误分析"},
+        {id:"improveSuggest", keywords:["增加", "调整", "优化", "改进", "特征"], score:1, hint:"改进建议"}
+    ];
+    document.getElementById('btnCheck').onclick = function() {
+        let total = 0;
+        let wrong = [], right = [];
+        scoring.forEach(function(item) {
+            var el = document.getElementById(item.id);
+            if (!el) return;
+            var val = el.value.trim();
+            if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push('✅ ' + item.id + '：正确 +' + item.score + '分');
+            } else {
+                var entry = '❌ ' + item.id + ' 正确答案：' + item.ans;
+                if (item.hint) entry += '<div class="hint-box">💡 提示：' + item.hint + '</div>';
+                wrong.push(entry);
+            }
+        });
+        textScoring.forEach(function(ti) {
+            var el = document.getElementById(ti.id);
+            if (!el) return;
+            var val = el.value.trim();
+            var hasKw = ti.keywords.some(function(k){return val.includes(k);});
+            if (val.length >= 15 && hasKw) {
+                total += ti.score;
+                right.push('✅ ' + ti.id + '：+' + ti.score + '分');
+            } else {
+                wrong.push('❌ ' + ti.id + '（' + ti.hint + '）：内容不足或缺少关键词');
+            }
+        });
+        total = Math.min(total, QMAX);
+        var sr = document.getElementById('scoreResult');
+        if (sr) { sr.style.display = 'block'; sr.innerHTML = '<strong>本次得分：' + total + ' / ' + QMAX + ' 分</strong>'; }
+        var ac = document.getElementById('answerComparison');
+        if (ac) {
+            ac.style.display = 'block';
+            var wEl = document.getElementById('wrongAnswer');
+            var cEl = document.getElementById('correctAnswer');
+            if (wEl) wEl.innerHTML = wrong.join('<br>') || '无错误';
+            if (cEl) cEl.innerHTML = right.join('<br>') || '全部正确';
+        }
+        localStorage.setItem('exam_score_2.2.2', total);
+        localStorage.setItem('exam_done_2.2.2', new Date().toISOString());
+    };
+    document.getElementById('btnReset').onclick = function() {
+        document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+        document.querySelectorAll('.text-answer, textarea').forEach(function(i){i.value='';});
+        var sr = document.getElementById('scoreResult'); if(sr) sr.style.display='none';
+        var ac = document.getElementById('answerComparison'); if(ac) ac.style.display='none';
+        localStorage.removeItem('exam_answers_2.2.2');
+        localStorage.removeItem('exam_score_2.2.2');
+        localStorage.removeItem('exam_done_2.2.2');
+    };
+    // 恢复已保存答案
+    window.addEventListener('DOMContentLoaded', function() {
+        var saved = localStorage.getItem('exam_answers_2.2.2');
+        if (saved) {
+            var answers = JSON.parse(saved);
+            Object.keys(answers).forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.value = answers[id];
+            });
+        }
+    });
+    document.querySelectorAll('.blank, textarea').forEach(function(el) {
+        el.addEventListener('input', function() {
+            var answers = {};
+            document.querySelectorAll('.blank, textarea').forEach(function(e){ if(e.id) answers[e.id]=e.value; });
+            localStorage.setItem('exam_answers_2.2.2', JSON.stringify(answers));
+        });
+    });
+    // ─────────────────────────────────────────────────────────
+
 </script>
+</body>
+</html>

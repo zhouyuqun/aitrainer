@@ -542,10 +542,17 @@ with open('2.2.3_report_xgb.txt', 'w') as xgb_report_file:
                 <div class="analysis-title">&#x1F4D6; 题目解析</div>
                 <div class="analysis-content" id="analysisContent"></div>
             </div>
+
+            <div class="score-result" id="scoreResult" style="margin-top:15px;padding:12px;background:#f0fff4;border:1px solid #9ae6b4;border-radius:4px;font-weight:bold;color:#22543d;display:none;"></div>
+            <div class="answer-comparison" id="answerComparison" style="margin-top:12px;padding:12px;background:#fff5f5;border:1px solid #fc8181;border-radius:4px;display:none;">
+                <div style="font-weight:bold;margin-bottom:8px;color:#c53030;">答案对比</div>
+                <div class="wrong-answer" id="wrongAnswer" style="background:#fee;border-left:4px solid #e53e3e;padding:8px;margin-bottom:8px;border-radius:4px;line-height:1.8;"></div>
+                <div class="correct-answer" id="correctAnswer" style="background:#e6f9f0;border-left:4px solid #38a169;padding:8px;border-radius:4px;line-height:1.8;"></div>
+            </div>
 <script>
         const QID = "2.2.3";
         const QNAME = "";
-        const QMAX = 0;
+        // QMAX set in scoring block
         function getStudentInfo() {
             return {
                 name: localStorage.getItem("exam_student_name") || "",
@@ -569,4 +576,115 @@ with open('2.2.3_report_xgb.txt', 'w') as xgb_report_file:
             alert('已重置，可重新作答！');
         }
 
+
+    // ── 打分逻辑（自动注入）──────────────────────────────────
+    const QMAX = 20;
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        return user === correct || user.includes(correct) || correct.includes(user);
+    }
+    const scoring = [
+        {id:"M1_1", ans:"pd.read_csv('fitness_data.csv')", score:1, hint:"read_csv 加载数据"},
+        {id:"M1_2", ans:"df.head()", score:1, hint:"df.head()"},
+        {id:"M2_1", ans:"pd.get_dummies", score:1, hint:"pd.get_dummies(X)"},
+        {id:"M2_2", ans:"df['Your age'].apply", score:1, hint:"apply(lambda x: int(x.split(\' \')[0]))"},
+        {id:"M3_1", ans:"train_test_split", score:0, hint:""},
+        {id:"M3_2", ans:"X, y, test_size=0.2", score:1, hint:"test_size=0.2"},
+        {id:"M4_1", ans:"RandomForestRegressor", score:0, hint:""},
+        {id:"M4_2", ans:"n_estimators=100", score:1, hint:"n_estimators=100"},
+        {id:"M5", ans:"rf_model.fit(X_train, y_train)", score:1, hint:"rf_model.fit(X_train, y_train)"},
+        {id:"M6", ans:"dump(rf_model, model_file)", score:1, hint:"pickle.dump(rf_model, model_file)"},
+        {id:"M7", ans:"rf_model.predict(X_test)", score:1, hint:"rf_model.predict(X_test)"},
+        {id:"M8_1", ans:"rf_model.score(X_train, y_train)", score:0, hint:""},
+        {id:"M8_2", ans:"rf_model.score(X_test, y_test)", score:1, hint:"rf_model.score(X_test, y_test)"},
+        {id:"M9", ans:"mean_squared_error(y_test, y_pred)", score:1, hint:"mean_squared_error(y_test, y_pred)"},
+        {id:"M10", ans:"r2_score(y_test, y_pred)", score:1, hint:"r2_score(y_test, y_pred)"},
+        {id:"M11_1", ans:"xgb.XGBRegressor", score:0, hint:""},
+        {id:"M11_2", ans:"n_estimators=100", score:1, hint:"n_estimators=100"},
+        {id:"M12", ans:"xgb_model.fit(X_train, y_train)", score:1, hint:"xgb_model.fit(X_train, y_train)"},
+        {id:"M13", ans:"xgb_model.predict(X_test)", score:1, hint:"xgb_model.predict(X_test)"},
+        {id:"M14_1", ans:"rf_model.score(X_train, y_train)", score:0, hint:""},
+        {id:"M14_2", ans:"rf_model.score(X_test, y_test)", score:1, hint:"test_score"},
+        {id:"M15_1", ans:"mean_squared_error(y_test, y_pred_xgb)", score:0, hint:""},
+        {id:"M15_2", ans:"r2_score(y_test, y_pred_xgb)", score:1, hint:"r2_score"}
+    ];
+    const textScoring = [
+        {id:"error_analysis", keywords:["过拟合", "欠拟合", "误差", "分析", "错误"], score:1, hint:"错误分析"},
+        {id:"improve_suggest", keywords:["增加", "调整", "优化", "改进", "特征"], score:1, hint:"改进建议"}
+    ];
+    document.getElementById('btnCheck').onclick = function() {
+        let total = 0;
+        let wrong = [], right = [];
+        scoring.forEach(function(item) {
+            var el = document.getElementById(item.id);
+            if (!el) return;
+            var val = el.value.trim();
+            if (fuzzyMatch(val, item.ans)) {
+                total += item.score;
+                right.push('✅ ' + item.id + '：正确 +' + item.score + '分');
+            } else {
+                var entry = '❌ ' + item.id + ' 正确答案：' + item.ans;
+                if (item.hint) entry += '<div class="hint-box">💡 提示：' + item.hint + '</div>';
+                wrong.push(entry);
+            }
+        });
+        textScoring.forEach(function(ti) {
+            var el = document.getElementById(ti.id);
+            if (!el) return;
+            var val = el.value.trim();
+            var hasKw = ti.keywords.some(function(k){return val.includes(k);});
+            if (val.length >= 15 && hasKw) {
+                total += ti.score;
+                right.push('✅ ' + ti.id + '：+' + ti.score + '分');
+            } else {
+                wrong.push('❌ ' + ti.id + '（' + ti.hint + '）：内容不足或缺少关键词');
+            }
+        });
+        total = Math.min(total, QMAX);
+        var sr = document.getElementById('scoreResult');
+        if (sr) { sr.style.display = 'block'; sr.innerHTML = '<strong>本次得分：' + total + ' / ' + QMAX + ' 分</strong>'; }
+        var ac = document.getElementById('answerComparison');
+        if (ac) {
+            ac.style.display = 'block';
+            var wEl = document.getElementById('wrongAnswer');
+            var cEl = document.getElementById('correctAnswer');
+            if (wEl) wEl.innerHTML = wrong.join('<br>') || '无错误';
+            if (cEl) cEl.innerHTML = right.join('<br>') || '全部正确';
+        }
+        localStorage.setItem('exam_score_2.2.3', total);
+        localStorage.setItem('exam_done_2.2.3', new Date().toISOString());
+    };
+    document.getElementById('btnReset').onclick = function() {
+        document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+        document.querySelectorAll('.text-answer, textarea').forEach(function(i){i.value='';});
+        var sr = document.getElementById('scoreResult'); if(sr) sr.style.display='none';
+        var ac = document.getElementById('answerComparison'); if(ac) ac.style.display='none';
+        localStorage.removeItem('exam_answers_2.2.3');
+        localStorage.removeItem('exam_score_2.2.3');
+        localStorage.removeItem('exam_done_2.2.3');
+    };
+    // 恢复已保存答案
+    window.addEventListener('DOMContentLoaded', function() {
+        var saved = localStorage.getItem('exam_answers_2.2.3');
+        if (saved) {
+            var answers = JSON.parse(saved);
+            Object.keys(answers).forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.value = answers[id];
+            });
+        }
+    });
+    document.querySelectorAll('.blank, textarea').forEach(function(el) {
+        el.addEventListener('input', function() {
+            var answers = {};
+            document.querySelectorAll('.blank, textarea').forEach(function(e){ if(e.id) answers[e.id]=e.value; });
+            localStorage.setItem('exam_answers_2.2.3', JSON.stringify(answers));
+        });
+    });
+    // ─────────────────────────────────────────────────────────
+
 </script>
+</body>
+</html>

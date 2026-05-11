@@ -7,8 +7,6 @@
     <script src="../auth.js"></script>
 <script>
         const QID = '4.1.1';
-        const QNAME = '';
-        const QMAX = 0;
 
         function getStudentInfo() {
             return {
@@ -16,15 +14,18 @@
                 id: localStorage.getItem('exam_student_id') || ''
             };
         }
-.1');
-        localStorage.removeItem('exam_wrong_' + QID + ');
-        localStorage.removeItem('exam_answers_' + QID + ');
-        document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
-        var el;
-        el = document.getElementById('scoreResult'); if(el) el.style.display='none';
-        el = document.getElementById('answerComparison'); if(el) el.style.display='none';
-        el = document.getElementById('analysisBox'); if(el) el.style.display='none';
-    }
+
+        function resetAll() {
+            localStorage.removeItem('exam_score_' + QID);
+            localStorage.removeItem('exam_done_' + QID);
+            localStorage.removeItem('exam_wrong_' + QID);
+            localStorage.removeItem('exam_answers_' + QID);
+            document.querySelectorAll('input[type=text], input[type=number], textarea').forEach(function(i){i.value='';});
+            var el;
+            el = document.getElementById('scoreResult'); if(el) el.style.display='none';
+            el = document.getElementById('answerComparison'); if(el) el.style.display='none';
+            el = document.getElementById('analysisBox'); if(el) el.style.display='none';
+        }
 
         // 重做本题（清除所有记录）
         function resetThisQuestion() {
@@ -33,7 +34,7 @@
             localStorage.removeItem('exam_done_' + QID);
             localStorage.removeItem('exam_wrong_' + QID);
             localStorage.removeItem('exam_answers_' + QID);
-            document.querySelectorAll('.blank').forEach(function(i){i.value='';});
+            document.querySelectorAll('.answer-input').forEach(function(i){i.value='';});
             var el;
             el = document.getElementById('scoreResult'); if(el) el.style.display='none';
             el = document.getElementById('answerComparison'); if(el) el.style.display='none';
@@ -41,7 +42,6 @@
             el = document.getElementById('finalScore'); if(el) el.textContent='?';
             alert('已重置，可重新作答！');
         }
-</script>
 </script>
     <style>
         * {
@@ -311,35 +311,35 @@ Label Studio音频标注功能演示。
             <div class="question-item" data-score="5" data-correct="了解数据标注的概念、类型及其作用和重要性">
                 <div class="question-text">数据标注基础理论 学习目标：</div>
                 <input type="text" class="answer-input" placeholder="请输入答案">
-                <div class="correct-answer">正确答案：了解数据标注的概念、类型及其作用和重要性</div>
+                <div class="correct-answer" id="correctAnswer">正确答案：了解数据标注的概念、类型及其作用和重要性</div>
                 <div class="score-info">本题分值：<span class="score-display">5分</span></div>
             </div>
 
             <div class="question-item" data-score="5" data-correct="掌握Label Studio的安装与配置方法和基本功能/操作">
                 <div class="question-text">Label Studio简介与安装 学习目标：</div>
                 <input type="text" class="answer-input" placeholder="请输入答案">
-                <div class="correct-answer">正确答案：掌握Label Studio的安装与配置方法和基本功能/操作</div>
+                <div class="correct-answer" id="correctAnswer">正确答案：掌握Label Studio的安装与配置方法和基本功能/操作</div>
                 <div class="score-info">本题分值：<span class="score-display">5分</span></div>
             </div>
 
             <div class="question-item" data-score="5" data-correct="掌握文本标注方法和实践操作技巧">
                 <div class="question-text">文本数据标注 学习目标：</div>
                 <input type="text" class="answer-input" placeholder="请输入答案">
-                <div class="correct-answer">正确答案：掌握文本标注方法和实践操作技巧</div>
+                <div class="correct-answer" id="correctAnswer">正确答案：掌握文本标注方法和实践操作技巧</div>
                 <div class="score-info">本题分值：<span class="score-display">5分</span></div>
             </div>
 
             <div class="question-item" data-score="5" data-correct="掌握图像标注方法和实践操作技巧">
                 <div class="question-text">图像数据标注 学习目标：</div>
                 <input type="text" class="answer-input" placeholder="请输入答案">
-                <div class="correct-answer">正确答案：掌握图像标注方法和实践操作技巧</div>
+                <div class="correct-answer" id="correctAnswer">正确答案：掌握图像标注方法和实践操作技巧</div>
                 <div class="score-info">本题分值：<span class="score-display">5分</span></div>
             </div>
 
             <div class="question-item" data-score="5" data-correct="掌握视频标注方法和实践操作技巧">
                 <div class="question-text">视频数据标注 学习目标：</div>
                 <input type="text" class="answer-input" placeholder="请输入答案">
-                <div class="correct-answer">正确答案：掌握视频标注方法和实践操作技巧</div>
+                <div class="correct-answer" id="correctAnswer">正确答案：掌握视频标注方法和实践操作技巧</div>
                 <div class="score-info">本题分值：<span class="score-display">5分</span></div>
             </div>
 
@@ -348,8 +348,129 @@ Label Studio音频标注功能演示。
                 <button class="btn btn-show-answers" onclick="showAnswers()">显示答案</button>
                 <button class="btn btn-reset" onclick="resetForm()">重置</button>
 <button class="btn btn-retry" id="btnRetry" onclick="resetThisQuestion()">&#x1F504; 重做本题</button>
-            <!-- 解析区 -->
-            <div class="analysis-box" id="analysisBox" style="display:none;">
-                <div class="analysis-title">&#x1F4D6; 题目解析</div>
-                <div class="analysis-content" id="analysisContent"></div>
-            </div>
+        </div><!-- end btn-group -->
+
+        <div id="scoreResult" style="display:none;text-align:center;font-size:18px;font-weight:bold;
+            color:#e74c3c;margin-top:15px;padding:12px;background:#fff5f5;border-radius:6px;">
+            本次得分：<span id="finalScore">0</span> / 25 分
+        </div>
+
+        <div id="answerComparison" style="display:none;margin-top:15px;padding:15px;
+            background:#f8f9fa;border-radius:6px;border:1px solid #dee2e6;">
+            <div style="font-weight:bold;margin-bottom:10px;color:#2c5282;">答案对比</div>
+            <div id="wrongAnswer"></div>
+            <div id="rightAnswer" style="margin-top:8px;"></div>
+        </div>
+
+    </div><!-- end right-answer -->
+</div><!-- end container -->
+
+<script>
+    // 模糊匹配
+    function fuzzyMatch(user, correct) {
+        if (!user) return false;
+        user = user.trim().toLowerCase().replace(/\s+/g, '');
+        correct = correct.trim().toLowerCase().replace(/\s+/g, '');
+        if (user === correct) return true;
+        if (correct.length >= 4 && user.includes(correct.substring(0, Math.floor(correct.length * 0.6)))) return true;
+        if (user.length >= 4 && correct.includes(user.substring(0, Math.floor(user.length * 0.6)))) return true;
+        return false;
+    }
+
+    // 页面加载还原答案
+    window.addEventListener('DOMContentLoaded', function() {
+        var saved = localStorage.getItem('exam_answers_' + QID);
+        if (saved) {
+            try {
+                var answers = JSON.parse(saved);
+                var inputs = document.querySelectorAll('.answer-input');
+                var items = document.querySelectorAll('.question-item');
+                items.forEach(function(item, idx) {
+                    var input = item.querySelector('.answer-input');
+                    if (input && answers['q' + (idx+1)]) input.value = answers['q' + (idx+1)];
+                });
+            } catch(e) {}
+        }
+        var score = localStorage.getItem('exam_score_' + QID);
+        if (score !== null) {
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('scoreResult').style.display = 'block';
+        }
+    });
+
+    // 自动保存答案
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.answer-input').forEach(function(input, idx) {
+            input.addEventListener('input', function() {
+                var answers = {};
+                document.querySelectorAll('.answer-input').forEach(function(inp, i) {
+                    answers['q' + (i+1)] = inp.value;
+                });
+                localStorage.setItem('exam_answers_' + QID, JSON.stringify(answers));
+            });
+        });
+    });
+
+    // 自动评分
+    function calculateScore() {
+        var items = document.querySelectorAll('.question-item');
+        var total = 0;
+        var wrongHtml = '';
+        var rightHtml = '';
+
+        items.forEach(function(item, idx) {
+            var input = item.querySelector('.answer-input');
+            var correctAttr = item.getAttribute('data-correct') || '';
+            var scoreVal = parseInt(item.getAttribute('data-score') || '5');
+            var label = item.querySelector('.question-text') ? item.querySelector('.question-text').textContent.trim() : ('第' + (idx+1) + '题');
+            var userVal = input ? input.value.trim() : '';
+
+            if (fuzzyMatch(userVal, correctAttr)) {
+                total += scoreVal;
+                rightHtml += '<div style="color:#27ae60;margin:4px 0;">✅ ' + label + ' <span style="color:#555">（+' + scoreVal + '分）</span></div>';
+                if (input) { input.style.borderColor = '#27ae60'; input.style.backgroundColor = '#f0fff4'; }
+            } else {
+                wrongHtml += '<div style="color:#e74c3c;margin:4px 0;">❌ ' + label + '</div>';
+                wrongHtml += '<div style="font-size:13px;color:#555;margin:2px 0 8px 16px;">你的答案：' + (userVal || '（未填写）') + '<br>正确答案：' + correctAttr + '</div>';
+                if (input) { input.style.borderColor = '#e74c3c'; input.style.backgroundColor = '#fff0f0'; }
+            }
+        });
+
+        document.getElementById('finalScore').textContent = total;
+        document.getElementById('scoreResult').style.display = 'block';
+        document.getElementById('answerComparison').style.display = 'block';
+        document.getElementById('wrongAnswer').innerHTML = wrongHtml || '<div style="color:#27ae60;">全部正确！</div>';
+        document.getElementById('rightAnswer').innerHTML = rightHtml;
+
+        localStorage.setItem('exam_score_' + QID, total);
+        localStorage.setItem('exam_done_' + QID, new Date().toISOString());
+        if (wrongHtml) {
+            localStorage.setItem('exam_wrong_' + QID, '1');
+        } else {
+            localStorage.removeItem('exam_wrong_' + QID);
+        }
+    }
+
+    // 显示答案
+    function showAnswers() {
+        document.querySelectorAll('.correct-answer').forEach(function(el) {
+            el.style.display = 'block';
+        });
+    }
+
+    // 重置表单（不清除localStorage）
+    function resetForm() {
+        document.querySelectorAll('.answer-input').forEach(function(i) {
+            i.value = '';
+            i.style.borderColor = '';
+            i.style.backgroundColor = '';
+        });
+        document.querySelectorAll('.correct-answer').forEach(function(el) {
+            el.style.display = 'none';
+        });
+        document.getElementById('scoreResult').style.display = 'none';
+        document.getElementById('answerComparison').style.display = 'none';
+    }
+</script>
+</body>
+</html>

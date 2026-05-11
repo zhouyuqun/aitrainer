@@ -270,6 +270,9 @@
             </div>
 
             <div id="resultPanel" class="result-panel"></div>
+<div id="scoreResult" style="display:none;"></div>
+<div id="answerComparison" style="display:none;"></div>
+
         </div>
     </div>
 
@@ -317,7 +320,7 @@
             comparisonHtml += `<div class="comparison-block">
                 <h4>1.2.2-1 问题识别（满分4分）</h4>
                 <div class="user-answer"><span>你的答案包含：</span>${problemMatch.join('、') || '无'}</div>
-                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem1.problems.join('、')}</div>
+                <div class="correct-answer" id="correctAnswer"><span>标准答案：</span>${standardAnswer.problem1.problems.join('、')}</div>
             </div>`;
 
             // M2: 影响（4分）
@@ -326,7 +329,7 @@
             comparisonHtml += `<div class="comparison-block">
                 <h4>1.2.2-1 影响分析（满分4分）</h4>
                 <div class="user-answer"><span>你的答案包含：</span>${impactMatch.map(i=>i.substring(0,20)+'...').join('、') || '无'}</div>
-                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem1.impacts.join('')}</div>
+                <div class="correct-answer" id="correctAnswer"><span>标准答案：</span>${standardAnswer.problem1.impacts.join('')}</div>
             </div>`;
 
             // M3: 原因（4分）
@@ -335,7 +338,7 @@
             comparisonHtml += `<div class="comparison-block">
                 <h4>1.2.2-1 原因分析（满分4分）</h4>
                 <div class="user-answer"><span>你的答案包含：</span>${causeMatch.map(c=>c.substring(0,20)+'...').join('、') || '无'}</div>
-                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem1.causes.join('')}</div>
+                <div class="correct-answer" id="correctAnswer"><span>标准答案：</span>${standardAnswer.problem1.causes.join('')}</div>
             </div>`;
 
             // 1.2.2-2 评分（共13分）
@@ -345,7 +348,7 @@
             comparisonHtml += `<div class="comparison-block">
                 <h4>1.2.2-2 优化方案（满分6分）</h4>
                 <div class="user-answer"><span>你的答案包含：</span>${optMatch.map(o=>o.substring(0,15)+'...').join('、') || '无'}</div>
-                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem2.optimizations.join('')}</div>
+                <div class="correct-answer" id="correctAnswer"><span>标准答案：</span>${standardAnswer.problem2.optimizations.join('')}</div>
             </div>`;
 
             // M5: 实施步骤（6分）
@@ -355,7 +358,7 @@
             comparisonHtml += `<div class="comparison-block">
                 <h4>1.2.2-2 实施步骤（满分6分）</h4>
                 <div class="user-answer"><span>你的答案包含：</span>${stepMatch.join('、') || '无'}</div>
-                <div class="correct-answer"><span>标准答案应包含：</span>${steps.join('、')}</div>
+                <div class="correct-answer" id="correctAnswer"><span>标准答案应包含：</span>${steps.join('、')}</div>
             </div>`;
 
             // M6: 团队协调与预期效果（1分）
@@ -364,7 +367,7 @@
             comparisonHtml += `<div class="comparison-block">
                 <h4>1.2.2-2 团队协调与预期效果（满分1分）</h4>
                 <div class="user-answer"><span>你的答案：</span>${teamEffectMatch ? '包含团队协调与预期效果描述' : '未完整覆盖'}</div>
-                <div class="correct-answer"><span>标准答案：</span>${standardAnswer.problem2.expectedEffects.join('')}</div>
+                <div class="correct-answer" id="correctAnswer"><span>标准答案：</span>${standardAnswer.problem2.expectedEffects.join('')}</div>
             </div>`;
 
             // 显示结果
